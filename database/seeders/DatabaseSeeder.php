@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
 
           // Membuat data roles
           $roles = [
-            ['role_name' => 'manager'],
             ['role_name' => 'superadmin'],
             ['role_name' => 'admin'],
+            ['role_name' => 'manager'],
             ['role_name' => 'pegawai'],
         ];
 
@@ -33,19 +33,19 @@ class DatabaseSeeder extends Seeder
                 'nip' => '12121',
                 'nama' => 'John Doe',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'manager')->first()->id
+                'role_id' => Role::where('role_name', 'superadmin')->first()->id
             ],
             [
                 'nip' => '12122',
                 'nama' => 'Jane Doe',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'superadmin')->first()->id
+                'role_id' => Role::where('role_name', 'admin')->first()->id
             ],
             [
                 'nip' => '12123',
                 'nama' => 'John Smith',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'admin')->first()->id
+                'role_id' => Role::where('role_name', 'manager')->first()->id
             ],
             [
                 'nip' => '12124',

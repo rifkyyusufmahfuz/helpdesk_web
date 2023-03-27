@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CDA - Login</title>
+    <title>KCI IT Helpdesk - Login</title>
     <link rel="icon" href="{!! asset('img/Logo_KAI_Commuter_kecil.png') !!}" />
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -54,7 +54,7 @@
                                         <div class="form-group">
                                             <input type="password" name="password" value="{{ old('password') }}"
                                                 class="form-control @error('password') is-invalid @enderror"
-                                                placeholder="Masukkan Password">
+                                                placeholder="Password">
                                             @error('password')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

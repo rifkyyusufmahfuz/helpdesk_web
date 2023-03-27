@@ -1,10 +1,12 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ManagerController;
+
 
 //  jika user belum login
 Route::group(['middleware' => 'guest'], function () {
@@ -25,9 +27,21 @@ Route::group(['middleware' => ['auth', 'checkrole:1,2,3,4']], function () {
 });
 
 
-// untuk superadmin
+// untuk Superadmin
 Route::group(['middleware' => ['auth', 'checkrole:1']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
+    Route::resource('/superadmin/crud', SuperadminController::class);
+});
+
+// untuk Admin
+Route::group(['middleware' => ['auth', 'checkrole:2']], function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+
+});
+
+// untuk Manager
+Route::group(['middleware' => ['auth', 'checkrole:3']], function () {
+    Route::get('/manager', [ManagerController::class, 'index']);
 });
 
 // untuk pegawai

@@ -8,11 +8,13 @@ use App\Models\Role;
 
 class AuthController extends Controller
 {
-    public function login() {
+    public function login()
+    {
         return view('auth.login');
     }
 
-    public function dologin(Request $request) {
+    public function dologin(Request $request)
+    {
         // validasi
         $credentials = $request->validate([
             'nip' => 'required',
@@ -21,15 +23,30 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
 
+            // // buat ulang session login
+            // $request->session()->regenerate();
+
+            // if (auth()->user()->role_id === 1) {
+            //     // jika user superadmin
+            //     return redirect()->intended('/superadmin');
+            // } else {
+            //     // jika user pegawai
+            //     return redirect()->intended('/pegawai');
+            // }
+
             // buat ulang session login
             $request->session()->regenerate();
 
-            if (auth()->user()->role_id === 1) {
-                // jika user superadmin
+            if (auth()->user()->role_id === 1) { // jika user = superadmin
                 return redirect()->intended('/superadmin');
-            } else {
-                // jika user pegawai
+            } else if (auth()->user()->role_id === 2) { // jika user = admin
+                return redirect()->intended('/admin');
+            } else if (auth()->user()->role_id === 3) { // jika user = manager
+                return redirect()->intended('/manager');
+            } else if (auth()->user()->role_id === 4) { // Jika user = pegawai
                 return redirect()->intended('/pegawai');
+            } else { // jika user tidak memiliki role yang valid
+                return redirect()->intended('/');
             }
         }
 
@@ -38,7 +55,8 @@ class AuthController extends Controller
         return back()->with('error', 'email atau password salah');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

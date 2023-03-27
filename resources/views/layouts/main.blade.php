@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>Commuter Document Archive</title>
-    <link rel="icon" href="{!! asset('templates/img/Logo_KAI_Commuter_kecil.png') !!}" />
+    <title>KCI IT Helpdesk</title>
+    <link rel="icon" href="{!! asset('img/Logo_KAI_Commuter_kecil.png') !!}" />
     @include('layouts.head')
 </head>
 
@@ -57,8 +57,8 @@
 
     {{-- Script --}}
     @include('layouts.script')
+    @include('sweetalert::alert')
     {{-- End Script --}}
-
 </body>
 
 </html>

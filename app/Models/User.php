@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+
 
 class User extends Authenticatable
 {
@@ -58,11 +60,12 @@ class User extends Authenticatable
      *
      * @return mixed
      */
+
     public function getAuthIdentifier()
     {
         return $this->nip;
     }
-    
+
     /**
      * Get the password for the user.
      *
@@ -72,13 +75,25 @@ class User extends Authenticatable
     {
         return $this->password;
     }
+
     // inverse one to Many ke tabel role
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
     public function findForPassport($username)
     {
         return $this->where('nip', $username)->first();
+    }
+
+    //Tambah Data User
+    public function insert_datauser($data)
+    {
+        if (DB::table('users')->insert($data)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

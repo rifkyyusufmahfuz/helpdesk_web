@@ -22,10 +22,11 @@
                     Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ route('logout') }}">
+                <a id="logout-link" class="dropdown-item" href="{{ route('logout') }}">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>
+
             </div>
         </li>
 
