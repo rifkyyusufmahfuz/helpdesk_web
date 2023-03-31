@@ -25,7 +25,30 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- Styles -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
 {{-- KHUSUS SCRIPT BARU TARO DI BAWAH INI --}}
+<script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+@include('sweetalert::alert')
 
+{{-- SCRIPT UNTUK FUNGSI HAPUS --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.js"></script>
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Anda yakin ingin menghapus user ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Tidak, batalkan',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit form jika user menekan tombol "Ya, hapus"
+                document.querySelector('#form-delete-' + id).submit();
+            }
+        });
+    }
+</script>

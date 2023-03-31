@@ -87,10 +87,41 @@ class User extends Authenticatable
         return $this->where('nip', $username)->first();
     }
 
+    public function get_user_by_id($id)
+    {
+        $user = DB::table('users')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->select('users.id', 'users.nama', 'users.nip', 'users.role_id', 'roles.role_name')
+            ->where('users.id', '=', $id)
+            ->first();
+        return $user;
+    }
+
     //Tambah Data User
     public function insert_datauser($data)
     {
         if (DB::table('users')->insert($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Update data user
+    public function update_user($data, $id)
+    {
+        if (DB::table('users')->where('id', $id)->update($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    //Delete Data User
+    public function delete_datauser($id)
+    {
+        if (DB::table('users')->where('id', $id)->delete()) {
             return true;
         } else {
             return false;

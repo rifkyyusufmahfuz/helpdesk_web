@@ -101,35 +101,43 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover" id="dataTable">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>NIPP</th>
                                         <th>Nama</th>
                                         <th>Role</th>
-                                        <th>Aksi</th>
+                                        <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $no = 1; ?>
                                     @foreach ($users as $user)
                                         <tr>
+                                            <td>{{ $no++ }}</td>
                                             <td>{{ $user->nip }}</td>
                                             <td>{{ $user->nama }}</td>
                                             <td>{{ ucwords($user->role->role_name) }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="#" class="btn btn-sm btn-warning"><i
-                                                            class="fa fa-edit"></i> Edit</a>
-                                                    <form action="#" method="POST" style="display: inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-sm btn-danger"
-                                                            onclick="deleteUser('{{ $user->nama }}', '{{ $user->id }}')">
-                                                            <i class="fa fa-trash"></i> Hapus
-                                                        </button>
-                                                    </form>
-
-                                                </div>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                                    data-target="#modalEditUser{{ $user->id }}"><i
+                                                        class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal"
+                                                    data-bs-target="#modalEditPassword{{ $user->id }}">
+                                                    <i class="fa fa-key"></i>
+                                                </button>
+                                                <form id="form-delete-{{ $user->id }}"
+                                                    action="/superadmin/crud/{{ $user->id }}" method="POST"
+                                                    style="display: inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                        onclick="confirmDelete('{{ $user->id }}')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -140,8 +148,10 @@
                 </div>
             </div>
         </div>
+
     </div>
 
-
+    @include('superadmin.modal.update_password_user')
+    @include('superadmin.modal.update_datauser')
     @include('superadmin.modal.input_user')
 @endsection
