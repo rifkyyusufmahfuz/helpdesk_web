@@ -104,38 +104,40 @@ class SuperadminController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, $id)
     {
         // Ambil data user yang akan diupdate
         $user = $this->modeluser->get_user_by_id($id);
 
         // Jika superadmin mencoba mengupdate rolenya sendiri
-        if ($user->nip === Auth::user()->id && $request->has('role')) {
-            return redirect('/superadmin')->with('toast_error', 'Tidak dapat mengubah role sendiri!');
+        if ($user->id == Auth::user()->id && $request->has('role')) {
+            $superadminRoleId = Role::where('role_name', 'superadmin')->first()->id;
+            if (Auth::user()->role_id == $superadminRoleId && $request->input('role') != $superadminRoleId) {
+                return redirect('/superadmin')->with('toast_error', 'Tidak dapat mengubah role sendiri menjadi role selain superadmin!');
+            }
         }
 
         // Jika melakukan update data user
         if ($request->has('nip') || $request->has('nama') || $request->has('role')) {
             // Validasi form
             $request->validate([
-                'nip' => 'required',
+                'nip' => 'required|unique:users,nip,' . $id,
                 'nama' => 'required',
                 'role' => $request->filled('role') ? 'required|exists:roles,id' : ''
             ]);
 
-            // Jika superadmin mengubah role, pastikan nilai rolenya tetap 1 (superadmin)
-            $role_id = $request->input('role');
-            if ($role_id != $user->role_id && Auth::user()->role_id == 1) {
-                $role_id = 1;
-            }
-
-            // Simpan data yang sudah divalidasi ke $data
             $data = [
                 'nama' => $request->input('nama'),
                 'nip'  => $request->input('nip'),
-                'role_id' => $role_id,
+                'role_id' => $user->role_id, // nilai awal diambil dari user yang diupdate
                 'updated_at' => \Carbon\Carbon::now(),
             ];
+
+            // Jika superadmin mengubah role user lain
+            if ($request->has('role') && Auth::user()->role_id == 1 && $user->role_id != $request->input('role')) {
+                $data['role_id'] = $request->input('role');
+            }
 
             // Kirim ke model update data user
             if ($this->modeluser->update_user($data, $id)) {
@@ -166,6 +168,11 @@ class SuperadminController extends Controller
 
         return redirect('/superadmin')->with('error', 'Gagal melakukan update data user atau password!');
     }
+
+
+
+
+
 
 
 
