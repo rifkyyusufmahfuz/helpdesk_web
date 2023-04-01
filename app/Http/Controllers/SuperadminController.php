@@ -24,7 +24,7 @@ class SuperadminController extends Controller
     public function index()
     {
         $users = User::join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*', 'roles.role_name')
+            ->select('users.*', 'roles.nama_role')
             ->get();
 
         $roleCounts = [
@@ -42,7 +42,7 @@ class SuperadminController extends Controller
     public function halaman_datauser()
     {
         $users = User::join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*', 'roles.role_name')
+            ->select('users.*', 'roles.nama_role')
             ->get();
 
         $roleCounts = [
@@ -130,7 +130,7 @@ class SuperadminController extends Controller
 
         // Jika superadmin mencoba mengupdate rolenya sendiri
         if ($user->id == Auth::user()->id && $request->has('role')) {
-            $superadminRoleId = Role::where('role_name', 'superadmin')->first()->id;
+            $superadminRoleId = Role::where('nama_role', 'superadmin')->first()->id;
             if (Auth::user()->role_id == $superadminRoleId && $request->input('role') != $superadminRoleId) {
                 return redirect('/superadmin')->with('toast_error', 'Tidak dapat mengubah role sendiri menjadi role selain superadmin!');
             }

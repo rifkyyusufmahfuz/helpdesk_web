@@ -34,7 +34,7 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $user->nip }}</td>
                                         <td>{{ $user->nama }}</td>
-                                        <td>{{ ucwords($user->role->role_name) }}</td>
+                                        <td>{{ ucwords($user->role->nama_role) }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-warning" data-toggle="modal"
                                                 data-target="#modalEditUser{{ $user->id }}"><i class="fa fa-edit"></i>

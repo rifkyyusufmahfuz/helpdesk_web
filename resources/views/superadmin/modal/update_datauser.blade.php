@@ -36,7 +36,7 @@
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}"
                                         @if ($user->role_id == $role->id) selected @endif>
-                                        {{ ucwords($role->role_name) }}</option>
+                                        {{ ucwords($role->nama_role) }}</option>
                                 @endforeach
                             </select>
                             @error('role')

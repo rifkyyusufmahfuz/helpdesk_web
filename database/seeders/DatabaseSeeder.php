@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
 
           // Membuat data roles
           $roles = [
-            ['role_name' => 'superadmin'],
-            ['role_name' => 'admin'],
-            ['role_name' => 'manager'],
-            ['role_name' => 'pegawai'],
+            ['nama_role' => 'superadmin'],
+            ['nama_role' => 'admin'],
+            ['nama_role' => 'manager'],
+            ['nama_role' => 'pegawai'],
         ];
 
         // Memasukkan data roles ke dalam tabel roles
@@ -33,25 +33,25 @@ class DatabaseSeeder extends Seeder
                 'nip' => '12121',
                 'nama' => 'John Doe',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'superadmin')->first()->id
+                'role_id' => Role::where('nama_role', 'superadmin')->first()->id
             ],
             [
                 'nip' => '12122',
                 'nama' => 'Jane Doe',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'admin')->first()->id
+                'role_id' => Role::where('nama_role', 'admin')->first()->id
             ],
             [
                 'nip' => '12123',
                 'nama' => 'John Smith',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'manager')->first()->id
+                'role_id' => Role::where('nama_role', 'manager')->first()->id
             ],
             [
                 'nip' => '12124',
                 'nama' => 'Jane Smith',
                 'password' => Hash::make('123'),
-                'role_id' => Role::where('role_name', 'pegawai')->first()->id
+                'role_id' => Role::where('nama_role', 'pegawai')->first()->id
             ],
         ];
 

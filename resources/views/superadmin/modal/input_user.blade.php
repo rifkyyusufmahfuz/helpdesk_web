@@ -46,10 +46,10 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="role_name">Role</label>
+                            <label for="nama_role">Role</label>
                             <select name="role_id" class="form-control @error('role_id') is-invalid @enderror">
                                 @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}">{{ ucfirst($role->role_name) }}</option>
+                                    <option value="{{ $role->id }}">{{ ucfirst($role->nama_role) }}</option>
                                 @endforeach
                             </select>
                             @error('role_id')
