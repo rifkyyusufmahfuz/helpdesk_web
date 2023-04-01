@@ -39,6 +39,24 @@ class SuperadminController extends Controller
         return view('superadmin.index', compact('roleCounts', 'users', 'roles'));
     }
 
+    public function halaman_datauser()
+    {
+        $users = User::join('roles', 'users.role_id', '=', 'roles.id')
+            ->select('users.*', 'roles.role_name')
+            ->get();
+
+        $roleCounts = [
+            'superadmin' => User::where('role_id', 1)->count(),
+            'admin' => User::where('role_id', 2)->count(),
+            'manager' => User::where('role_id', 3)->count(),
+            'pegawai' => User::where('role_id', 4)->count()
+        ];
+
+        $roles = Role::all();
+
+        return view('superadmin.datauser', compact('roleCounts', 'users', 'roles'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

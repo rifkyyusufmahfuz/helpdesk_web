@@ -16,14 +16,18 @@
 
     <!-- Nav Item - Pengguna -->
     @if (auth()->user()->role_id == '1')
-
-    <li class="nav-item {{ request()->is('superadmin') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->is('superadmin') ? 'active' : '' }}">
             <a class="nav-link" href="/superadmin">
                 <i class="fas fa-fw fa-home"></i>
                 <span>Dashboard</span></a>
         </li>
 
-        <li class="nav-item {{ request()->is('dokumen_terbuka_user') | request()->is('') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->is('superadmin') ? 'active' : '' }}">
+            <a class="nav-link" href="/superadmin/datauser">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Data User</span></a>
+        </li>
+        {{-- <li class="nav-item {{ request()->is('dokumen_terbuka_user') | request()->is('') ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSuperadmin"
                 aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-file-alt"></i>
@@ -41,7 +45,7 @@
                     </a>
                 </div>
             </div>
-        </li>
+        </li> --}}
     @endif
 
 

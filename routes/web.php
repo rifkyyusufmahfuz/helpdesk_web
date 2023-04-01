@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth', 'checkrole:1,2,3,4']], function () {
 Route::group(['middleware' => ['auth', 'checkrole:1']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
     Route::resource('/superadmin/crud', SuperadminController::class);
+
+    Route::get('/superadmin/datauser', [SuperadminController::class, 'halaman_datauser']);
 });
 
 // untuk Admin
