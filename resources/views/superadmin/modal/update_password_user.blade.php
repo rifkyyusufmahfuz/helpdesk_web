@@ -1,4 +1,4 @@
-@foreach ($users as $user)
+@foreach ($data_user as $user)
     <div class="modal fade" id="modalEditPassword{{ $user->id }}" tabindex="-1" role="dialog"
         aria-labelledby="modalEditPassword{{ $user->id }}Title" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

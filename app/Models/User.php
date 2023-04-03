@@ -20,10 +20,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'nip',
-        'nama',
+        'username',
         'password',
-        'role_id',
+        'id_role',
+        'nip',
     ];
 
     /**
@@ -52,7 +52,7 @@ class User extends Authenticatable
      */
     public function getAuthIdentifierName()
     {
-        return 'nip';
+        return 'username';
     }
 
     /**
@@ -63,7 +63,7 @@ class User extends Authenticatable
 
     public function getAuthIdentifier()
     {
-        return $this->nip;
+        return $this->username;
     }
 
     /**
@@ -79,19 +79,24 @@ class User extends Authenticatable
     // inverse one to Many ke tabel role
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsTo(RoleModel::class, 'id_role');
+    }
+
+    public function pegawai()
+    {
+        return $this->belongsTo(PegawaiModel::class, 'nip');
     }
 
     public function findForPassport($username)
     {
-        return $this->where('nip', $username)->first();
+        return $this->where('username', $username)->first();
     }
 
     public function get_user_by_id($id)
     {
         $user = DB::table('users')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.nama', 'users.nip', 'users.role_id', 'roles.nama_role')
+            ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->select('users.id', 'users.nama', 'users.nip', 'users.id_role', 'roles.nama_role')
             ->where('users.id', '=', $id)
             ->first();
         return $user;

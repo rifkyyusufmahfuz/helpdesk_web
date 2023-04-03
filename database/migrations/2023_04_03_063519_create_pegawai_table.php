@@ -9,11 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id('id_role');
-            $table->string('nama_role')->unique();
+        Schema::create('pegawai', function (Blueprint $table) {
+            $table->string('nip', 5)->primary();
+            $table->string('nama', 50);
+            $table->string('bagian', 30);
+            $table->string('jabatan', 30);
+            $table->string('lokasi', 30);
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('pegawai');
     }
 };

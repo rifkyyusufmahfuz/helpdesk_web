@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         // validasi
         $credentials = $request->validate([
-            'nip' => 'required',
+            'username' => 'required',
             'password' => 'required'
         ]);
 
@@ -24,13 +24,13 @@ class AuthController extends Controller
             // buat ulang session login
             $request->session()->regenerate();
 
-            if (auth()->user()->role_id === 1) { // jika user = superadmin
+            if (auth()->user()->id_role === 1) { // jika user = superadmin
                 return redirect()->intended('/superadmin');
-            } else if (auth()->user()->role_id === 2) { // jika user = admin
+            } else if (auth()->user()->id_role === 2) { // jika user = admin
                 return redirect()->intended('/admin');
-            } else if (auth()->user()->role_id === 3) { // jika user = manager
+            } else if (auth()->user()->id_role === 3) { // jika user = manager
                 return redirect()->intended('/manager');
-            } else if (auth()->user()->role_id === 4) { // Jika user = pegawai
+            } else if (auth()->user()->id_role === 4) { // Jika user = pegawai
                 return redirect()->intended('/pegawai');
             } else { // jika user tidak memiliki role yang valid
                 return redirect()->intended('/');
@@ -39,7 +39,7 @@ class AuthController extends Controller
 
         // jika email atau password salah
         // kirimkan session error
-        return back()->with('toast_error', 'NIPP atau Password salah!');
+        return back()->with('toast_error', 'Username atau Password salah!');
     }
 
     public function logout(Request $request)

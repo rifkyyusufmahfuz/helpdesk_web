@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RedirectController;
@@ -31,14 +32,15 @@ Route::group(['middleware' => ['auth', 'checkrole:1,2,3,4']], function () {
 Route::group(['middleware' => ['auth', 'checkrole:1']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
     Route::resource('/superadmin/crud', SuperadminController::class);
-
     Route::get('/superadmin/datauser', [SuperadminController::class, 'halaman_datauser']);
+    // Route::post('/get-pegawai-data', [SuperadminController::class, 'halaman_datauser']);
+
+    Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');
 });
 
 // untuk Admin
 Route::group(['middleware' => ['auth', 'checkrole:2']], function () {
     Route::get('/admin', [AdminController::class, 'index']);
-
 });
 
 // untuk Manager

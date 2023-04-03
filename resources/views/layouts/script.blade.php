@@ -12,7 +12,7 @@
 <!-- Page level plugins -->
 <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+{{-- <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script> --}}
 
 <!-- Page level custom scripts -->
 <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
@@ -33,8 +33,6 @@
 @include('sweetalert::alert')
 
 {{-- SCRIPT UNTUK FUNGSI HAPUS --}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.js"></script>
 
 <script>
     function confirmDelete(id) {
@@ -53,3 +51,18 @@
     }
 </script>
 
+
+
+{{-- custom script --}}
+
+<script src="{{ asset('custom_script/js/cari_data_pegawai.js') }}"></script>
+{{-- end of custom script  --}}
+
+{{-- custom online script tidak digunakan  --}}
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+</script> --}}
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
+{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.css"> --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.js"></script> --}}

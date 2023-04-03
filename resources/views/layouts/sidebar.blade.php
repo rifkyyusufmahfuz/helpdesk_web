@@ -15,14 +15,14 @@
     <!-- Nav Item - Beranda -->
 
     <!-- Nav Item - Pengguna -->
-    @if (auth()->user()->role_id == '1')
+    @if (auth()->user()->id_role == '1')
         <li class="nav-item {{ request()->is('superadmin') ? 'active' : '' }}">
             <a class="nav-link" href="/superadmin">
                 <i class="fas fa-fw fa-home"></i>
                 <span>Dashboard</span></a>
         </li>
 
-        <li class="nav-item {{ request()->is('superadmin') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->is('superadmin/datauser') ? 'active' : '' }}">
             <a class="nav-link" href="/superadmin/datauser">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Data User</span></a>

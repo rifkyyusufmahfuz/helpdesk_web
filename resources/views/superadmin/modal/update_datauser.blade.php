@@ -1,4 +1,4 @@
-@foreach ($users as $user)
+@foreach ($data_user as $user)
     <div class="modal fade" id="modalEditUser{{ $user->id }}" tabindex="-1" role="dialog"
         aria-labelledby="modalEditUser{{ $user->id }}Title" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -33,9 +33,9 @@
                         <div class="form-group">
                             <label for="role">Role</label>
                             <select name="role" id="role" class="form-control" required>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}"
-                                        @if ($user->role_id == $role->id) selected @endif>
+                                @foreach ($data_role as $role)
+                                    <option value="{{ $role->id_role }}"
+                                        @if ($user->id_role == $role->id_role) selected @endif>
                                         {{ ucwords($role->nama_role) }}</option>
                                 @endforeach
                             </select>

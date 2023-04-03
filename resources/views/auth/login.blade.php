@@ -44,10 +44,10 @@
                                     <form action="/" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <input type="nip" name="nip" value="{{ old('nip') }}"
-                                                class="form-control @error('nip') is-invalid @enderror"
-                                                placeholder="NIP">
-                                            @error('nip')
+                                            <input type="username" name="username" value="{{ old('username') }}"
+                                                class="form-control @error('username') is-invalid @enderror"
+                                                placeholder="Username">
+                                            @error('username')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
