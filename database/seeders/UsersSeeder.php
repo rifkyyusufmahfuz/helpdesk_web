@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Models\Role;
+use App\Models\RoleModel;
 
 class UsersSeeder extends Seeder
 {
@@ -19,26 +19,30 @@ class UsersSeeder extends Seeder
             [
                 'username' => 'superadmin',
                 'password' => Hash::make('123'),
-                'id_role' => Role::where('nama_role', 'superadmin')->first()->id_role,
-                'nip'=> '12121'
+                'id_role' => RoleModel::where('nama_role', 'superadmin')->first()->id_role,
+                'nip'=> '12121',
+                'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'username' => 'admin',
                 'password' => Hash::make('123'),
-                'id_role' => Role::where('nama_role', 'admin')->first()->id_role,
-                'nip'=> '12122'
+                'id_role' => RoleModel::where('nama_role', 'admin')->first()->id_role,
+                'nip'=> '12122',
+                'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'username' => 'manager',
                 'password' => Hash::make('123'),
-                'id_role' => Role::where('nama_role', 'manager')->first()->id_role,
-                'nip'=> '12123'
+                'id_role' => RoleModel::where('nama_role', 'manager')->first()->id_role,
+                'nip'=> '12123',
+                'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'username' => 'pegawai',
                 'password' => Hash::make('123'),
-                'id_role' => Role::where('nama_role', 'pegawai')->first()->id_role,
-                'nip'=> '12124'
+                'id_role' => RoleModel::where('nama_role', 'pegawai')->first()->id_role,
+                'nip'=> '12124',
+                'created_at' => \Carbon\Carbon::now(),
             ],
         ];
 

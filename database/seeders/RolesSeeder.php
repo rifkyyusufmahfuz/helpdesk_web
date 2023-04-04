@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Role;
+use App\Models\RoleModel;
 class RolesSeeder extends Seeder
 {
     /**
@@ -21,6 +21,6 @@ class RolesSeeder extends Seeder
         ];
 
         // Memasukkan data roles ke dalam tabel roles
-        Role::insert($roles);
+        RoleModel::insert($roles);
     }
 }

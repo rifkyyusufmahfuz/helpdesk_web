@@ -20,28 +20,32 @@ class PegawaiSeeder extends Seeder
                 'nama' => 'John Doe',
                 'bagian' => 'IT',
                 'jabatan' => 'Programmer',
-                'lokasi' => 'Jakarta'
+                'lokasi' => 'Jakarta',
+                'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'nip' => '12122',
                 'nama' => 'Sigit',
                 'bagian' => 'IT Support',
                 'jabatan' => 'IT Junior Manager',
-                'lokasi' => 'Juanda'
+                'lokasi' => 'Juanda',
+                'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'nip' => '12123',
                 'nama' => 'Ramli',
                 'bagian' => 'IT Support',
                 'jabatan' => 'Manager',
-                'lokasi' => 'Juanda'
+                'lokasi' => 'Juanda',
+                'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'nip' => '12124',
                 'nama' => 'Nardi',
                 'bagian' => 'Marketing',
                 'jabatan' => 'Marketing Manager',
-                'lokasi' => 'Bogor'
+                'lokasi' => 'Bogor',
+                'created_at' => \Carbon\Carbon::now(),
             ]
         ];
 

@@ -22,31 +22,32 @@
                 <span>Dashboard</span></a>
         </li>
 
-        <li class="nav-item {{ request()->is('superadmin/datauser') ? 'active' : '' }}">
-            <a class="nav-link" href="/superadmin/datauser">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Data User</span></a>
-        </li>
-        {{-- <li class="nav-item {{ request()->is('dokumen_terbuka_user') | request()->is('') ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSuperadmin"
-                aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-file-alt"></i>
-                <span>Dokumen</span>
+        <li
+            class="nav-item {{ request()->is('superadmin/datauser') | request()->is('superadmin/datapegawai') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/datauser') || request()->is('superadmin/datapegawai') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Informasi User</span>
             </a>
-            <div id="collapseSuperadmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseSuperadmin"
+                class="collapse {{ request()->is('superadmin/datauser') || request()->is('superadmin/datapegawai') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}" href="/dokumen_terbuka_user">
-                        <i class="fas fa-fw fa-square fa-xs"></i>
-                        <span>Terbuka</span>
+                    <a class="collapse-item {{ request()->is('superadmin/datauser') ? 'active' : '' }}"
+                        href="/superadmin/datauser">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Data User</span>
                     </a>
-                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}" href="/dokumen_terbatas_user">
-                        <i class="fas fa-fw fa-square fa-xs"></i>
-                        <span>Terbatas</span>
+                    <a class="collapse-item {{ request()->is('superadmin/datapegawai') ? 'active' : '' }}"
+                        href="/superadmin/datapegawai">
+                        <i class="fas fa-fw fa-briefcase"></i>
+                        <span>Data Pegawai</span>
                     </a>
                 </div>
             </div>
-        </li> --}}
+        </li>
     @endif
+
 
 
     {{-- UNTUK TAMPILAN SUPER ADMIN --}}

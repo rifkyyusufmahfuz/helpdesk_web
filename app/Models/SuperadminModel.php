@@ -44,10 +44,52 @@ class SuperadminModel extends Model
         return $usersByRole;
     }
 
+    public function data_pegawai()
+    {
+        return DB::table('pegawai')
+            ->leftJoin('users', 'pegawai.nip', '=', 'users.nip')
+            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.lokasi', 'users.id')
+            ->orderBy('pegawai.created_at', 'desc')
+            ->get();
+    }
+
     public function data_pegawai_by_nip($nip)
     {
         return DB::table('pegawai')
             ->where('nip', $nip)
             ->get();
+    }
+
+    public function get_nip_unregistered()
+    {
+        // Mengambil NIP dari tabel pegawai yang belum memiliki akun user
+        $nip = DB::table('pegawai')
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('users')
+                    ->whereColumn('users.nip', 'pegawai.nip');
+            })
+            ->pluck('nip');
+
+        return $nip;
+    }
+
+    //Tambah Data User
+    public function insert_datauser($data)
+    {
+        if (DB::table('users')->insert($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function insert_datapegawai($data)
+    {
+        if (DB::table('pegawai')->insert($data)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

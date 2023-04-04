@@ -34,7 +34,7 @@ return new class extends Migration
               ->onUpdate('cascade');
 
             // $table->rememberToken();
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 

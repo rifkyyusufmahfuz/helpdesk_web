@@ -42,9 +42,19 @@ class SuperadminController extends Controller
             'data_user' => $this->modelsuperadmin->data_user_lengkap(),
             'data_role' => $this->modelsuperadmin->get_data_role(),
             'roleCounts' => $this->modelsuperadmin->hitung_user_by_role(),
+            'nip_pegawai' => $this->modelsuperadmin->get_nip_unregistered(),
         ];
 
         return view('superadmin.datauser', $data);
+    }
+
+    public function halaman_datapegawai()
+    {
+        $data = [
+            'data_pegawai' => $this->modelsuperadmin->data_pegawai(),
+        ];
+
+        return view('superadmin.datapegawai', $data);
     }
 
     public function getPegawaiData($nip)
@@ -76,37 +86,88 @@ class SuperadminController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                'nip'  => 'required|unique:users,nip|numeric|digits_between:4,16',
-                'nama' => 'required',
+        if ($request->input('jenis_input') == 'data_pegawai') {
+            $request->validate([
+                //data pegawai
+                'nip_pegawai'  => 'required|unique:pegawai,nip|numeric|digits_between:1,5',
+                'nama_pegawai' => 'required',
+                'bagian_pegawai' => 'required',
+                'jabatan_pegawai' => 'required',
+                'lokasi_pegawai' => 'required',
+            ], [
+                'nip_pegawai.required' => 'NIK tidak boleh kosong!',
+                'nip_pegawai.numeric' => 'NIK harus angka!',
+                'nip_pegawai.digits_between' => 'Jumlah NIK minimal 4 dan maksimal 5 digit!',
+
+                'nama_pegawai.required' => 'Nama tidak boleh kosong!',
+                'bagian_pegawai.required' => 'Bagian tidak boleh kosong!',
+                'jabatan_pegawai.required' => 'Jabatan tidak boleh kosong!',
+                'lokasi_pegawai.required' => 'Lokasi tidak boleh kosong!',
+            ]);
+
+            $data = [
+                'nip'  => $request->input('nip_pegawai'),
+                'nama' => $request->input('nama_pegawai'),
+                'bagian' => $request->input('bagian_pegawai'),
+                'jabatan' => $request->input('jabatan_pegawai'),
+                'lokasi' => $request->input('lokasi_pegawai'),
+                'created_at' => \Carbon\Carbon::now(),
+            ];
+            // melakukan proses penyimpanan data pegawai
+            if ($this->modelsuperadmin->insert_datapegawai($data)) {
+                return redirect('/superadmin/datapegawai')->with('toast_success', 'Data pegawai berhasil ditambahkan!');
+            } else {
+                return redirect('/superadmin/datapegawai')->with('toast_error', 'Data pegawai gagal ditambahkan!');
+            }
+        } else if ($request->input('jenis_input') == 'data_user') {
+            $request->validate([
+                //data user
+                'username' => 'required|unique:users,username',
                 'password' => 'required',
+                'confirm_password' => 'required|same:password',
                 'id_role' => 'required',
-            ],
-            [
-                'nip.required' => 'NIK tidak boleh kosong!',
-                'nip.numeric' => 'NIK harus angka!',
-                'nip.digits_between' => 'Jumlah NIK minimal 4 dan maksimal 16 digit!',
-                'nama.required' => 'Nama tidak boleh kosong!',
+
+                //data pegawai
+                'nip_pegawai'  => 'required',
+                'nama_pegawai' => 'required',
+                'bagian_pegawai' => 'required',
+                'jabatan_pegawai' => 'required',
+                'lokasi_pegawai' => 'required',
+            ], [
                 'password.required' => 'Password tidak boleh kosong!',
+                'confirm_password.required' => 'Konfirmasi Password tidak boleh kosong!',
+                'confirm_password.same' => 'Password tidak cocok!',
                 'id_role.required' => 'Role tidak boleh kosong!',
-            ]
-        );
 
-        $data = [
-            'nama' => $request->input('nama'),
-            'nip'  => $request->input('nip'),
-            'password' => Hash::make($request->input('password')),
-            'id_role' => $request->input('id_role'),
-            'created_at' => \Carbon\Carbon::now(),
-        ];
+                'nip_pegawai.required' => 'NIK tidak boleh kosong!',
+                'nama_pegawai.required' => 'Nama tidak boleh kosong!',
+                'bagian_pegawai.required' => 'Bagian tidak boleh kosong!',
+                'jabatan_pegawai.required' => 'Jabatan tidak boleh kosong!',
+                'lokasi_pegawai.required' => 'Lokasi tidak boleh kosong!',
+            ]);
 
-        if ($this->modeluser->insert_datauser($data)) {
-            return redirect('/superadmin/datauser')->with('toast_success', 'Data user berhasil ditambahkan!');
+            $data = [
+                'username' => $request->input('username'),
+                'password' => Hash::make($request->input('password')),
+                'id_role' => $request->input('role'),
+                'nip'  => $request->input('nip_pegawai'),
+                'created_at' => \Carbon\Carbon::now(),
+            ];
+
+            // melakukan proses penyimpanan data user
+            if ($this->modelsuperadmin->insert_datauser($data)) {
+                return redirect('/superadmin/datauser')->with('toast_success', 'Data user berhasil ditambahkan!');
+            } else {
+                return redirect('/superadmin/datauser')->with('toast_error', 'Data user gagal ditambahkan!');
+            }
         } else {
-            return redirect('/superadmin/datauser')->with('toast_error', 'Data user gagal ditambahkan!');
+            // jika jenis input tidak valid, lakukan sesuai kebutuhan
+            return redirect('/superadmin/datauser')->with('toast_error', 'Data gagal ditambahkan!');
         }
     }
+
+
+
 
 
     /**

@@ -11,6 +11,16 @@ class PegawaiModel extends Model
     protected $table = 'pegawai';
     protected $primaryKey = 'nip';
 
+    protected $fillable = [
+        'nama',
+        'bagian',
+        'jabatan',
+        'lokasi',
+    ];
+
     //
-    
+    public function users()
+    {
+        return $this->hasMany(User::class, 'nip');
+    }
 }

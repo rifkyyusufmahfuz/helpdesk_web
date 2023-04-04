@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
     Route::resource('/superadmin/crud', SuperadminController::class);
     Route::get('/superadmin/datauser', [SuperadminController::class, 'halaman_datauser']);
+    Route::get('/superadmin/datapegawai', [SuperadminController::class, 'halaman_datapegawai']);
+
     // Route::post('/get-pegawai-data', [SuperadminController::class, 'halaman_datauser']);
 
     Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');

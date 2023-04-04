@@ -19,11 +19,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'username',
         'password',
-        'id_role',
         'nip',
+        'id_role',
     ];
 
     /**
@@ -77,15 +79,16 @@ class User extends Authenticatable
     }
 
     // inverse one to Many ke tabel role
+    public function pegawai()
+    {
+        return $this->belongsTo(PegawaiModel::class, 'nip');
+    }
+
     public function role()
     {
         return $this->belongsTo(RoleModel::class, 'id_role');
     }
 
-    public function pegawai()
-    {
-        return $this->belongsTo(PegawaiModel::class, 'nip');
-    }
 
     public function findForPassport($username)
     {
@@ -102,15 +105,7 @@ class User extends Authenticatable
         return $user;
     }
 
-    //Tambah Data User
-    public function insert_datauser($data)
-    {
-        if (DB::table('users')->insert($data)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     // Update data user
     public function update_user($data, $id)
