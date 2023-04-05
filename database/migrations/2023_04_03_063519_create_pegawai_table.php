@@ -16,7 +16,12 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('bagian', 30);
             $table->string('jabatan', 30);
-            $table->string('lokasi', 30);
+            //relasi ke table stasiun
+            $table->string('id_stasiun', 3);
+            $table->foreign('id_stasiun')
+                ->references('id_stasiun')
+                ->on('stasiun');
+
             $table->timestamps();
         });
     }

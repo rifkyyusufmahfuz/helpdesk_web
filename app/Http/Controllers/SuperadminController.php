@@ -52,6 +52,7 @@ class SuperadminController extends Controller
     {
         $data = [
             'data_pegawai' => $this->modelsuperadmin->data_pegawai(),
+            'data_stasiun' => $this->modelsuperadmin->data_stasiun(),
         ];
 
         return view('superadmin.datapegawai', $data);
@@ -59,13 +60,19 @@ class SuperadminController extends Controller
 
     public function getPegawaiData($nip)
     {
-        $pegawai = DB::table('pegawai')->where('nip', $nip)->first();
+        $pegawai = $this->modelsuperadmin->data_pegawai_by_nip($nip);
+
         if ($pegawai) {
+            $nama = $pegawai['nama'];
+            $bagian = $pegawai['bagian'];
+            $jabatan = $pegawai['jabatan'];
+            $lokasi = $pegawai['lokasi'];
+
             return response()->json([
-                'nama' => $pegawai->nama,
-                'bagian' => $pegawai->bagian,
-                'jabatan' => $pegawai->jabatan,
-                'lokasi' => $pegawai->lokasi
+                'nama' => $nama,
+                'bagian' => $bagian,
+                'jabatan' => $jabatan,
+                'lokasi' => $lokasi
             ]);
         } else {
             return response()->json(null);
@@ -105,12 +112,15 @@ class SuperadminController extends Controller
                 'lokasi_pegawai.required' => 'Lokasi tidak boleh kosong!',
             ]);
 
+            $nama_stasiun = $request->input('lokasi_pegawai');
+            $id_stasiun = $this->modelsuperadmin->getIdStasiun($nama_stasiun);
+
             $data = [
                 'nip'  => $request->input('nip_pegawai'),
                 'nama' => $request->input('nama_pegawai'),
                 'bagian' => $request->input('bagian_pegawai'),
                 'jabatan' => $request->input('jabatan_pegawai'),
-                'lokasi' => $request->input('lokasi_pegawai'),
+                'id_stasiun' => $id_stasiun,
                 'created_at' => \Carbon\Carbon::now(),
             ];
             // melakukan proses penyimpanan data pegawai

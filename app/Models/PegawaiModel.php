@@ -23,4 +23,9 @@ class PegawaiModel extends Model
     {
         return $this->hasMany(User::class, 'nip');
     }
+
+    public function stasiun()
+    {
+        return $this->belongsTo(StasiunModel::class, 'id_stasiun');
+    }
 }

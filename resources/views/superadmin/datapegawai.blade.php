@@ -39,7 +39,7 @@
                                         <td>{{ $pegawai->nama }}</td>
                                         <td>{{ $pegawai->bagian }}</td>
                                         <td>{{ $pegawai->jabatan }}</td>
-                                        <td>{{ $pegawai->lokasi }}</td>
+                                        <td>{{ $pegawai->nama_stasiun }}</td>
                                         <td class="text-center">
                                             @if ($pegawai->id != null)
                                                 <i class="fas fa-check text-success"></i>

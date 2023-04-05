@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\StasiunModel;
 
 class PegawaiSeeder extends Seeder
 {
@@ -14,13 +15,15 @@ class PegawaiSeeder extends Seeder
     public function run(): void
     {
         // Menyiapkan data pegawai
+        $stasiun = StasiunModel::all();
+
         $pegawai = [
             [
                 'nip' => '12121',
                 'nama' => 'John Doe',
                 'bagian' => 'IT',
                 'jabatan' => 'Programmer',
-                'lokasi' => 'Jakarta',
+                'id_stasiun' => 'JUA',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
@@ -28,7 +31,7 @@ class PegawaiSeeder extends Seeder
                 'nama' => 'Sigit',
                 'bagian' => 'IT Support',
                 'jabatan' => 'IT Junior Manager',
-                'lokasi' => 'Juanda',
+                'id_stasiun' => 'JUA',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
@@ -36,7 +39,7 @@ class PegawaiSeeder extends Seeder
                 'nama' => 'Ramli',
                 'bagian' => 'IT Support',
                 'jabatan' => 'Manager',
-                'lokasi' => 'Juanda',
+                'id_stasiun' => 'JUA',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
@@ -44,7 +47,7 @@ class PegawaiSeeder extends Seeder
                 'nama' => 'Nardi',
                 'bagian' => 'Marketing',
                 'jabatan' => 'Marketing Manager',
-                'lokasi' => 'Bogor',
+                'id_stasiun' => 'CYR',
                 'created_at' => \Carbon\Carbon::now(),
             ]
         ];

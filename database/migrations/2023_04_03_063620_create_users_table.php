@@ -29,9 +29,7 @@ return new class extends Migration
               $table->string('nip', 5);
               $table->foreign('nip')
               ->references('nip')
-              ->on('pegawai')
-              ->onDelete('cascade')
-              ->onUpdate('cascade');
+              ->on('pegawai');
 
             // $table->rememberToken();
             $table->timestamps();

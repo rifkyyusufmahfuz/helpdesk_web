@@ -23,7 +23,7 @@ class SuperadminModel extends Model
         return DB::table('users')
             ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
             ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
-            ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.lokasi', 'roles.nama_role')
+            ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
             ->get();
     }
 
@@ -48,16 +48,45 @@ class SuperadminModel extends Model
     {
         return DB::table('pegawai')
             ->leftJoin('users', 'pegawai.nip', '=', 'users.nip')
-            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.lokasi', 'users.id')
+            ->leftJoin('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'users.id', 'stasiun.id_stasiun', 'stasiun.nama_stasiun')
             ->orderBy('pegawai.created_at', 'desc')
             ->get();
     }
 
+    public function data_stasiun()
+    {
+        return DB::table('stasiun')
+            ->get();
+    }
+
+    public function getIdStasiun($nama_stasiun)
+    {
+        $stasiun = DB::table('stasiun')->where('nama_stasiun', $nama_stasiun)->first();
+        if ($stasiun) {
+            return $stasiun->id_stasiun;
+        } else {
+            return null;
+        }
+    }
+
     public function data_pegawai_by_nip($nip)
     {
-        return DB::table('pegawai')
+        $pegawai = DB::table('pegawai')
+            ->leftJoin('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->where('nip', $nip)
-            ->get();
+            ->first();
+
+        if ($pegawai) {
+            return [
+                'nama' => $pegawai->nama,
+                'bagian' => $pegawai->bagian,
+                'jabatan' => $pegawai->jabatan,
+                'lokasi' => DB::table('stasiun')->where('id_stasiun', $pegawai->id_stasiun)->value('nama_stasiun')
+            ];
+        } else {
+            return null;
+        }
     }
 
     public function get_nip_unregistered()

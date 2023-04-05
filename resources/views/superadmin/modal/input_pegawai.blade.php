@@ -22,15 +22,15 @@
                     </div>
                     <div class="form-group">
                         <label for="nama_pegawai">Nama Pegawai</label>
-                        <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai" readonly
+                        <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai"
                             value="{{ old('nama_pegawai') }}">
                         @error('nama_pegawai')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="bagian_pegawai">Bagian</label>
-                        <input type="text" class="form-control" id="bagian_pegawai" name="bagian_pegawai" readonly
+                        <label for="bagian_pegawai">Unit/Bagian</label>
+                        <input type="text" class="form-control" id="bagian_pegawai" name="bagian_pegawai"
                             value="{{ old('bagian_pegawai') }}">
                         @error('bagian_pegawai')
                             <div class="text-danger">{{ $message }}</div>
@@ -38,16 +38,22 @@
                     </div>
                     <div class="form-group">
                         <label for="jabatan_pegawai">Jabatan</label>
-                        <input type="text" class="form-control" id="jabatan_pegawai" name="jabatan_pegawai" readonly
+                        <input type="text" class="form-control" id="jabatan_pegawai" name="jabatan_pegawai"
                             value="{{ old('jabatan_pegawai') }}">
                         @error('jabatan_pegawai')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <div class="form-group">
                         <label for="lokasi_pegawai">Lokasi</label>
-                        <input type="text" class="form-control" id="lokasi_pegawai" name="lokasi_pegawai" readonly
-                            value="{{ old('lokasi_pegawai') }}">
+                        <input list="stasiun_list" class="form-control" id="lokasi_pegawai" name="lokasi_pegawai">
+                        <datalist id="stasiun_list">
+                            @foreach ($data_stasiun as $stasiun)
+                                <option value="{{ $stasiun->nama_stasiun }}">
+                                </option>
+                            @endforeach
+                        </datalist>
                     </div>
 
                     <div class="modal-footer">
@@ -59,6 +65,7 @@
         </div>
     </div>
 </div>
+
 
 {{-- Perulangan untuk cek error --}}
 <?php $listError = ['nip_pegawai', 'nama_pegawai', 'bagian_pegawai', 'jabatan_pegawai', 'lokasi_pegawai']; ?>
