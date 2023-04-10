@@ -12,26 +12,28 @@ return new class extends Migration
      */
     public function up()
     {
+        // Schema::create('users', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('username', 15);
+        //     $table->string('password', 60);
+        //     $table->integer('id_role')->unsigned();
+        //     $table->string('nip', 5);
+        //     $table->foreign('id_role')->references('id_role')->on('roles');
+        //     $table->foreign('nip')->references('nip')->on('pegawai');
+        //     $table->timestamps();
+        // });
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->increments('id');
+            $table->string('username', 15);
+            $table->string('password', 60);
+            $table->boolean('status')->default(false); // tambahkan kolom status
 
-            // tambahan untuk role id ditable role
-            $table->unsignedBigInteger('id_role');
-            $table->foreign('id_role')
-            ->references('id_role')
-            ->on('roles')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
 
-              // tambahan untuk role id ditable role
-              $table->string('nip', 5);
-              $table->foreign('nip')
-              ->references('nip')
-              ->on('pegawai');
+            $table->integer('id_role')->unsigned();
+            $table->foreign('id_role')->references('id_role')->on('roles');
+            $table->string('nip', 5);
+            $table->foreign('nip')->references('nip')->on('pegawai');
 
-            // $table->rememberToken();
             $table->timestamps();
         });
     }

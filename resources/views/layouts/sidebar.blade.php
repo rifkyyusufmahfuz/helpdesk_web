@@ -48,9 +48,36 @@
         </li>
     @endif
 
+    {{-- MENU UNTUK USER PEGAWAI --}}
+    @if (auth()->user()->id_role == '4')
+        <li class="nav-item {{ request()->is('pegawai') ? 'active' : '' }}">
+            <a class="nav-link" href="/pegawai">
+                <i class="fas fa-fw fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
 
-
-    {{-- UNTUK TAMPILAN SUPER ADMIN --}}
+        <li class="nav-item {{ request()->is('pegawai/permintaan_software') | request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('pegawai/permintaan_software') || request()->is('') ? '' : 'collapsed' }}" href="#"
+                data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Permintaan Layanan</span>
+            </a>
+            <div id="collapseSuperadmin" class="collapse {{ request()->is('pegawai/permintaan_software') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ request()->is('pegawai/permintaan_software') ? 'active' : '' }}" href="/pegawai/permintaan_software">
+                        <i class="fas fa-fw fa-laptop-code"></i>
+                        <span>Instalasi Software</span>
+                    </a>
+                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}" href="">
+                        <i class="fas fa-fw fa-tools"></i>
+                        <span>Pengecekan Hardware</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+    @endif
 
 
     <!-- Sidebar Toggler (Sidebar) -->

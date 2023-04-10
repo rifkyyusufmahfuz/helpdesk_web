@@ -54,15 +54,9 @@
 
 
 {{-- custom script --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
 
 <script src="{{ asset('custom_script/js/cari_data_pegawai.js') }}"></script>
+<script src="{{ asset('custom_script/js/tanda_tangan.js') }}"></script>
+
 {{-- end of custom script  --}}
-
-{{-- custom online script tidak digunakan  --}}
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-</script> --}}
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-
-{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.css"> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.min.js"></script> --}}

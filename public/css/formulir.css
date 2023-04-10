@@ -1,0 +1,151 @@
+html {
+    font-family: Calibri;
+}
+
+.tabel tr td {
+    text-align: center;
+    font-size: 13px;
+}
+
+.container {
+    border: solid 1px black;
+}
+
+.header {
+    background-color: lightgray;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table-data-requestor {
+    margin: 0;
+}
+
+.header-table-data-requestor {
+    margin: 0;
+    padding: 10px;
+}
+
+.body-table-data-requestor {
+    margin: 0;
+    padding: 10px;
+}
+
+.tabel_ttd_requestor {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    display: grid;
+    justify-items: end;
+}
+
+#judul_dokumen {
+    text-align: center;
+    font-weight: bold;
+}
+
+#informasi_dokumen {
+    text-align: left;
+    padding-left: 5px;
+}
+
+#garis_bawah {
+    border-bottom: 1px solid black;
+}
+
+.kolom_nama {
+    width: 18%;
+}
+
+.kolom_isi_nama {
+    width: 25%;
+}
+
+
+/*UNITBAGIAN & JABATAN*/
+
+.kolom_kedua {
+    padding-left: 2rem;
+    width: 5rem;
+}
+
+.kolom_aset {
+    width: 35%;
+}
+
+#garis_bawah_noaset {
+    border-bottom: 1px solid black;
+    width: 80%;
+    display: block;
+}
+
+.titikdua {
+    width: 1%;
+}
+
+.nama_tanda_tangan {
+    width: 8rem;
+    display: block;
+}
+
+.kolom_tanda_tangan {
+    display: flex;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.kotak-ttd {
+    border: solid 1px black;
+    width: 200px;
+}
+
+.gambar_ttd {
+    width: 100px;
+}
+
+.header-kolom-admin {
+    font-weight: bold;
+    text-align: left;
+}
+
+.kolom_check_software {
+    text-align: center;
+    display: block;
+    margin-left: -15px;
+    margin-right: -5px;
+}
+
+.kolom_software {
+    width: 25%;
+}
+
+.kolom_version {
+    width: 10%;
+}
+
+.kolom_notes {
+    display: table;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: 85%;
+}
+
+.jarak-kiri {
+    padding-left: 15px;
+}
+
+.konten {
+    /* height: 100px; */
+    width: 100%;
+}
+
+.kolom1 {
+    /* height: 100px; */
+    width: 20%;
+    float: left;
+}
+
+.kolom2 {
+    /* height: 100px; */
+    width: 80%;
+    float: right;
+}
