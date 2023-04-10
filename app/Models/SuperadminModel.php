@@ -49,7 +49,7 @@ class SuperadminModel extends Model
         return DB::table('pegawai')
             ->leftJoin('users', 'pegawai.nip', '=', 'users.nip')
             ->leftJoin('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
-            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'users.id', 'stasiun.id_stasiun', 'stasiun.nama_stasiun')
+            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'users.id','users.status', 'stasiun.id_stasiun', 'stasiun.nama_stasiun')
             ->orderBy('pegawai.created_at', 'desc')
             ->get();
     }

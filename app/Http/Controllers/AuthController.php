@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         // validasi
         $credentials = $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         // jika email atau password salah
         // kirimkan session error
-        return back()->with('toast_error', 'Username atau Password salah!');
+        return back()->with('toast_error', 'Email atau Password salah!');
     }
 
 

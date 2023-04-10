@@ -12,19 +12,9 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('users', function (Blueprint $table) {
-        //     $table->increments('id');
-        //     $table->string('username', 15);
-        //     $table->string('password', 60);
-        //     $table->integer('id_role')->unsigned();
-        //     $table->string('nip', 5);
-        //     $table->foreign('id_role')->references('id_role')->on('roles');
-        //     $table->foreign('nip')->references('nip')->on('pegawai');
-        //     $table->timestamps();
-        // });
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username', 15);
+            $table->string('email', 50);
             $table->string('password', 60);
             $table->boolean('status')->default(false); // tambahkan kolom status
 
@@ -34,6 +24,8 @@ return new class extends Migration
             $table->string('nip', 5);
             $table->foreign('nip')->references('nip')->on('pegawai');
 
+            $table->string('reset_password_token')->nullable();
+            $table->dateTime('reset_password_token_expiration')->nullable();
             $table->timestamps();
         });
     }

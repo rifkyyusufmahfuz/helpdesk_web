@@ -63,7 +63,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-            'identifier' => 'username',
+            'identifier' => 'email',
             'password' => 'password',
         ],
 
@@ -99,7 +99,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
             'email' => 'emails.password',
-            'username' => 'username',
+            'email' => 'email',
         ],
     ],
 

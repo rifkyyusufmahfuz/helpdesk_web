@@ -41,7 +41,7 @@
                                         <td>{{ $pegawai->jabatan }}</td>
                                         <td>{{ $pegawai->nama_stasiun }}</td>
                                         <td class="text-center">
-                                            @if ($pegawai->id != null)
+                                            @if ($pegawai->status != false)
                                                 <i class="fas fa-check text-success"></i>
                                             @else
                                                 <i class="fas fa-times text-danger"></i>
@@ -49,7 +49,7 @@
                                         </td>
 
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                            <button class="btn btn-sm btn-warning text-white" data-toggle="modal"
                                                 data-target="#modalEditUser{{ $pegawai->nip }}"><i class="fa fa-edit"></i>
                                             </button>
                                             <form id="form-delete-{{ $pegawai->nip }}"

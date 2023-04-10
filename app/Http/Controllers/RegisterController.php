@@ -50,7 +50,7 @@ class RegisterController extends Controller
             'bagian' => 'required',
             'jabatan' => 'required',
             'lokasi' => 'required',
-            'username' => 'required|unique:users',
+            'email' => 'required|unique:users',
             'password' => 'required|min:3'
         ]);
 
@@ -65,23 +65,23 @@ class RegisterController extends Controller
             'bagian' => $request->bagian,
             'jabatan' => $request->jabatan,
             'id_stasiun' => $id_stasiun,
-            'create_at' => \Carbon\Carbon::now(),
+            'created_at' => \Carbon\Carbon::now(),
         ];
         $this->modelregister->registrasi_pegawai($data);
 
 
         // tambah ke tabel users
         $data2 = [
-            'username' => $request->username,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
             'nip' => $request->nip,
             'id_role' => 4,
-            'create_at' => \Carbon\Carbon::now(),
+            'created_at' => \Carbon\Carbon::now(),
         ];
         $this->modelregister->registrasi_user($data2);
 
 
-        return redirect('/')->with('toast_success', 'Registrasi berhasil! Akun Anda akan segera diaktifkan oleh Administrator!');
+        return redirect('/')->with('toast_success', 'Registrasi berhasil! Akun Anda akan segera diaktifkan!');
     }
 
 

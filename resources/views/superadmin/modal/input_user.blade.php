@@ -16,10 +16,10 @@
                             <input type="hidden" value="data_user" name="jenis_input" id="jenis_input">
                             <h5 class="text-center">Data user</h5>
                             <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required
-                                    value="{{ old('username') }}" onkeypress="return event.charCode != 32">
-                                @error('username')
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="email" name="email" required
+                                    value="{{ old('email') }}" onkeypress="return event.charCode != 32">
+                                @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -118,7 +118,7 @@
 </div>
 
 {{-- Perulangan untuk cek error --}}
-<?php $listError = ['username', 'password', 'confirm_password', 'role', 'nip_pegawai', 'nama_pegawai', 'bagian_pegawai', 'jabatan_pegawai', 'lokasi_pegawai']; ?>
+<?php $listError = ['email', 'password', 'confirm_password', 'role', 'nip_pegawai', 'nama_pegawai', 'bagian_pegawai', 'jabatan_pegawai', 'lokasi_pegawai']; ?>
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">

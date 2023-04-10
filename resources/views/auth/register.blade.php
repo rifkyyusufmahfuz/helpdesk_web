@@ -37,10 +37,10 @@
                                     <div class="row">
                                         <div class="col-md-12 mb-2 pb-2">
                                             <div class="form-outline">
-                                                <label class="form-label" for="username">Username</label>
-                                                <input type="text" id="username" name="username"
+                                                <label class="form-label" for="email">Email</label>
+                                                <input type="text" id="email" name="email"
                                                     class="form-control form-control-lg" />
-                                                @error('username')
+                                                @error('email')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -156,7 +156,7 @@
             </div>
         </div>
 
-        <?php $listError = ['username', 'password', 'konfirmasi_password', 'nip', 'nama', 'bagian', 'jabatan', 'lokasi']; ?>
+        <?php $listError = ['email', 'password', 'konfirmasi_password', 'nip', 'nama', 'bagian', 'jabatan', 'lokasi']; ?>
 
 
     </section>

@@ -22,7 +22,7 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'username',
+        'email',
         'password',
         'nip',
         'id_role',
@@ -54,7 +54,7 @@ class User extends Authenticatable
      */
     public function getAuthIdentifierName()
     {
-        return 'username';
+        return 'email';
     }
 
     /**
@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function getAuthIdentifier()
     {
-        return $this->username;
+        return $this->email;
     }
 
     /**
@@ -90,9 +90,9 @@ class User extends Authenticatable
     }
 
 
-    public function findForPassport($username)
+    public function findForPassport($email)
     {
-        return $this->where('username', $username)->first();
+        return $this->where('email', $email)->first();
     }
 
     public function get_user_by_id($id)

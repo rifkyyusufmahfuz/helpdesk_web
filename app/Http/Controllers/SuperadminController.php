@@ -132,7 +132,7 @@ class SuperadminController extends Controller
         } else if ($request->input('jenis_input') == 'data_user') {
             $request->validate([
                 //data user
-                'username' => 'required|unique:users,username',
+                'email' => 'required|unique:users,email',
                 'password' => 'required',
                 'confirm_password' => 'required|same:password',
                 'id_role' => 'required',
@@ -157,7 +157,7 @@ class SuperadminController extends Controller
             ]);
 
             $data = [
-                'username' => $request->input('username'),
+                'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
                 'id_role' => $request->input('role'),
                 'nip'  => $request->input('nip_pegawai'),

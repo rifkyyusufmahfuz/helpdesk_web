@@ -17,7 +17,7 @@ class UsersSeeder extends Seeder
     {
         $users = [
             [
-                'username' => 'superadmin',
+                'email' => 'superadmin@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => true,
                 'id_role' => RoleModel::where('nama_role', 'superadmin')->first()->id_role,
@@ -25,7 +25,7 @@ class UsersSeeder extends Seeder
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
-                'username' => 'admin',
+                'email' => 'admin@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => true,
                 'id_role' => RoleModel::where('nama_role', 'admin')->first()->id_role,
@@ -33,7 +33,7 @@ class UsersSeeder extends Seeder
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
-                'username' => 'manager',
+                'email' => 'manager@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => true,
                 'id_role' => RoleModel::where('nama_role', 'manager')->first()->id_role,
@@ -41,7 +41,7 @@ class UsersSeeder extends Seeder
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
-                'username' => 'pegawai',
+                'email' => 'pegawai@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => false,
                 'id_role' => RoleModel::where('nama_role', 'pegawai')->first()->id_role,

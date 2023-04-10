@@ -36,7 +36,7 @@
                                         <td>{{ $user->nama }}</td>
                                         <td>{{ ucwords($user->nama_role) }}</td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                            <button class="btn btn-sm btn-warning text-white" data-toggle="modal"
                                                 data-target="#modalEditUser{{ $user->id }}"><i class="fa fa-edit"></i>
                                             </button>
                                             <button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal"
