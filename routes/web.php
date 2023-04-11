@@ -1,13 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RedirectController;
+
+//halaman input email untuk reset password
+Route::get('/reset_password', [ResetPasswordController::class, 'konfirmasi_email']);
+
+//kirim permintaan reset ke email yang telah diinput
+Route::post('/reset_password/kirim_email_reset', [ResetPasswordController::class, 'permintaan_reset_password']);
+
+//mengirim email tautan (link token) untuk reset password ke email yang telah diinput
+Route::get('/token_reset_password/{token}', [ResetPasswordController::class, 'halaman_reset_password'])->name('reset.password.get');
+
+Route::post('/halaman_reset_password', [ResetPasswordController::class, 'submit_reset_password']);
+
+
+Route::group(['middleware' => ['auth', 'checkrole:1,2,3,4']], function () {
+    Route::get('/redirect', [RedirectController::class, 'cek']);
+});
 
 //  jika user belum login
 Route::group(['middleware' => 'guest'], function () {
@@ -18,8 +35,10 @@ Route::group(['middleware' => 'guest'], function () {
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Registrasi
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::resource('/register/registrasi_akun', RegisterController::class);
+Route::get('/registrasi', [RegisterController::class, 'index']);
+Route::resource('/registrasi/registrasi_akun', RegisterController::class);
+
+
 
 // Role
 // 1 = superadmin

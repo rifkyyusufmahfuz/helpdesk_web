@@ -48,6 +48,14 @@ class UsersSeeder extends Seeder
                 'nip'=> '12124',
                 'created_at' => \Carbon\Carbon::now(),
             ],
+            [
+                'email' => 'rifkyyusufmahfud@gmail.com',
+                'password' => Hash::make('123'),
+                'status' => false,
+                'id_role' => RoleModel::where('nama_role', 'pegawai')->first()->id_role,
+                'nip'=> '12125',
+                'created_at' => \Carbon\Carbon::now(),
+            ],
         ];
 
         // Memasukkan data user ke dalam tabel users

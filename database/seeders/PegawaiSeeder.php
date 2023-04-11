@@ -49,6 +49,14 @@ class PegawaiSeeder extends Seeder
                 'jabatan' => 'Marketing Manager',
                 'id_stasiun' => 'CYR',
                 'created_at' => \Carbon\Carbon::now(),
+            ],
+            [
+                'nip' => '12125',
+                'nama' => 'Rifky YM',
+                'bagian' => 'CTIO',
+                'jabatan' => 'Programmer',
+                'id_stasiun' => 'BKS',
+                'created_at' => \Carbon\Carbon::now(),
             ]
         ];
 
