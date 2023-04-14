@@ -11685,3 +11685,29 @@ body.sidebar-toggled footer.sticky-footer {
     max-width: 300px !important;
     height: auto;
 }
+
+
+/* @media (min-width: 576px) {
+    .img-sidebar {
+        height: 1.8rem;
+    }
+    .container,
+    .container-sm {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .img-sidebar {
+        height: 50px;
+    }
+    .container,
+    .container-md,
+    .container-sm {
+        max-width: 720px;
+    }
+}
+
+.sidebar.toggled .img-sidebar {
+    max-height: 25px;
+} */

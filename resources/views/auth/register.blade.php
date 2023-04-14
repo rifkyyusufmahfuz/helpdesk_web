@@ -142,12 +142,12 @@
         <div class="row justify-content-center">
             <div class="card col-md-12 px-4 pt-1 pb-2">
                 <div class="pb-2">
-
+                    
                     <div class="card-header bg-white">
                             <div class="row d-flex flex-column m-0">
                                 <div class="d-flex">
-                                    <img class=" text-right" src="{{ asset('img/Logo_KAI_Commuter_kecil.png') }}"
-                                        alt="" width="100px" height="auto">
+                                    <img class=" text-right" src="{{ asset('img/logo_it_helpdesk.png') }}"
+                                        alt="" width="200px" height="auto">
                                 </div>
                                 <div class="d-flex">
                                     <h6 class="register-heading">Form Registrasi Akun Pegawai</h6>

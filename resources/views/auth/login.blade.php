@@ -14,9 +14,9 @@
                             <div class="col-12">
                                 <div class="p-5">
                                     <div class="text-center mb-4">
-                                        <img src="{{ asset('img/logo.webp') }}" width="150px">
-                                        <p style="letter-spacing: 1px" class="text-muted mt-4 font-italic">Sistem
-                                            Informasi Layanan IT Helpdesk</p>
+                                        <img src="{{ asset('img/logo_it_helpdesk.png') }}" width="250px">
+                                        <p style="letter-spacing: 1px" class="text-muted mt-4 font-italic">Sistem Informasi
+                                            Layanan IT Helpdesk</p>
                                     </div>
                                     <form action="/" method="POST">
                                         @csrf
@@ -37,12 +37,18 @@
                                             @enderror
                                         </div>
 
-                                        <button type="submit" class="btn btn-danger btn-user btn-block">Login</button>
-                                        <div class="text-center">
-                                            <a class="small" href="/registrasi">Belum punya akun? Daftar sekarang!</a>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                                        <div class="text-center my-2">
+                                            <span class="small">Belum punya akun?</span>
                                         </div>
-                                        <div class="text-center">
-                                            <a class="small" href="/reset_password">Reset Password</a>
+                                        <div>
+                                            <a href="/registrasi" class="btn btn-success btn-user btn-block">
+                                                Registrasi
+                                            </a>
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <span class="small">Lupa password? </span>
+                                            <a class="small" href="/reset_password">Reset</a>
                                         </div>
                                     </form>
 

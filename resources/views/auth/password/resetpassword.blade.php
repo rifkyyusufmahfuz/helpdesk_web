@@ -1,4 +1,4 @@
-@extends('auth.password.layout')
+@extends('auth.layout')
 @section('content')
     <main class="login-form">
         <div class="cotainer">
