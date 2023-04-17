@@ -15,18 +15,10 @@
                         @method('PUT')
                         {{-- <input type="hidden" name="jenis_update" value="update_data"> --}}
                         <div class="form-group">
-                            <label for="nip">NIPP</label>
-                            <input type="text" name="nip" id="nip" class="form-control"
-                                value="{{ $user->nip }}" required @error('nip') is-invalid @enderror>
-                            @error('nip')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" class="form-control"
-                                value="{{ $user->nama }}" required @error('nama') is-invalid @enderror>
-                            @error('nama')
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control"
+                                value="{{ $user->email }}" required @error('email') is-invalid @enderror>
+                            @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -54,7 +46,7 @@
     </div>
 @endforeach
 
-<?php $listError = ['nip', 'nama', 'role']; ?>
+<?php $listError = ['email', 'nama', 'role']; ?>
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">

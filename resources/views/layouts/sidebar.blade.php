@@ -23,20 +23,25 @@
         </li>
 
         <li
-            class="nav-item {{ request()->is('superadmin/datauser') | request()->is('superadmin/datapegawai') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('superadmin/datauser') || request()->is('superadmin/datapegawai') ? '' : 'collapsed' }}"
+            class="nav-item {{ request()->is('superadmin/datauseraktif') | request()->is('superadmin/datausernonaktif') | request()->is('superadmin/datapegawai') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/datauseraktif') || request()->is('superadmin/datausernonaktif') || request()->is('superadmin/datapegawai') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Informasi User</span>
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('superadmin/datauser') || request()->is('superadmin/datapegawai') ? 'show' : '' }}"
+                class="collapse {{ request()->is('superadmin/datauseraktif') || request()->is('superadmin/datausernonaktif') || request()->is('superadmin/datapegawai') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item {{ request()->is('superadmin/datauser') ? 'active' : '' }}"
-                        href="/superadmin/datauser">
+                    <a class="collapse-item {{ request()->is('superadmin/datauseraktif') ? 'active' : '' }}"
+                        href="/superadmin/datauseraktif">
                         <i class="fas fa-fw fa-user"></i>
-                        <span>Data User</span>
+                        <span>Data User Aktif</span>
+                    </a>
+                    <a class="collapse-item {{ request()->is('superadmin/datausernonaktif') ? 'active' : '' }}"
+                        href="/superadmin/datausernonaktif">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Data User Nonaktif</span>
                     </a>
                     <a class="collapse-item {{ request()->is('superadmin/datapegawai') ? 'active' : '' }}"
                         href="/superadmin/datapegawai">
@@ -58,15 +63,17 @@
         </li>
 
         <li class="nav-item {{ request()->is('pegawai/permintaan_software') | request()->is('') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('pegawai/permintaan_software') || request()->is('') ? '' : 'collapsed' }}" href="#"
-                data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
+            <a class="nav-link {{ request()->is('pegawai/permintaan_software') || request()->is('') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Layanan</span>
             </a>
-            <div id="collapseSuperadmin" class="collapse {{ request()->is('pegawai/permintaan_software') || request()->is('') ? 'show' : '' }}"
+            <div id="collapseSuperadmin"
+                class="collapse {{ request()->is('pegawai/permintaan_software') || request()->is('') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item {{ request()->is('pegawai/permintaan_software') ? 'active' : '' }}" href="/pegawai/permintaan_software">
+                    <a class="collapse-item {{ request()->is('pegawai/permintaan_software') ? 'active' : '' }}"
+                        href="/pegawai/permintaan_software">
                         <i class="fas fa-fw fa-laptop-code"></i>
                         <span>Instalasi Software</span>
                     </a>

@@ -18,6 +18,22 @@ class SuperadminModel extends Model
             ->get();
     }
 
+    public function hitung_semua_user()
+    {
+        return DB::table('users')
+            ->count();
+    }
+
+    public function get_user_by_id($id)
+    {
+        $user = DB::table('users')
+            ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->select('users.id', 'users.email', 'users.id_role', 'roles.nama_role')
+            ->where('users.id', '=', $id)
+            ->first();
+        return $user;
+    }
+
     public function data_user_lengkap()
     {
         return DB::table('users')
@@ -26,6 +42,48 @@ class SuperadminModel extends Model
             ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
             ->get();
     }
+
+    public function data_user_aktif()
+    {
+        return DB::table('users')
+            ->where('status', '=', true)
+            ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
+            ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
+            ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
+            ->get();
+    }
+
+    public function hitung_data_user_aktif()
+    {
+        return DB::table('users')
+            ->where('status', '=', true)
+            ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
+            ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
+            ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
+            ->count();
+    }
+
+
+    public function data_user_nonaktif()
+    {
+        return DB::table('users')
+            ->where('status', '=', false)
+            ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
+            ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
+            ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
+            ->get();
+    }
+
+    public function hitung_data_user_nonaktif()
+    {
+        return DB::table('users')
+            ->where('status', '=', false)
+            ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
+            ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
+            ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
+            ->count();
+    }
+
 
     public function get_data_role()
     {
@@ -49,7 +107,7 @@ class SuperadminModel extends Model
         return DB::table('pegawai')
             ->leftJoin('users', 'pegawai.nip', '=', 'users.nip')
             ->leftJoin('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
-            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'users.id','users.status', 'stasiun.id_stasiun', 'stasiun.nama_stasiun')
+            ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'users.id', 'users.status', 'stasiun.id_stasiun', 'stasiun.nama_stasiun')
             ->orderBy('pegawai.created_at', 'desc')
             ->get();
     }
@@ -116,6 +174,17 @@ class SuperadminModel extends Model
     public function insert_datapegawai($data)
     {
         if (DB::table('pegawai')->insert($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    // Update data user
+    public function update_user($data, $id)
+    {
+        if (DB::table('users')->where('id', $id)->update($data)) {
             return true;
         } else {
             return false;

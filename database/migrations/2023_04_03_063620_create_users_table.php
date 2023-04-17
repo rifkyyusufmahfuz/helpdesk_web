@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('nip', 5);
             $table->foreign('nip')->references('nip')->on('pegawai');
 
-            $table->string('reset_password_token')->nullable();
-            $table->dateTime('reset_password_token_expiration')->nullable();
+            // $table->string('reset_password_token')->nullable();
+            // $table->dateTime('reset_password_token_expiration')->nullable();
             $table->timestamps();
         });
     }

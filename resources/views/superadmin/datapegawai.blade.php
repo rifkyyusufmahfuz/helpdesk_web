@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Daftar Pegawai</h4>
+                <div class="card-header row">
+                    <h4 class="card-title mx-2">Data Pegawai</h4> <p class="small text-gray-800">Daftar pegawai terdaftar di sistem</p>
                 </div>
                 <div class="row ml-2 mt-2">
                     <div class="col-md-12">

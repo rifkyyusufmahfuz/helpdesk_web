@@ -32,25 +32,6 @@
 <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
 @include('sweetalert::alert')
 
-{{-- SCRIPT UNTUK FUNGSI HAPUS --}}
-
-<script>
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Anda yakin ingin menghapus user ini?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, hapus',
-            cancelButtonText: 'Tidak, batalkan',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Submit form jika user menekan tombol "Ya, hapus"
-                document.querySelector('#form-delete-' + id).submit();
-            }
-        });
-    }
-</script>
-
 
 
 {{-- custom script --}}
@@ -58,5 +39,6 @@
 
 <script src="{{ asset('custom_script/js/cari_data_pegawai.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan.js') }}"></script>
+<script src="{{ asset('custom_script/js/fungsi_tombol.js') }}"></script>
 
 {{-- end of custom script  --}}

@@ -80,7 +80,6 @@ class RegisterController extends Controller
         ];
         $this->modelregister->registrasi_user($data2);
 
-
         return redirect('/')->with('toast_success', 'Registrasi berhasil! Akun Anda akan segera diaktifkan!');
     }
 

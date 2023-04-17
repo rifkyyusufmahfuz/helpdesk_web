@@ -28,7 +28,11 @@ class ResetPasswordController extends Controller
     {
         $request->validate([
             'email' => 'required|email|exists:users',
-        ]);
+        ],
+    [
+        'email.required' => 'Email wajid diisi!',
+        'email.exists' => 'Email tidak ditemukan!',
+    ]);
         $token = Str::random(64);
 
         $expires_at = now()->addMinutes(5); // waktu kadaluwarsa token 5 menit sejak disubmit
@@ -46,7 +50,11 @@ class ResetPasswordController extends Controller
             $message->subject('Reset Password');
         });
 
-        return view('auth.password.kirim_email_reset_password')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
+        // return view('auth.password.kirim_email_reset_password')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
+
+        return redirect('/')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
+
+        // return view('auth.password.kirim_email_reset_password')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
     }
 
     //halaman yang diakses dari link email tautan dengan token reset email

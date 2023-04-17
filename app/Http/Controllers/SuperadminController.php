@@ -31,6 +31,10 @@ class SuperadminController extends Controller
             'data_user' => $this->modelsuperadmin->get_data_user(),
             'data_role' => $this->modelsuperadmin->get_data_role(),
             'roleCounts' => $this->modelsuperadmin->hitung_user_by_role(),
+            'activeUser' => $this->modelsuperadmin->hitung_data_user_aktif(),
+            'inactiveUser' => $this->modelsuperadmin->hitung_data_user_nonaktif(),
+            'totalUser' => $this->modelsuperadmin->hitung_semua_user(),
+
         ];
 
         return view('superadmin.index', $data);
@@ -39,13 +43,25 @@ class SuperadminController extends Controller
     public function halaman_datauser()
     {
         $data = [
-            'data_user' => $this->modelsuperadmin->data_user_lengkap(),
+            'data_user' => $this->modelsuperadmin->data_user_aktif(),
             'data_role' => $this->modelsuperadmin->get_data_role(),
             'roleCounts' => $this->modelsuperadmin->hitung_user_by_role(),
             'nip_pegawai' => $this->modelsuperadmin->get_nip_unregistered(),
         ];
 
         return view('superadmin.datauser', $data);
+    }
+
+    public function halaman_datauser_nonaktif()
+    {
+        $data = [
+            'data_user' => $this->modelsuperadmin->data_user_nonaktif(),
+            'data_role' => $this->modelsuperadmin->get_data_role(),
+            'roleCounts' => $this->modelsuperadmin->hitung_user_by_role(),
+            'nip_pegawai' => $this->modelsuperadmin->get_nip_unregistered(),
+        ];
+
+        return view('superadmin.datauser_nonaktif', $data);
     }
 
     public function halaman_datapegawai()
@@ -78,6 +94,15 @@ class SuperadminController extends Controller
             return response()->json(null);
         }
     }
+
+    // fungsi untuk mengaktivasi semua user yang nonaktif
+    public function aktivasi_semua_user()
+    {
+        User::where('status', false)->update(['status' => true]);
+
+        return redirect()->back()->with('toast_success', 'Semua user berhasil diaktivasi!');
+    }
+
 
 
     /**
@@ -166,13 +191,13 @@ class SuperadminController extends Controller
 
             // melakukan proses penyimpanan data user
             if ($this->modelsuperadmin->insert_datauser($data)) {
-                return redirect('/superadmin/datauser')->with('toast_success', 'Data user berhasil ditambahkan!');
+                return redirect('/superadmin/datauseraktif')->with('toast_success', 'Data user berhasil ditambahkan!');
             } else {
-                return redirect('/superadmin/datauser')->with('toast_error', 'Data user gagal ditambahkan!');
+                return redirect('/superadmin/datauseraktif')->with('toast_error', 'Data user gagal ditambahkan!');
             }
         } else {
             // jika jenis input tidak valid, lakukan sesuai kebutuhan
-            return redirect('/superadmin/datauser')->with('toast_error', 'Data gagal ditambahkan!');
+            return redirect('/superadmin/datauseraktif')->with('toast_error', 'Data gagal ditambahkan!');
         }
     }
 
@@ -203,28 +228,26 @@ class SuperadminController extends Controller
     public function update(Request $request, $id)
     {
         // Ambil data user yang akan diupdate
-        $user = $this->modeluser->get_user_by_id($id);
+        $user = $this->modelsuperadmin->get_user_by_id($id);
 
         // Jika superadmin mencoba mengupdate rolenya sendiri
         if ($user->id == Auth::user()->id && $request->has('role')) {
             $superadminRoleId = RoleModel::where('nama_role', 'superadmin')->first()->id_role;
             if (Auth::user()->id_role == $superadminRoleId && $request->input('role') != $superadminRoleId) {
-                return redirect('/superadmin/datauser')->with('toast_error', 'Tidak dapat mengubah role sendiri menjadi role selain superadmin!');
+                return redirect('/superadmin/datauseraktif')->with('toast_error', 'Tidak dapat mengubah role sendiri menjadi role selain superadmin!');
             }
         }
 
         // Jika melakukan update data user
-        if ($request->has('nip') || $request->has('nama') || $request->has('role')) {
+        if ($request->has('email') || $request->has('role')) {
             // Validasi form
             $request->validate([
-                'nip' => 'required|unique:users,nip,' . $id,
-                'nama' => 'required',
+                'email' => 'required|unique:users,email,' . $id,
                 'role' => $request->filled('role') ? 'required|exists:roles,id_role' : ''
             ]);
 
             $data = [
-                'nama' => $request->input('nama'),
-                'nip'  => $request->input('nip'),
+                'email' => $request->input('email'),
                 'id_role' => $user->id_role, // nilai awal diambil dari user yang diupdate
                 'updated_at' => \Carbon\Carbon::now(),
             ];
@@ -235,33 +258,58 @@ class SuperadminController extends Controller
             }
 
             // Kirim ke model update data user
-            if ($this->modeluser->update_user($data, $id)) {
-                return redirect('/superadmin/datauser')->with('toast_success', 'Data user berhasil diupdate!');
+            if ($this->modelsuperadmin->update_user($data, $id)) {
+                return redirect('/superadmin/datauseraktif')->with('toast_success', 'Data user berhasil diupdate!');
             } else {
-                return redirect('/superadmin/datauser')->with('toast_error', 'Data user gagal diupdate!');
+                return redirect('/superadmin/datauseraktif')->with('toast_error', 'Data user gagal diupdate!');
             }
         }
 
         // Jika melakukan update password
-        if ($request->has('password')) {
-            $request->validate([
-                'password' => 'required|min:3'
-            ]);
+        if ($request->has('ganti_password')) {
+            $request->validate(
+                [
+                    'ganti_password' => 'required|min:6',
+                    'konfirmasi_password2' => 'required|same:ganti_password'
+                ],
+                [
+                    'ganti_password.required' => 'Password wajib diisi!',
+                    'ganti_password.min' => 'Password minimal 5 karakter!',
+                    'ganti_password.confirmed' => 'Konfirmasi password tidak cocok!',
+                    'konfirmasi_password2.required' => 'Konfirmasi password wajib diisi!',
+                    'konfirmasi_password2.same' => 'Konfirmasi password tidak cocok!',
+                ]
+
+            );
 
             $data = [
-                'password' => $request->input('password'),
+                'password' => Hash::make($request->input('ganti_password')),
                 'updated_at' => \Carbon\Carbon::now(),
             ];
 
             // Kirim ke model update data user
-            if ($this->modeluser->update_user($data, $id)) {
-                return redirect('/superadmin/datauser')->with('toast_success', 'Password user berhasil diupdate!');
+            if ($this->modelsuperadmin->update_user($data, $id)) {
+                return redirect('/superadmin/datauseraktif')->with('toast_success', 'Password user berhasil diupdate!');
             } else {
-                return redirect('/superadmin/datauser')->with('toast_error', 'Password user gagal diupdate!');
+                return redirect('/superadmin/datauseraktif')->with('toast_error', 'Password user gagal diupdate!');
             }
         }
 
-        return redirect('/superadmin/datauser')->with('error', 'Gagal melakukan update data user atau password!');
+        // aktivasi user
+        if ($request->has('aktivasi')) {
+            $data = [
+                'status' => $request->input('aktivasi'),
+                'updated_at' => \Carbon\Carbon::now(),
+            ];
+
+            if ($this->modelsuperadmin->update_user($data, $id)) {
+                return redirect('/superadmin/datausernonaktif')->with('toast_success', 'User berhasil diaktivasi!');
+            } else {
+                return redirect('/superadmin/datausernonaktif')->with('toast_error', 'User gagal diaktivasi!');
+            }
+        }
+
+        return redirect('/superadmin/datauseraktif')->with('error', 'Gagal melakukan update data user!');
     }
 
 
@@ -273,14 +321,14 @@ class SuperadminController extends Controller
         //fungsi untuk mencegah superadmin menghapus akunnya sendiri
         $superadminlogin = Auth::user()->id;
         if ($id == $superadminlogin) {
-            return redirect('/superadmin/datauser')->with('toast_error', 'Anda tidak diizinkan untuk menghapus akun sendiri!');
+            return redirect('/superadmin/datauseraktif')->with('toast_error', 'Anda tidak diizinkan untuk menghapus akun sendiri!');
         }
 
         //jika hapus user lain maka bisa
         if ($this->modeluser->delete_datauser($id)) {
-            return redirect('/superadmin/datauser')->with('toast_success', 'User berhasil dihapus!');
+            return back()->with('toast_success', 'User berhasil dihapus!');
         } else {
-            return redirect('/superadmin/datauser')->with('toast_error', 'User gagal dihapus!');
+            return back()->with('toast_error', 'User gagal dihapus!');
         }
     }
 }

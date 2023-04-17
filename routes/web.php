@@ -50,8 +50,12 @@ Route::resource('/registrasi/registrasi_akun', RegisterController::class);
 Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
     Route::resource('/superadmin/crud', SuperadminController::class);
-    Route::get('/superadmin/datauser', [SuperadminController::class, 'halaman_datauser']);
+    Route::get('/superadmin/datauseraktif', [SuperadminController::class, 'halaman_datauser']);
+    Route::get('/superadmin/datausernonaktif', [SuperadminController::class, 'halaman_datauser_nonaktif']);
     Route::get('/superadmin/datapegawai', [SuperadminController::class, 'halaman_datapegawai']);
+
+    Route::post('/superadmin/aktivasi_semua_user', [SuperadminController::class, 'aktivasi_semua_user']);
+
 });
 
 Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');

@@ -8,18 +8,18 @@
                     <div class="card">
                         <div class="card-header">Reset Password</div>
                         <div class="card-body">
-                            @if (Session::has('message'))
+                            {{-- @if (Session::has('message'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('message') }}
                                 </div>
-                            @endif
+                            @endif --}}
                             <form action="/reset_password/kirim_email_reset" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="email_address" class="col-form-label">Masukkan email Anda
                                             untuk membantu kami mengidentifikasi.<span class="text-danger">*</span></label>
-                                        <input type="text" id="email_address" class="form-control" name="email"
+                                        <input type="email" id="email_address" class="form-control" name="email"
                                             required autofocus placeholder="name@example.com">
 
                                         @if ($errors->has('email'))
