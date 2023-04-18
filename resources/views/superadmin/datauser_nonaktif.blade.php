@@ -15,8 +15,8 @@
                             <form id="aktivasi_semua_user_form" action="/superadmin/aktivasi_semua_user" method="POST"
                                 style="display: inline-block;">
                                 @csrf
-                                <button id="btnAktivasiSemuaUser" type="button"
-                                    class="btn btn-primary btn-sm float-left mr-2" onclick="aktivasi_semua_user()">
+                                <button id="btnAktivasiSemuaUser" type="button" class="btn-primary btn-sm float-left mr-2"
+                                    onclick="aktivasi_semua_user()">
                                     <i class="fa fa-user-check"></i> Aktivasi semua user
                                 </button>
                             </form>
@@ -71,15 +71,16 @@
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="aktivasi" value="1">
-                                                <button type="button" class="btn btn-sm btn-primary"
+                                                <button title="Aktivasi user" type="button" class="btn btn-sm btn-primary"
                                                     onclick="aktivasi_user('{{ $user->id }}')">
                                                     <i class="fas fa-user-check"></i>
                                                 </button>
                                             </form>
 
-                                            <button class="btn btn-sm bg-warning text-white" data-bs-toggle="modal"
-                                                data-bs-target="#modalEditPassword{{ $user->id }}">
-                                                <i class="fa fa-eye"></i>
+                                            <button class="btn-sm btn-info text-white tombol_lihat_data"
+                                                data-bs-toggle="modal" data-bs-target="#modal_lihat_data"
+                                                data-id="{{ $user->id }}" title="Lihat data pegawai">
+                                                <i class="fas fa-eye"></i>
                                             </button>
 
                                             <form id="form-delete-{{ $user->id }}"
@@ -87,7 +88,8 @@
                                                 style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger"
+                                                <input type="hidden" name="hapus_user" id="hapus_user">
+                                                <button title="Hapus user" type="button" class="btn btn-sm btn-danger"
                                                     onclick="confirmDelete('{{ $user->id }}')">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
@@ -112,4 +114,5 @@
     @include('superadmin.modal.update_password_user')
     @include('superadmin.modal.update_datauser')
     @include('superadmin.modal.input_user')
+    @include('superadmin.modal.lihat_data')
 @endsection

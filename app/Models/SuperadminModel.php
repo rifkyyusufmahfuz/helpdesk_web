@@ -28,10 +28,18 @@ class SuperadminModel extends Model
     {
         $user = DB::table('users')
             ->join('roles', 'users.id_role', '=', 'roles.id_role')
-            ->select('users.id', 'users.email', 'users.id_role', 'roles.nama_role')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->select('users.id', 'users.email', 'users.id_role', 'roles.nama_role', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan')
             ->where('users.id', '=', $id)
             ->first();
         return $user;
+    }
+
+    public function get_user_by_id2($id)
+    {
+        return DB::table('users')
+            ->where('id', $id)
+            ->first();
     }
 
     public function data_user_lengkap()
@@ -50,8 +58,11 @@ class SuperadminModel extends Model
             ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
             ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
             ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
+            // order by kolom updated_at
+            ->orderBy('updated_at', 'desc')
             ->get();
     }
+
 
     public function hitung_data_user_aktif()
     {
@@ -63,7 +74,6 @@ class SuperadminModel extends Model
             ->count();
     }
 
-
     public function data_user_nonaktif()
     {
         return DB::table('users')
@@ -71,6 +81,8 @@ class SuperadminModel extends Model
             ->leftJoin('pegawai', 'pegawai.nip', '=', 'users.nip')
             ->leftJoin('roles', 'roles.id_role', '=', 'users.id_role')
             ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
+            // order by kolom updated_at
+            ->orderBy('updated_at', 'desc')
             ->get();
     }
 
@@ -83,7 +95,6 @@ class SuperadminModel extends Model
             ->select('users.*', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'roles.nama_role')
             ->count();
     }
-
 
     public function get_data_role()
     {
@@ -108,7 +119,7 @@ class SuperadminModel extends Model
             ->leftJoin('users', 'pegawai.nip', '=', 'users.nip')
             ->leftJoin('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->select('pegawai.nip', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan', 'pegawai.id_stasiun', 'users.id', 'users.status', 'stasiun.id_stasiun', 'stasiun.nama_stasiun')
-            ->orderBy('pegawai.created_at', 'desc')
+            ->orderBy('pegawai.updated_at', 'desc')
             ->get();
     }
 
@@ -156,21 +167,24 @@ class SuperadminModel extends Model
                     ->from('users')
                     ->whereColumn('users.nip', 'pegawai.nip');
             })
-            ->pluck('nip');
+            ->pluck('nip')
+            ->toArray();
 
         return $nip;
     }
 
-    //Tambah Data User
-    public function insert_datauser($data)
+
+    //Tambah Data User baru
+    public function insert_datauser($data_user)
     {
-        if (DB::table('users')->insert($data)) {
+        if (DB::table('users')->insert($data_user)) {
             return true;
         } else {
             return false;
         }
     }
 
+    //Tambah data pegawai baru
     public function insert_datapegawai($data)
     {
         if (DB::table('pegawai')->insert($data)) {
@@ -185,6 +199,26 @@ class SuperadminModel extends Model
     public function update_user($data, $id)
     {
         if (DB::table('users')->where('id', $id)->update($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // update data pegawai
+    public function update_pegawai($data, $id)
+    {
+        if (DB::table('pegawai')->where('nip', $id)->update($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // hapus data pegawai
+    public function delete_datapegawai($id)
+    {
+        if (DB::table('pegawai')->where('nip', $id)->delete()) {
             return true;
         } else {
             return false;

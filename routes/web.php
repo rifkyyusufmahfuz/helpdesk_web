@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], fun
     Route::get('/superadmin/datausernonaktif', [SuperadminController::class, 'halaman_datauser_nonaktif']);
     Route::get('/superadmin/datapegawai', [SuperadminController::class, 'halaman_datapegawai']);
 
+    Route::get('/superadmin/lihatdatauser/{id}', [SuperadminController::class, 'show'])->name('lihat_data_pegawai');
+
     Route::post('/superadmin/aktivasi_semua_user', [SuperadminController::class, 'aktivasi_semua_user']);
 
 });

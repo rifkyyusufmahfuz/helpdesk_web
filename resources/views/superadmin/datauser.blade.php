@@ -5,22 +5,17 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header row">
-                    <h4 class="card-title mx-2">Data User Aktif</h4> <p class="small text-gray-800">Daftar user aktif</p>
+                    <h4 class="card-title mx-2">Data User Aktif</h4>
+                    <p class="small text-gray-800">Daftar user aktif</p>
                 </div>
                 <div class="row ml-2 mt-2">
                     <div class="col-md-12">
                         <div class="1">
-                            <button type="button" class="btn btn-primary btn-sm float-left mr-2" data-toggle="modal"
-                                data-target="#modalTambahUser">
+                            <button class="btn-sm btn-primary float-left mr-2" data-bs-toggle="modal"
+                                data-bs-target="#modalTambahUser">
                                 <i class="fa fa-user-plus"></i> Tambah User
                             </button>
                         </div>
-                        {{-- <div class="">
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                                data-target="#modalTambahUser">
-                                <i class="fa fa-user-plus"></i> Aktivasi User
-                            </button>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="card-body">
@@ -44,7 +39,7 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ ucwords($user->nama_role) }}</td>
-                                        <td>{{$user->nip}}</td>
+                                        <td>{{ $user->nip }}</td>
                                         <td>{{ $user->nama }}</td>
                                         <td class="text-center">
                                             @if ($user->status != false)
@@ -54,23 +49,60 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-warning text-white" data-toggle="modal"
-                                                data-target="#modalEditUser{{ $user->id }}"><i class="fa fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal"
-                                                data-bs-target="#modalEditPassword{{ $user->id }}">
-                                                <i class="fa fa-key"></i>
-                                            </button>
-                                            <form id="form-delete-{{ $user->id }}"
-                                                action="/superadmin/crud/{{ $user->id }}" method="POST"
-                                                style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="confirmDelete('{{ $user->id }}')">
-                                                    <i class="fa fa-trash"></i>
+                                            <div class="btn-group">
+                                                {{-- tombol edit --}}
+                                                <button type="button" class="btn-sm btn-warning text-white"
+                                                    data-bs-toggle="modal" title="Edit data user"
+                                                    data-bs-target="#modalEditUser{{ $user->id }}"><i
+                                                        class="fa fa-edit"></i>
                                                 </button>
-                                            </form>
+                                                {{-- tombol edit password --}}
+                                                <button type="button" class="btn-sm btn-warning text-white"
+                                                    data-bs-toggle="modal" title="Ubah password"
+                                                    data-bs-target="#modalEditPassword{{ $user->id }}">
+                                                    <i class="fa fa-key"></i>
+                                                </button>
+                                            </div>
+
+                                            {{-- tombol view --}}
+                                            <div class="btn-group">
+                                                <button title="Lihat data pegawai"
+                                                    class="btn-sm btn-info text-white tombol_lihat_data"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modal_lihat_data{{ $user->id }}"
+                                                    data-id="{{ $user->id }}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                {{-- tombol disable user --}}
+                                                <form id="disable_user-{{ $user->id }}"
+                                                    action="/superadmin/crud/{{ $user->id }}" method="POST"
+                                                    style="display: inline-block;">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="aktivasi" value="0">
+                                                    <button type="button" class="btn-sm btn-danger"
+                                                        title="Nonaktifkan user"
+                                                        onclick="disable_user('{{ $user->id }}')">
+                                                        <i class="fas fa-user-times"></i>
+                                                    </button>
+                                                </form>
+
+                                                {{-- tombol hapus user --}}
+                                                <form id="form-delete-{{ $user->id }}"
+                                                    action="/superadmin/crud/{{ $user->id }}" method="POST"
+                                                    style="display: inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="hidden" name="hapus_user" id="hapus_user">
+                                                    <button type="button" class="btn-sm btn-danger" title="Hapus user"
+                                                        onclick="confirmDelete('{{ $user->id }}')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -85,4 +117,5 @@
     @include('superadmin.modal.update_password_user')
     @include('superadmin.modal.update_datauser')
     @include('superadmin.modal.input_user')
+    @include('superadmin.modal.lihat_data')
 @endsection

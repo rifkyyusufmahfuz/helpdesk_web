@@ -18,14 +18,13 @@ return new class extends Migration
             $table->string('password', 60);
             $table->boolean('status')->default(false); // tambahkan kolom status
 
-
+            //relasi
             $table->integer('id_role')->unsigned();
             $table->foreign('id_role')->references('id_role')->on('roles');
             $table->string('nip', 5);
-            $table->foreign('nip')->references('nip')->on('pegawai');
+            $table->foreign('nip')->references('nip')->on('pegawai')->onDelete('cascade')->onUpdate('cascade');
 
-            // $table->string('reset_password_token')->nullable();
-            // $table->dateTime('reset_password_token_expiration')->nullable();
+            //timestamp
             $table->timestamps();
         });
     }

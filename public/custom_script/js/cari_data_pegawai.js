@@ -59,20 +59,20 @@ $(document).ready(function() {
                 $('#jabatan_pegawai').val(response.jabatan);
                 $('#lokasi_pegawai').val(response.lokasi);
 
-                if ($('#nip_pegawai').val() == '') {
-                    $('#nama_pegawai').attr('readonly', true);
-                    $('#bagian_pegawai').attr('readonly', true);
-                    $('#jabatan_pegawai').attr('readonly', true);
-                    $('#lokasi_pegawai').attr('readonly', true);
-                }
+                // if ($('#nip_pegawai').val() == '') {
+                //     $('#nama_pegawai').attr('readonly', true);
+                //     $('#bagian_pegawai').attr('readonly', true);
+                //     $('#jabatan_pegawai').attr('readonly', true);
+                //     $('#lokasi_pegawai').attr('readonly', true);
+                // }
             },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                $('#nama_pegawai').val('').attr('readonly', true);
-                $('#bagian_pegawai').val('').attr('readonly', true);
-                $('#jabatan_pegawai').val('').attr('readonly', true);
-                $('#lokasi_pegawai').val('').attr('readonly', true);
-            }
+            // error: function(xhr, status, error) {
+            //     console.log(xhr.responseText);
+            //     $('#nama_pegawai').val('').attr('readonly', true);
+            //     $('#bagian_pegawai').val('').attr('readonly', true);
+            //     $('#jabatan_pegawai').val('').attr('readonly', true);
+            //     $('#lokasi_pegawai').val('').attr('readonly', true);
+            // }
         });
     });
 });

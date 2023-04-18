@@ -5,7 +5,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalEditUser{{ $user->id }}Title">Update Data User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -15,11 +15,11 @@
                         @method('PUT')
                         {{-- <input type="hidden" name="jenis_update" value="update_data"> --}}
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control"
-                                value="{{ $user->email }}" required @error('email') is-invalid @enderror>
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                            <label for="email2">Email</label>
+                            <input type="email2" name="email2" id="email2" class="form-control"
+                                value="{{ $user->email }}" required>
+                                @error('email2')
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
@@ -37,8 +37,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                 </div>
             </div>
@@ -46,7 +46,7 @@
     </div>
 @endforeach
 
-<?php $listError = ['email', 'nama', 'role']; ?>
+<?php $listError = ['email2', 'role']; ?>
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">
