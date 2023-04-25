@@ -35,12 +35,12 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {{ request()->is('superadmin/datauseraktif') ? 'active' : '' }}"
                         href="/superadmin/datauseraktif">
-                        <i class="fas fa-fw fa-user"></i>
+                        <i class="fas fa-fw fa-user-check"></i>
                         <span>Data User Aktif</span>
                     </a>
                     <a class="collapse-item {{ request()->is('superadmin/datausernonaktif') ? 'active' : '' }}"
                         href="/superadmin/datausernonaktif">
-                        <i class="fas fa-fw fa-user"></i>
+                        <i class="fas fa-fw fa-user-times"></i>
                         <span>Data User Nonaktif</span>
                     </a>
                     <a class="collapse-item {{ request()->is('superadmin/datapegawai') ? 'active' : '' }}"
@@ -74,6 +74,41 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {{ request()->is('pegawai/permintaan_software') ? 'active' : '' }}"
                         href="/pegawai/permintaan_software">
+                        <i class="fas fa-fw fa-laptop-code"></i>
+                        <span>Instalasi Software</span>
+                    </a>
+                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}" href="">
+                        <i class="fas fa-fw fa-tools"></i>
+                        <span>Pengecekan Hardware</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+    @endif
+
+
+
+    {{-- MENU UNTUK USER ADMIN --}}
+    @if (auth()->user()->id_role == '2')
+        <li class="nav-item {{ request()->is('admin') ? 'active' : '' }}">
+            <a class="nav-link" href="/admin">
+                <i class="fas fa-fw fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ request()->is('admin/permintaan_software') | request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('admin/permintaan_software') || request()->is('') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Permintaan Layanan</span>
+            </a>
+            <div id="collapseSuperadmin"
+                class="collapse {{ request()->is('admin/permintaan_software') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ request()->is('admin/permintaan_software') ? 'active' : '' }}"
+                        href="admin/permintaan_software">
                         <i class="fas fa-fw fa-laptop-code"></i>
                         <span>Instalasi Software</span>
                     </a>

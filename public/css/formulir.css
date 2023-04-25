@@ -32,7 +32,7 @@ html {
 }
 
 .tabel_ttd_requestor {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     margin-right: 10px;
     display: grid;
     justify-items: end;
@@ -96,10 +96,13 @@ html {
 .kotak-ttd {
     border: solid 1px black;
     width: 200px;
+    height: 60px;
+    text-align: center;
 }
 
 .gambar_ttd {
     width: 100px;
+    margin-bottom: -8px;
 }
 
 .header-kolom-admin {
@@ -134,18 +137,96 @@ html {
 }
 
 .konten {
-    /* height: 100px; */
     width: 100%;
 }
 
 .kolom1 {
-    /* height: 100px; */
-    width: 20%;
+    width: 40%;
     float: left;
 }
 
 .kolom2 {
-    /* height: 100px; */
-    width: 80%;
+    width: 60%;
     float: right;
+}
+
+
+/* untuk ttd admin dan request owner */
+
+.pembungkus {
+    /* margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px; */
+    margin: 10px;
+}
+
+.tabel_ttd_request_owner,
+.tabel_ttd_admin {
+    display: inline-block;
+}
+
+.tabel_ttd_admin {
+    float: right;
+}
+
+.kolom_ttd_admin {
+    display: flex;
+}
+
+.kotak_ttd_request_owner {
+    border: solid 1px black;
+    width: 200px;
+    height: 60px;
+    text-align: center;
+}
+
+.judul_ttd_request_owner {
+    margin-left: 5px;
+    text-align: left;
+}
+
+.gambar_ttd_request_owner {
+    width: 100px;
+    margin-top: -20px;
+    margin-bottom: -5px;
+}
+
+#garis_bawah_request_owner {
+    border-bottom: 1px solid black;
+    width: 90%;
+    margin-left: 0.5rem;
+}
+
+#garis_bawah_request_owner_kosong {
+    border-bottom: 1px solid black;
+    width: 90%;
+    margin-left: 0.5rem;
+    margin-top: 25px;
+}
+
+
+/* Untuk kolom otorisasi */
+
+.table_otorisasi {
+    padding-right: 1rem;
+}
+
+.kotak_otorisasi {
+    border: solid 1px black;
+}
+
+
+/* Cetak ke media A4 */
+
+@media print {
+    @page {
+        size: A4;
+        margin: 7mm;
+    }
+    html,
+    body {
+        width: 210mm;
+        height: 297mm;
+        /* margin: 20mm 20mm 20mm 20mm; */
+    }
 }

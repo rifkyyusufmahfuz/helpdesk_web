@@ -112,5 +112,8 @@
         sig.signature('clear');
         document.getElementById("note").innerHTML = "Silakan tanda tangan di area kolom ini";
         $("#signature64").val('');
+        var canvas = document.getElementsByTagName('canvas')[0];
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
 </script>

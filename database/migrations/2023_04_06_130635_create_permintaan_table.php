@@ -26,11 +26,11 @@ return new class extends Migration
 
             //FK Kolom id_otorisasi dari table otorisasi
             $table->unsignedInteger('id_otorisasi')->nullable();
-            $table->foreign('id_otorisasi')->references('id_otorisasi')->on('otorisasi');
+            $table->foreign('id_otorisasi')->references('id_otorisasi')->on('otorisasi')->onDelete('cascade');
 
             //FK Kolom id_kategori dari table kategori_software
             $table->unsignedInteger('id_kategori')->nullable();
-            $table->foreign('id_kategori')->references('id_kategori')->on('kategori_software')->onDelete('set null');
+            $table->foreign('id_kategori')->references('id_kategori')->on('kategori_software')->onDelete('cascade');
 
             //timestamp
             $table->timestamps();

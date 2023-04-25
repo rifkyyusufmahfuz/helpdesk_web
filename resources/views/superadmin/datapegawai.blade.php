@@ -20,7 +20,7 @@
                         <table class="table table-striped table-hover" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>NIPP</th>
                                     <th>Nama</th>
                                     <th>Bagian</th>

@@ -23,7 +23,7 @@
                         <table class="table table-striped table-hover" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Email</th>
                                     <th>Role</th>
                                     <th>NIPP</th>

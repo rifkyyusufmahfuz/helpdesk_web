@@ -51,7 +51,7 @@ class UsersSeeder extends Seeder
             [
                 'email' => 'rifkyyusufmahfud@gmail.com',
                 'password' => Hash::make('123'),
-                'status' => false,
+                'status' => true,
                 'id_role' => RoleModel::where('nama_role', 'pegawai')->first()->id_role,
                 'nip'=> '12125',
                 'created_at' => \Carbon\Carbon::now(),

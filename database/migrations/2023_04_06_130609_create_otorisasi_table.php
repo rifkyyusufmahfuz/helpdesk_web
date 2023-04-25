@@ -16,7 +16,8 @@ return new class extends Migration
             $table->date('tanggal_approval')->nullable();
             $table->enum('status_approval', ['pending', 'approved', 'rejected', 'revision']);
             $table->string('catatan', 50);
-            
+            $table->string('ttd_manager', 100)->nullable();
+
             $table->unsignedInteger('id')->nullable();
             $table->foreign('id')->references('id')->on('users');
             $table->timestamps();

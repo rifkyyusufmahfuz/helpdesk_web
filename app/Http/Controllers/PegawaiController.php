@@ -14,12 +14,16 @@ class PegawaiController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    //untuk mendefinisikan model pegawai
     protected $modelpegawai;
 
     public function __construct()
     {
         $this->modelpegawai = new PegawaiModel();
     }
+
+    //fungsi-fungsi 
 
     public function index()
     {
@@ -98,9 +102,13 @@ class PegawaiController extends Controller
         $kategori = DB::table('kategori_software')->where('id_kategori', $permintaan->id_kategori)->first();
         $table_software = DB::table('software')->where('id_permintaan', $id_permintaan)->get();
 
+        $otorisasi = OtorisasiModel::where('id_otorisasi', $permintaan->id_otorisasi)->first();
+
+
         return view('pegawai.permintaan.cetak.form_permintaan_instalasi_software', [
             'id_permintaan' => $permintaan->id_permintaan,
-            'tanggal_permintaan' => date('d/m/Y', strtotime($permintaan->tanggal_permintaan)),
+            // 'tanggal_permintaan' => date('d/m/Y', strtotime($permintaan->tanggal_permintaan)),
+            'tanggal_permintaan' => $permintaan->tanggal_permintaan,
             'nama' => $pegawai->nama,
             'nip' => $pegawai->nip,
             'bagian' => $pegawai->bagian,
@@ -111,6 +119,7 @@ class PegawaiController extends Controller
             'ttd_requestor' => $permintaan->ttd_requestor,
             'list_software' => $list_software,
             'table_software' => $table_software,
+            'otorisasi' => $otorisasi,
         ]);
     }
 
