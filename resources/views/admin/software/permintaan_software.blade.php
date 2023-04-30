@@ -4,13 +4,10 @@
     <!-- HTML -->
     <div class="card shadow mb-4">
         <div class="card-header row">
-            <h4 class="card-title mx-2">Permintaan Instalasi Software</h4> <p class="small text-gray-800">Daftar permintaan instalasi software</p>
+            <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
+            <p class="small text-gray-800">Daftar permintaan instalasi software</p>
         </div>
         <div class="card-body">
-            {{-- <button type="button" class="btn btn-primary mb-3 btn-sm float-left" data-toggle="modal"
-                data-target="#modal-instalasi-software">
-                <i class="fa fa-user-plus"></i> Ajukan Permintaan
-            </button> --}}
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -33,11 +30,20 @@
                                 <td>{{ ucwords($data->status_permintaan) }}</td>
                                 <td>{{ ucwords($data->status_approval) }}</td>
                                 <td>{{ $data->nama }}</td>
-                                <td>
-                                    <a href="" class="btn btn-sm bg-warning text-white">
+
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-warning text-white">
                                         <i class="fa fa-eye"></i>
-                                    </a>
+                                    </button>
+                                    <form action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
+                                        method="GET" style="display: inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success text-white">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                    </form>
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -45,5 +51,4 @@
             </div>
         </div>
     </div>
-    @include('pegawai.modal.modal_permintaan_software')
 @endsection

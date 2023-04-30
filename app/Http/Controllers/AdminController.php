@@ -50,9 +50,48 @@ class AdminController extends Controller
         $permintaan = $this->modeladmin->get_permintaan_software();
 
         return view(
-            'admin.permintaan_software',
+            'admin.software.permintaan_software',
             [
                 'permintaan' => $permintaan
+            ]
+        );
+    }
+
+    public function tambah_software($id_permintaan)
+    {
+
+        $list_software = array(
+            "Microsoft Windows",
+            "Microsoft Office Standart",
+            "Microsoft Visio",
+            "Microsoft Project",
+            "Autocad",
+            "Corel Draw",
+            "Adobe Photoshop",
+            "Adobe Premiere",
+            "Adobe Ilustrator",
+            "Adobe After Effect",
+            "Antivirus",
+            "Sketch Up Pro",
+            "Vray Fr Sketchup",
+            "Nitro PDF Pro",
+            "Linux OS",
+            "Open Office",
+            "Mac OS",
+            "Microsoft Office For Mac",
+            "SAP",
+            "Software Lainnya"
+        );
+
+        $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
+        $software = $this->modeladmin->get_software_by_id($id_permintaan);
+
+        return view(
+            'admin.software.tindak_lanjut_software',
+            [
+                'permintaan' => $permintaan,
+                'software' => $software,
+                'list_software' => $list_software,
             ]
         );
     }
@@ -71,7 +110,40 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            // validasi form 
+            [
+                'id_permintaan' => 'required',
+                'nama_software' => 'required',
+                'versi_software' => 'required',
+                // 'notes' => 'required',
+            ],
+            // custom error notifikasi
+            [
+                'id_permintaan.required' => 'ID Permintaan wajib diisi!',
+                'nama_software.required' => 'Nama software wajib diisi!',
+                'versi_software.required' => 'Versi software wajib diisi!',
+                // 'notes' => 'Notes wajib diisi!',
+            ]
+        );
+
+
+        $catatan = $request->notes ?: '-';
+
+        $data = [
+            'id_permintaan' => $request->id_permintaan,
+            'nama_software' => $request->nama_software,
+            'versi_software' => $request->versi_software,
+            'notes' => $catatan,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ];
+
+        if ($this->modeladmin->input_software($data)) {
+            return back()->with('toast_success', 'Tambah software berhasil!');
+        } else {
+            return back()->with('toast_error', 'Tambah software gagal!');
+        }
     }
 
     /**
@@ -103,6 +175,10 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if ($this->modeladmin->hapus_software($id)) {
+            return back()->with('toast_success', 'Software berhasil dihapus!');
+        } else {
+            return back()->with('toast_error', 'Software gagal dihapus!');
+        }
     }
 }

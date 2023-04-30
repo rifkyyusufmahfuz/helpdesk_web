@@ -59,7 +59,6 @@ class PegawaiController extends Controller
 
     public function simpan_software(Request $request)
     {
-
         if ($this->modelpegawai->simpan_permintaan_software($request)) {
             return redirect('/pegawai/permintaan_software')->with('toast_success', 'Permintaan berhasil ditambahkan!');
         } else {

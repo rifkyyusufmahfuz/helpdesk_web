@@ -97,29 +97,62 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->is('admin/permintaan_software') | request()->is('') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('admin/permintaan_software') || request()->is('') ? '' : 'collapsed' }}"
+        {{-- MENU PERMINTAAN LAYANAN --}}
+        <li
+            class="nav-item {{ request()->is('admin/permintaan_software') | request()->is('admin/permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('admin/permintaan_software') || request()->is('admin/permintaan_hardware') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Layanan</span>
+                @php
+                    $permintaan_count = DB::table('permintaan')
+                        ->where('status_permintaan', '1')
+                        ->count();
+                @endphp
+                @if ($permintaan_count > 0)
+                    <span class="badge badge-danger badge-pill badge-counter">{{ $permintaan_count }}</span>
+                @endif
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('admin/permintaan_software') || request()->is('') ? 'show' : '' }}"
+                class="collapse {{ request()->is('admin/permintaan_software') || request()->is('/admin/permintaan_hardware') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
                     <a class="collapse-item {{ request()->is('admin/permintaan_software') ? 'active' : '' }}"
-                        href="admin/permintaan_software">
+                        href="/admin/permintaan_software">
                         <i class="fas fa-fw fa-laptop-code"></i>
                         <span>Instalasi Software</span>
+                        @php
+                            $permintaan_software_count = DB::table('permintaan')
+                                ->where('status_permintaan', '1')
+                                ->where('tipe_permintaan', 'software')
+                                ->count();
+                        @endphp
+                        @if ($permintaan_software_count > 0)
+                            <span class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
+                        @endif
                     </a>
-                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}" href="">
+                    {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
+                    <a class="collapse-item {{ request()->is('admin/permintaan_hardware') ? 'active' : '' }}"
+                        href="/admin/permintaan_hardware">
                         <i class="fas fa-fw fa-tools"></i>
                         <span>Pengecekan Hardware</span>
+                        @php
+                            $permintaan_hardware_count = DB::table('permintaan')
+                                ->where('status_permintaan', '1')
+                                ->where('tipe_permintaan', 'hardware')
+                                ->count();
+                        @endphp
+                        @if ($permintaan_hardware_count > 0)
+                            <span class="badge badge-danger badge-counter badge-pill">{{ $permintaan_hardware_count }}</span>
+                        @endif
                     </a>
                 </div>
             </div>
         </li>
     @endif
+
+
 
 
     <!-- Sidebar Toggler (Sidebar) -->

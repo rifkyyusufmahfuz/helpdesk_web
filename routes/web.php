@@ -57,7 +57,6 @@ Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], fun
     Route::get('/superadmin/lihatdatauser/{id}', [SuperadminController::class, 'show'])->name('lihat_data_pegawai');
 
     Route::post('/superadmin/aktivasi_semua_user', [SuperadminController::class, 'aktivasi_semua_user']);
-
 });
 
 Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');
@@ -67,14 +66,14 @@ Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiDat
 Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], function () {
     Route::get('/admin', [AdminController::class, 'index']);
     Route::get('/admin/permintaan_software', [AdminController::class, 'permintaan_software']);
-
+    Route::get('/admin/permintaan_software/tambah_software/{id_permintaan}', [AdminController::class, 'tambah_software']);
+    Route::resource('/admin/crud', AdminController::class);
 });
 
 // untuk Manager
 Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], function () {
     Route::get('/manager', [ManagerController::class, 'index']);
 });
-
 
 // untuk pegawai
 Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
