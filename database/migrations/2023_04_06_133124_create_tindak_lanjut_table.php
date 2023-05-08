@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tindak_lanjut_software', function (Blueprint $table) {
-            $table->increments('id_admin');
-            $table->date('tanggal_instalasi');
+        Schema::create('tindak_lanjut', function (Blueprint $table) {
+            $table->increments('id_tindak_lanjut');
+            $table->date('tanggal_penanganan');
             $table->string('ttd_admin', 255)->nullable();
             $table->unsignedInteger('id');
             $table->unsignedInteger('id_permintaan');

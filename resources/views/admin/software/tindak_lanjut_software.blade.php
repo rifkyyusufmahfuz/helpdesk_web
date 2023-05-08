@@ -4,8 +4,8 @@
     <!-- HTML -->
     <div class="card shadow">
         <div class="card-header pb-0">
-            Tambah software untuk :
             @foreach ($permintaan as $data)
+                Tambah software untuk :
                 <div class="row">
                     <div class="form-group px-3">
                         <div><b>ID Permintaan</b></div>
@@ -26,6 +26,11 @@
                         <div><b>Lokasi</b></div>
                         <div>{{ $data->nama_stasiun }}</div>
                     </div>
+
+                    <div class="form-group px-4">
+                        <div><b>Lokasi</b></div>
+                        <div>{{ $data->nama_stasiun }}</div>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -38,12 +43,15 @@
 
                 {{-- <button class="btn btn-md btn-info  mb-3" data-toggle="modal" data-target="#forwardToManager"><i
                         class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager</button> --}}
-
-                <button class="btn btn-md btn-info mb-3" data-toggle="modal" data-target="#forwardToManager"
-                    {{ count($software) == 0 ? 'disabled' : '' }}>
-                    <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager
-                </button>
+                @foreach ($permintaan as $data)
+                    <button class="btn btn-md btn-info mb-3" data-toggle="modal"
+                        data-target="#ajukan_ke_manager_{{ $data->id_permintaan }}"
+                        {{ count($software) == 0 ? 'disabled' : '' }}>
+                        <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager
+                    </button>
+                @endforeach
             </div>
+
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -88,4 +96,5 @@
         </div>
     </div>
     @include('admin.software.modal.tambah_software')
+    @include('admin.software.modal.ajukan_ke_manager')
 @endsection

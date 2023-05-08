@@ -48,7 +48,6 @@ class AdminController extends Controller
     public function permintaan_software()
     {
         $permintaan = $this->modeladmin->get_permintaan_software();
-
         return view(
             'admin.software.permintaan_software',
             [
@@ -96,6 +95,19 @@ class AdminController extends Controller
         );
     }
 
+    public function bast_software($id_permintaan)
+    {
+        $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
+        $barang = $this->modeladmin->get_barang_by_id_permintaan($id_permintaan);
+        return view(
+            'admin.software.bast_software',
+            [
+                'permintaan' => $permintaan,
+                'barang' => $barang,
+            ]
+        );
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -110,39 +122,101 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            // validasi form 
-            [
-                'id_permintaan' => 'required',
-                'nama_software' => 'required',
-                'versi_software' => 'required',
-                // 'notes' => 'required',
-            ],
-            // custom error notifikasi
-            [
-                'id_permintaan.required' => 'ID Permintaan wajib diisi!',
-                'nama_software.required' => 'Nama software wajib diisi!',
-                'versi_software.required' => 'Versi software wajib diisi!',
-                // 'notes' => 'Notes wajib diisi!',
-            ]
-        );
+        if ($request->has('nama_software')) {
+            $request->validate(
+                // validasi form 
+                [
+                    'id_permintaan' => 'required',
+                    'nama_software' => 'required',
+                    'versi_software' => 'required',
+                    // 'notes' => 'required',
+                ],
+                // custom error notifikasi
+                [
+                    'id_permintaan.required' => 'ID Permintaan wajib diisi!',
+                    'nama_software.required' => 'Nama software wajib diisi!',
+                    'versi_software.required' => 'Versi software wajib diisi!',
+                    // 'notes' => 'Notes wajib diisi!',
+                ]
+            );
 
 
-        $catatan = $request->notes ?: '-';
+            $catatan = $request->notes ?: '-';
 
-        $data = [
-            'id_permintaan' => $request->id_permintaan,
-            'nama_software' => $request->nama_software,
-            'versi_software' => $request->versi_software,
-            'notes' => $catatan,
-            'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now(),
-        ];
+            $data = [
+                'id_permintaan' => $request->id_permintaan,
+                'nama_software' => $request->nama_software,
+                'versi_software' => $request->versi_software,
+                'notes' => $catatan,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ];
 
-        if ($this->modeladmin->input_software($data)) {
-            return back()->with('toast_success', 'Tambah software berhasil!');
-        } else {
-            return back()->with('toast_error', 'Tambah software gagal!');
+            if ($this->modeladmin->input_software($data)) {
+                return back()->with('toast_success', 'Tambah software berhasil!');
+            } else {
+                return back()->with('toast_error', 'Tambah software gagal!');
+            }
+        } else if ($request->has('kode_barang')) {
+            $request->validate(
+                // validasi form 
+                [
+                    'kode_barang' => 'required',
+                    'nama_barang' => 'required',
+                    'perihal' => 'required',
+                ],
+                // custom error notifikasi
+                [
+                    'kode_barang.required' => 'ID Barang wajib diisi!',
+                    'nama_barang.required' => 'Nama Barang wajib diisi!',
+                    'perihal.required' => 'Perihal wajib diisi!',
+                ]
+            );
+
+            $data2 = [
+                'kode_barang' => $request->kode_barang,
+                'nama_barang' => $request->nama_barang,
+                'jumlah_barang' => 1,
+                'perihal' => $request->perihal,
+                'id_permintaan' => $request->id_permintaan,
+                'updated_at' => \Carbon\Carbon::now(),
+            ];
+
+            if ($this->modeladmin->input_barang($data2)) {
+                return back()->with('toast_success', 'Tambah barang berhasil!');
+            } else {
+                return back()->with('toast_error', 'Tambah barang gagal!');
+            }
+        } else if ($request->has('ajukan_ke_manager')) {
+            $request->validate(
+                // validasi form 
+                [
+                    'kode_barang' => 'required',
+                    'nama_barang' => 'required',
+                    'perihal' => 'required',
+                ],
+                // custom error notifikasi
+                [
+                    'kode_barang.required' => 'ID Barang wajib diisi!',
+                    'nama_barang.required' => 'Nama Barang wajib diisi!',
+                    'perihal.required' => 'Perihal wajib diisi!',
+                ]
+            );
+
+            $data2 = [
+                'kode_barang' => $request->kode_barang,
+                'nama_barang' => $request->nama_barang,
+                'jumlah_barang' => 1,
+                'perihal' => $request->perihal,
+                'id_permintaan' => $request->id_permintaan,
+                'updated_at' => \Carbon\Carbon::now(),
+            ];
+
+            if ($this->modeladmin->input_barang($data2)) {
+                return back()->with('toast_success', 'Tambah barang berhasil!');
+            } else {
+                return back()->with('toast_error', 'Tambah barang gagal!');
+            }
         }
     }
 
@@ -167,7 +241,19 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'status_permintaan' => 'required|sometimes|different:' . $request->status_permintaan
+        ], [
+            'status_permintaan.required' => 'Pilih status permintaan!',
+            'status_permintaan.different' => 'Status permintaan tidak boleh sama dengan sebelumnya!'
+        ]);
+
+        $data = [
+            'status_permintaan' => $request->status_permintaan,
+            'updated_at' => now(),
+        ];
+
+        return $this->modeladmin->update_permintaan($data, $id) ? back()->with('toast_success', 'Status permintaan telah diubah!') : back()->with('toast_success', 'Status permintaan telah diubah!');
     }
 
     /**

@@ -65,9 +65,10 @@ Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiDat
 // untuk Admin
 Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], function () {
     Route::get('/admin', [AdminController::class, 'index']);
+    Route::resource('/admin/crud', AdminController::class);
     Route::get('/admin/permintaan_software', [AdminController::class, 'permintaan_software']);
     Route::get('/admin/permintaan_software/tambah_software/{id_permintaan}', [AdminController::class, 'tambah_software']);
-    Route::resource('/admin/crud', AdminController::class);
+    Route::get('/admin/permintaan_software/bast_software/{id_permintaan}', [AdminController::class, 'bast_software']);
 });
 
 // untuk Manager

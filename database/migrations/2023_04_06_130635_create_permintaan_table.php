@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('permintaan', function (Blueprint $table) {
             $table->increments('id_permintaan');
             $table->string('keluhan_kebutuhan');
-            $table->string('no_aset', 20);
+            // $table->string('no_aset', 20);
             $table->enum('tipe_permintaan', ['hardware', 'software']);
-            $table->enum('status_permintaan', ['1', '2', '3', '4']);
+            $table->enum('status_permintaan', ['1', '2', '3', '4', '5']);
             // 1 = pending , 2 = menunggu barang diserahkan, 
-            // 3 = proses / barang diterima , 4 = selesai / barang dikembalikan
+            // 3 = proses / barang diterima ,
+            // 4 = selesai / barang siap diambil 5 = barang sudah dikembalikan
 
             $table->date('tanggal_permintaan');
             $table->string('ttd_requestor', 100);

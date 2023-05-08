@@ -1,0 +1,100 @@
+@extends('layouts.main')
+
+@section('contents')
+    <!-- HTML -->
+    <div class="card shadow mb-4">
+        <div class="card-header">
+            <div class="row px-3">
+                <h4 class="card-title">Serah Terima Barang</h4>
+                <p class="small text-gray-800 px-1">Permintaan instalasi software</p>
+            </div>
+            <div class="row px-3">
+                <p>Serah terima barang untuk :</p>
+            </div>
+            @foreach ($permintaan as $data)
+                <div class="row">
+                    <div class="form-group px-3">
+                        <div><b>ID Permintaan</b></div>
+                        <div>{{ $data->id_permintaan }}</div>
+                    </div>
+
+                    <div class="form-group px-3">
+                        <div><b>Tanggal Permintaan</b></div>
+                        <div>{{ $data->tanggal_permintaan }}</div>
+                    </div>
+
+                    <div class="form-group px-3">
+                        <div><b>Requestor</b></div>
+                        <div>{{ $data->nama }}</div>
+                    </div>
+
+                    <div class="form-group px-3">
+                        <div><b>Lokasi</b></div>
+                        <div>{{ $data->nama_stasiun }}</div>
+                    </div>
+
+                    {{-- <div class="form-group px-3">
+                        <div><b>Lokasi</b></div>
+                        <div>{{ $data->nama_stasiun }}</div>
+                    </div> --}}
+                </div>
+            @endforeach
+        </div>
+
+        <div class="card-body">
+            {{-- @foreach ($permintaan as $data)
+                <button class="btn btn-md btn-primary mb-3" data-bs-toggle="modal" title="Tambah barang"
+                    data-bs-target="#modal_input_barang{{ $data->id_permintaan }}"><i
+                        class="fas fa-plus fa-sm mr-2"></i>Tambah Barang</button>
+            @endforeach --}}
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>ID Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Perihal</th>
+                            <th>Status Barang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
+                    @foreach ($barang as $data)
+                        <tbody>
+                            <?php $no = 1; ?>
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $data->kode_barang }}</td>
+                                <td>{{ $data->nama_barang }}</td>
+                                <td>{{ $data->perihal }}</td>
+                                <td>
+                                    @if ($data->status_barang == 1)
+                                        <span>Belum Diterima</span>
+                                    @elseif ($data->status_barang == 2)
+                                        <span>Diterima</span>
+                                    @elseif ($data->status_barang == 3)
+                                        <span>Dikembalikan</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
+                                        data-bs-target="#modal_input_barang{{ $data->id_permintaan }}" title="Terima barang">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger text-white" data-toggle="modal"
+                                        data-target="#modal_input_bast{{ $data->id_barang }}" title="Serahkan barang">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    @endforeach
+
+                </table>
+            </div>
+        </div>
+    </div>
+    @include('admin.software.modal.input_barang')
+@endsection
