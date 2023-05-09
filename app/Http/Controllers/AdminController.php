@@ -108,6 +108,15 @@ class AdminController extends Controller
         );
     }
 
+    public function tindak_lanjut_software(Request $request)
+    {
+        if ($this->modeladmin->tindak_lanjut_permintaan_software($request)) {
+            return redirect('/admin/permintaan_software')->with('toast_success', 'Permintaan berhasil diajukan ke manager!');
+        } else {
+            return redirect('/admin/permintaan_software')->with('toast_error', 'Permintaan gagal ditambahkan!');
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -158,36 +167,6 @@ class AdminController extends Controller
                 return back()->with('toast_error', 'Tambah software gagal!');
             }
         } else if ($request->has('kode_barang')) {
-            $request->validate(
-                // validasi form 
-                [
-                    'kode_barang' => 'required',
-                    'nama_barang' => 'required',
-                    'perihal' => 'required',
-                ],
-                // custom error notifikasi
-                [
-                    'kode_barang.required' => 'ID Barang wajib diisi!',
-                    'nama_barang.required' => 'Nama Barang wajib diisi!',
-                    'perihal.required' => 'Perihal wajib diisi!',
-                ]
-            );
-
-            $data2 = [
-                'kode_barang' => $request->kode_barang,
-                'nama_barang' => $request->nama_barang,
-                'jumlah_barang' => 1,
-                'perihal' => $request->perihal,
-                'id_permintaan' => $request->id_permintaan,
-                'updated_at' => \Carbon\Carbon::now(),
-            ];
-
-            if ($this->modeladmin->input_barang($data2)) {
-                return back()->with('toast_success', 'Tambah barang berhasil!');
-            } else {
-                return back()->with('toast_error', 'Tambah barang gagal!');
-            }
-        } else if ($request->has('ajukan_ke_manager')) {
             $request->validate(
                 // validasi form 
                 [

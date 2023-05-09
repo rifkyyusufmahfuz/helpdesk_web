@@ -14,8 +14,8 @@
                     <div id="detail_barang">
                         <h6>Spesifikasi PC / Laptop</h6>
                         <div class="form-group">
-                            <label for="no_aset">No. Aset / Inventaris / Serial Number</label>
-                            <input disabled type="text" class="form-control" id="no_aset" name="no_aset"
+                            <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
+                            <input disabled type="text" class="form-control" id="kode_barang" name="kode_barang"
                                 value="{{ $data->kode_barang }}">
                         </div>
                         <div class="form-group">

@@ -38,6 +38,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
 
 <script src="{{ asset('custom_script/js/cari_data_pegawai.js') }}"></script>
+<script src="{{ asset('custom_script/js/cari_data_barang.js') }}"></script>
 <script src="{{ asset('custom_script/js/fungsi_tombol.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan.js') }}"></script>
 

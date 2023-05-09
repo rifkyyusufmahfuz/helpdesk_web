@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('otorisasi', function (Blueprint $table) {
             $table->increments('id_otorisasi');
             $table->date('tanggal_approval')->nullable();
-            $table->enum('status_approval', ['pending', 'approved', 'rejected', 'revision']);
+            $table->enum('status_approval', ['pending', 'waiting', 'approved', 'rejected', 'revision']);
             $table->string('catatan', 50);
             $table->string('ttd_manager', 100)->nullable();
 

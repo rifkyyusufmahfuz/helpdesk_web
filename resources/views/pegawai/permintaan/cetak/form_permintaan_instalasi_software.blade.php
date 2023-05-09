@@ -176,7 +176,7 @@
                                 </td>
                                 <td class="titikdua">:</td>
                                 <td class="no_aset" id="garis_bawah_noaset">
-                                    {{ $no_aset }}
+                                    {{ $kode_barang }}
                                 </td>
                             </tr>
                         </table>
@@ -186,13 +186,13 @@
         </table>
 
         <table class="tabel_ttd_requestor" border="0" cellspacing="0">
-            @if (file_exists(public_path('/tandatangan/' . $ttd_requestor)))
+            @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
                 <tr class="kolom_tanda_tangan">
                     <td class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
                     <td rowspan="8">
                         <div class="kotak-ttd">
                             {{-- <figure> --}}
-                            <img class="gambar_ttd" src="{{ asset('tandatangan/' . $ttd_requestor) }}"
+                            <img class="gambar_ttd" src="{{ asset('tandatangan/requestor/' . $ttd_requestor) }}"
                                 title="Tanda tangan {{ $nama }}">
                             <figcaption>{{ $nama }}</figcaption>
                             {{-- </figure> --}}
@@ -272,12 +272,12 @@
             {{-- kolom ttd admin --}}
             <div class="tabel_ttd_request_owner" border="0" cellspacing="0">
                 <div class="kolom_ttd_request_owner">
-                    @if (file_exists(public_path('/tandatangan/' . $ttd_requestor)))
+                    @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
                         <div>
                             <div class="kotak_ttd_request_owner">
                                 <figcaption class="judul_ttd_request_owner">Request Owner</figcaption>
                                 <img class="gambar_ttd_request_owner" title="Tanda tangan {{ $nama }}"
-                                    src="{{ asset('tandatangan/' . $ttd_requestor) }}">
+                                    src="{{ asset('tandatangan/requestor/' . $ttd_requestor) }}">
                                 <figcaption id="garis_bawah_request_owner">{{ $nama }}</figcaption>
                             </div>
                         </div>
@@ -296,11 +296,11 @@
             <div class="tabel_ttd_admin">
                 {{-- ttd admin --}}
                 <div class="kolom_ttd_admin">
-                    @if (file_exists(public_path('/tandatangan/' . $ttd_requestor)))
+                    @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
                         <div class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
                         <div>
                             <div class="kotak-ttd">
-                                <img class="gambar_ttd" src="{{ asset('tandatangan/' . $ttd_requestor) }}"
+                                <img class="gambar_ttd" src="{{ asset('tandatangan/requestor/' . $ttd_requestor) }}"
                                     title="Tanda tangan {{ $nama }}">
                                 <figcaption>{{ $nama }}</figcaption>
                             </div>

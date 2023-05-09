@@ -15,7 +15,7 @@ class PermintaanModel extends Model
 
     protected $fillable = [
         'keluhan_kebutuhan',
-        'no_aset',
+        'kode_barang',
         'tipe_permintaan',
         'status_permintaan',
         'tanggal_permintaan',

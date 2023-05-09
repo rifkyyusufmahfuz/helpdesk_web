@@ -10,12 +10,13 @@
                 </button>
             </div>
             <div class="modal-body" id="signature-pad">
-                <form action="/admin/crud" method="POST" id="form-instalasi-software" enctype="multipart/form-data">
+                <form action="/admin/tindak_lanjut_software/{id_permintaan}" method="POST" id="form-instalasi-software"
+                    enctype="multipart/form-data">
                     @csrf
                     <div id="detail_admin">
                         <h6>Pengajuan Permintaan</h6>
-                        <input hidden id="ajukan_ke_manager" name="ajukan_ke_manager"
-                            value="{{ $data->id_permintaan }}">
+                        <input hidden id="id_permintaan" name="id_permintaan" value="{{ $data->id_permintaan }}">
+                        <input hidden id="id_otorisasi" name="id_otorisasi" value="{{ $data->id_otorisasi }}">
 
                         <div class="row">
                             <div class="form-group col-sm-5">

@@ -25,13 +25,13 @@ return new class extends Migration
             // 3 = dikembalikan
 
 
-            $table->unsignedInteger('id_permintaan');
+            // $table->unsignedInteger('id_permintaan');
             $table->timestamps();
 
-            $table->foreign('id_permintaan')
-                ->references('id_permintaan')
-                ->on('permintaan')
-                ->onDelete('cascade');
+            // $table->foreign('id_permintaan')
+            //     ->references('id_permintaan')
+            //     ->on('permintaan')
+            //     ->onDelete('cascade');
         });
     }
 

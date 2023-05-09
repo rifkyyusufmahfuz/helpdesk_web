@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tindak_lanjut', function (Blueprint $table) {
             $table->increments('id_tindak_lanjut');
-            $table->date('tanggal_penanganan');
-            $table->string('ttd_admin', 255)->nullable();
+            $table->date('tanggal_penanganan')->nullable();
+            $table->string('ttd_admin', 255);
             $table->unsignedInteger('id');
             $table->unsignedInteger('id_permintaan');
 

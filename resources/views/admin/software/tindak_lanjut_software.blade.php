@@ -28,8 +28,26 @@
                     </div>
 
                     <div class="form-group px-4">
-                        <div><b>Lokasi</b></div>
-                        <div>{{ $data->nama_stasiun }}</div>
+                        <div><b>Kategori</b></div>
+                        <div>
+                            @if ($data->operating_system == 1)
+                                <span>Sistem Operasi</span>
+                            @endif
+                            @if ($data->microsoft_office == 1)
+                                <span>Microsoft Office</span>
+                            @endif
+                            @if ($data->software_design == 1)
+                                <span>Software Design</span>
+                            @endif
+                            @if ($data->software_lainnya == 1)
+                                <span>Lainnya</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group px-4">
+                        <div><b>Kebutuhan</b></div>
+                        <div>{{ $data->keluhan_kebutuhan }}</div>
                     </div>
                 </div>
             @endforeach

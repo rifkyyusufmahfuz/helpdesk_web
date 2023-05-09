@@ -114,7 +114,7 @@ class PegawaiController extends Controller
             'jabatan' => $pegawai->jabatan,
             'kategori' => $kategori,
             'keluhan' => $permintaan->keluhan_kebutuhan,
-            'no_aset' => $permintaan->no_aset,
+            'kode_barang' => $permintaan->kode_barang,
             'ttd_requestor' => $permintaan->ttd_requestor,
             'list_software' => $list_software,
             'table_software' => $table_software,
@@ -145,6 +145,28 @@ class PegawaiController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function getDataBarang($kodebarang)
+    {
+        // $barang = DB::table('barang')->find($kodebarang);
+        $barang = $this->modelpegawai->data_barang_by_kode_barang($kodebarang);
+
+        if ($barang) {
+            $nama_barang = $barang['nama_barang'];
+            $prosesor = $barang['prosesor'];
+            $ram = $barang['ram'];
+            $penyimpanan = $barang['penyimpanan'];
+
+            return response()->json([
+                'nama_barang' => $nama_barang,
+                'prosesor' => $prosesor,
+                'ram' => $ram,
+                'penyimpanan' => $penyimpanan
+            ]);
+        } else {
+            return response()->json(null);
+        }
     }
 
     /**

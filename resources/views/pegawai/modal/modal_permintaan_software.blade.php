@@ -16,8 +16,8 @@
                     <div id="detail_barang">
                         <h6>Spesifikasi PC / Laptop</h6>
                         <div class="form-group">
-                            <label for="no_aset">No. Aset / Inventaris / Serial Number</label>
-                            <input type="text" class="form-control" id="no_aset" name="no_aset"
+                            <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
+                            <input type="text" class="form-control" id="kode_barang" name="kode_barang"
                                 placeholder="Nomor aset / inventaris / serial number">
                         </div>
                         <div class="form-group">
@@ -226,23 +226,28 @@
         // disable tombol lanjut pada awalnya
         $('#btn_lanjut_1').prop('disabled', true);
 
-        // cek input setiap kali nilai input berubah
-        $('#detail_barang input').on('input', function() {
-            // cek apakah semua input diisi
-            var isFilled = true;
-            $('#detail_barang input').each(function() {
-                if ($(this).val() === '') {
-                    isFilled = false;
-                    return false; // keluar dari loop
-                }
-            });
+        var timeoutId;
 
-            // aktifkan tombol lanjut jika semua input diisi
-            if (isFilled) {
-                $('#btn_lanjut_1').prop('disabled', false);
-            } else {
-                $('#btn_lanjut_1').prop('disabled', true);
-            }
+        $('#detail_barang input').on('input', function() {
+            clearTimeout(timeoutId);
+
+            timeoutId = setTimeout(function() {
+                // cek apakah semua input diisi
+                var isFilled = true;
+                $('#detail_barang input').each(function() {
+                    if ($(this).val() === '') {
+                        isFilled = false;
+                        return false; // keluar dari loop
+                    }
+                });
+
+                // aktifkan tombol lanjut jika semua input diisi
+                if (isFilled) {
+                    $('#btn_lanjut_1').prop('disabled', false);
+                } else {
+                    $('#btn_lanjut_1').prop('disabled', true);
+                }
+            }, 500);
         });
 
         // tampilan modal awal, sembunyikan form detail_permintaan dan detail_pegawai

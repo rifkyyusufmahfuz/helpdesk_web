@@ -28,7 +28,7 @@
                         @foreach ($permintaan as $data)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->created_at }}</td>
+                                <td>{{ $data->permintaan_created_at }}</td>
                                 <td>
                                     @if ($data->operating_system)
                                         <span>Sistem Operasi</span>

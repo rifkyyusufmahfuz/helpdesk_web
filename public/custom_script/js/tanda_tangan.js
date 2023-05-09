@@ -13,7 +13,7 @@ clearButton.addEventListener("click", function(event) {
     signaturePad.clear();
 });
 
-var form = document.querySelector('form');
+var form = document.getElementById('signature-pad');
 form.addEventListener('submit', function(event) {
     if (signaturePad.isEmpty()) {
         // alert("Silakan tanda tangan terlebih dahulu!");
