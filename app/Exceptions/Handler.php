@@ -45,4 +45,27 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            return response()->view('404', [], 404);
+        }
+
+        if ($exception instanceof \PDOException) {
+            $error_message = "Terjadi kesalahan saat terhubung ke database. ";
+            $exception_message = $exception->getMessage();
+            $email = $request->input('email');
+            if (strpos($exception_message, $email) !== false) {
+                $masked_email = substr($email, 0, 1) . str_repeat('*', strlen($email) - 10) . substr($email, -10);
+                $exception_message = str_replace($email, $masked_email, $exception_message);
+            }
+            return response()->view('404', ['pesan_error_custom' => $error_message, 'pesan_error_sistem' => $exception_message], 404);
+        }
+
+
+
+        return parent::render($request, $exception);
+    }
 }
