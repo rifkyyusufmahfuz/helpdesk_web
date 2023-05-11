@@ -2,10 +2,46 @@
 
 @section('contents')
     <div class="container">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        </div>
+
+
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-header">Status Permintaan Pengecekan Hardware</div>
+                    <div class="card-header">Permintaan Instalasi Software</div>
+                    <div class="card-body">
+                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $software_total }}</p>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold">Pending</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_pending }}</span>
+                            </li>
+                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold">Revisi</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_revisi }}</span>
+                            </li> --}}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold">Proses</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_diproses }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold">Selesai</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_diproses }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold">Ditolak</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_ditolak }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">Permintaan Pengecekan Hardware</div>
                     <div class="card-body">
                         <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $hardware_total }}</p>
                         <ul class="list-group">
@@ -20,32 +56,6 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Selesai</span>
                                 <span class="badge badge-primary badge-pill">{{ $hardware_selesai }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-header">Status Permintaan Instalasi Software</div>
-                    <div class="card-body">
-                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $instalasi_total }}</p>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Pending</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_pending }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Revisi</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_revisi }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Diterima</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_diterima }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Ditolak</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_ditolak }}</span>
                             </li>
                         </ul>
                     </div>
@@ -66,18 +76,18 @@
                                 <span class="font-weight-bold">Proses</span>
                                 <span class="badge badge-primary badge-pill">{{ $diproses }}</span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Revisi</span>
                                 <span class="badge badge-primary badge-pill">{{ $revisi }}</span>
-                            </li>
+                            </li> --}}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Diterima</span>
-                                <span class="badge badge-primary badge-pill">{{ $diterima }}</span>
+                                <span class="font-weight-bold">Selesai</span>
+                                <span class="badge badge-primary badge-pill">{{ $selesai }}</span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Ditolak</span>
                                 <span class="badge badge-primary badge-pill">{{ $ditolak }}</span>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>

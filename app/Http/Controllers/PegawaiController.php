@@ -27,26 +27,66 @@ class PegawaiController extends Controller
 
     public function index()
     {
-        $instalasi_total = OtorisasiModel::count();
-        $instalasi_pending = OtorisasiModel::where('status_approval', '=', 'pending')->count();
-        $instalasi_revisi = OtorisasiModel::where('status_approval', '=', 'revision')->count();
-        $instalasi_diterima = OtorisasiModel::where('status_approval', '=', 'approved')->count();
-        $instalasi_ditolak = OtorisasiModel::where('status_approval', '=', 'rejected')->count();
+        $id_user = auth()->user()->id;
 
-        $hardware_total = PermintaanModel::count();
-        $hardware_pending = PermintaanModel::where('status_permintaan', '=', 'pending')->count();
-        $hardware_proses = PermintaanModel::where('status_permintaan', '=', 'proses')->count();
-        $hardware_selesai = PermintaanModel::where('status_permintaan', '=', 'selesai')->count();
+        $software_total = PermintaanModel::where('tipe_permintaan', '=', 'software')
+            ->where('id', '=', $id_user)
+            ->count();
+        $software_pending = PermintaanModel::where('tipe_permintaan', '=', 'software')
+            ->where('status_permintaan', '=', '1')
+            ->orwhere('status_permintaan', '=', '2')
+            ->orwhere('status_permintaan', '=', '3')
+            ->where('id', '=', $id_user)
+            ->count();
+        $software_diproses = PermintaanModel::where('tipe_permintaan', '=', 'software')
+            ->where('status_permintaan', '=', '4')
+            ->where('id', '=', $id_user)
+            ->count();
+        $software_ditolak = PermintaanModel::where('tipe_permintaan', '=', 'software')
+            ->where('status_permintaan', '=', '7')
+            ->where('id', '=', $id_user)
+            ->count();
 
-        $total = $instalasi_total + $hardware_total;
-        $pending = $instalasi_pending + $hardware_pending;
-        $revisi = $instalasi_revisi;
-        $diproses = $hardware_proses;
-        $diterima = $instalasi_diterima + $hardware_selesai;
+        $hardware_total = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('id', '=', $id_user)
+            ->count();
+        $hardware_pending = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('status_permintaan', '=', 'pending')
+            ->where('id', '=', $id_user)
+            ->count();
+        $hardware_proses = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('status_permintaan', '=', 'proses')
+            ->where('id', '=', $id_user)
+            ->count();
+        $hardware_selesai = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('status_permintaan', '=', 'selesai')
+            ->where('id', '=', $id_user)
+            ->count();
+
+        $total = $software_total + $hardware_total;
+        $pending = $software_pending + $hardware_pending;
+        $diproses = $hardware_proses + $software_diproses;
         $selesai = $hardware_selesai;
-        $ditolak = $instalasi_ditolak;
 
-        return view('pegawai.index', compact('instalasi_total', 'instalasi_pending', 'instalasi_revisi', 'instalasi_diterima', 'instalasi_ditolak', 'hardware_total', 'hardware_pending', 'hardware_proses', 'hardware_selesai', 'total', 'pending', 'revisi', 'diproses', 'diterima', 'selesai', 'ditolak'));
+        // untuk notifikasi
+        $user = auth()->user();
+        $notifikasi = $user->unreadNotifications;
+
+        return view('pegawai.index', compact(
+            'software_total',
+            'software_pending',
+            'software_diproses',
+            'software_ditolak',
+            'hardware_total',
+            'hardware_pending',
+            'hardware_proses',
+            'hardware_selesai',
+            'total',
+            'pending',
+            'diproses',
+            'selesai',
+            'notifikasi'
+        ));
     }
 
     public function permintaan_software()

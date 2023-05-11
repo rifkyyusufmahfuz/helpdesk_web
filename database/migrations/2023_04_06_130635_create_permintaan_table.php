@@ -29,7 +29,7 @@ return new class extends Migration
 
             //FK Kolom kode_barang dari table barang
             $table->string('kode_barang', 20);
-            $table->foreign('kode_barang')->references('kode_barang')->on('barang');
+            $table->foreign('kode_barang')->references('kode_barang')->on('barang')->onDelete('cascade');
 
             //FK Kolom id dari table users
             $table->unsignedInteger('id');

@@ -29,23 +29,23 @@
                 <div class="card">
                     <div class="card-header">Status Permintaan Instalasi Software</div>
                     <div class="card-body">
-                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $instalasi_total }}</p>
+                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $software_total }}</p>
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Pending</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_pending }}</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_pending }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Revisi</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_revisi }}</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_revisi }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Diterima</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_diterima }}</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_diterima }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="font-weight-bold">Ditolak</span>
-                                <span class="badge badge-primary badge-pill">{{ $instalasi_ditolak }}</span>
+                                <span class="badge badge-primary badge-pill">{{ $software_ditolak }}</span>
                             </li>
                         </ul>
                     </div>

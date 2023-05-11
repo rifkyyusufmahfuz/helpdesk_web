@@ -104,4 +104,15 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    // UNTUK NOTIFIKASI
+    public function notifications()
+    {
+        return $this->hasMany(NotifikasiModel::class);
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->whereNull('read_at');
+    }
 }

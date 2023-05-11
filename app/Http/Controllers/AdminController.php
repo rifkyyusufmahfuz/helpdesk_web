@@ -23,26 +23,34 @@ class AdminController extends Controller
 
     public function index()
     {
-        $instalasi_total = OtorisasiModel::count();
-        $instalasi_pending = OtorisasiModel::where('status_approval', '=', 'pending')->count();
-        $instalasi_revisi = OtorisasiModel::where('status_approval', '=', 'revision')->count();
-        $instalasi_diterima = OtorisasiModel::where('status_approval', '=', 'approved')->count();
-        $instalasi_ditolak = OtorisasiModel::where('status_approval', '=', 'rejected')->count();
+        $software_total = OtorisasiModel::count();
+        $software_pending = OtorisasiModel::where('status_approval', '=', 'pending')->count();
+        $software_waiting = OtorisasiModel::where('status_approval', '=', 'waiting')->count();
+        $software_revisi = OtorisasiModel::where('status_approval', '=', 'revision')->count();
+        $software_diterima = OtorisasiModel::where('status_approval', '=', 'approved')->count();
+        $software_ditolak = OtorisasiModel::where('status_approval', '=', 'rejected')->count();
 
-        $hardware_total = PermintaanModel::count();
-        $hardware_pending = PermintaanModel::where('status_permintaan', '=', 'pending')->count();
-        $hardware_proses = PermintaanModel::where('status_permintaan', '=', 'proses')->count();
-        $hardware_selesai = PermintaanModel::where('status_permintaan', '=', 'selesai')->count();
+        $hardware_total = PermintaanModel::where('tipe_permintaan', '=', 'hardware')->count();
+        $hardware_pending = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('status_permintaan', '=', 'pending')
+            ->count();
+        $hardware_proses = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('status_permintaan', '=', 'proses')
+            ->count();
+        $hardware_selesai = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
+            ->where('status_permintaan', '=', 'selesai')
+            ->count();
 
-        $total = $instalasi_total + $hardware_total;
-        $pending = $instalasi_pending + $hardware_pending;
-        $revisi = $instalasi_revisi;
+
+        $total = $software_total + $hardware_total;
+        $pending = $software_pending + $hardware_pending;
+        $revisi = $software_revisi;
         $diproses = $hardware_proses;
-        $diterima = $instalasi_diterima + $hardware_selesai;
+        $diterima = $software_diterima + $hardware_selesai;
         $selesai = $hardware_selesai;
-        $ditolak = $instalasi_ditolak;
+        $ditolak = $software_ditolak;
 
-        return view('admin.index', compact('instalasi_total', 'instalasi_pending', 'instalasi_revisi', 'instalasi_diterima', 'instalasi_ditolak', 'hardware_total', 'hardware_pending', 'hardware_proses', 'hardware_selesai', 'total', 'pending', 'revisi', 'diproses', 'diterima', 'selesai', 'ditolak'));
+        return view('admin.index', compact('software_total', 'software_pending', 'software_revisi', 'software_diterima', 'software_ditolak', 'hardware_total', 'hardware_pending', 'hardware_proses', 'hardware_selesai', 'total', 'pending', 'revisi', 'diproses', 'diterima', 'selesai', 'ditolak'));
     }
 
     public function permintaan_software()
