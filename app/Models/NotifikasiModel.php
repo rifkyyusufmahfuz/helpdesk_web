@@ -12,6 +12,7 @@ class NotifikasiModel extends Model
     protected $fillable = [
         'user_id',
         'pesan',
+        'tipe_pesan',
         'read_at'
     ];
 
@@ -21,4 +22,5 @@ class NotifikasiModel extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

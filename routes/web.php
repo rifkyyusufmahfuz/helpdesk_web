@@ -7,6 +7,7 @@ use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RedirectController;
 
@@ -85,3 +86,8 @@ Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
     Route::post('/pegawai/simpan_software', [PegawaiController::class, 'simpan_software']);
     Route::get('/form_instalasi_software/{id}', [PegawaiController::class, 'getDataRequest'])->name('lihat_form');
 });
+
+Route::get('/notifications', [NotifikasiController::class, 'index']);
+Route::delete('/notifikasi/hapus/{id}', [NotifikasiController::class, 'destroy']);
+Route::put('/notifikasi/read/{id}', [NotifikasiController::class, 'tandai_telah_dibaca']);
+Route::put('/notifikasi/read_all', [NotifikasiController::class, 'tandai_semua_telah_dibaca']);

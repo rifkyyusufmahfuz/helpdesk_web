@@ -11720,6 +11720,20 @@ label {
     overflow-y: auto;
 }
 
+.swal2-confirm,
+.swal2-cancel {
+    font-size: 12px !important;
+    /* padding: 8px 16px; */
+    width: 5rem;
+}
+
+#notifications {
+    max-height: 300px;
+    /* atur maksimum tinggi daftar notifikasi */
+    overflow-y: auto;
+    /* tambahkan overflow-y dengan nilai auto atau scroll */
+}
+
 
 /* .kbw-signature {
     border: 1px solid #d1d3e2;

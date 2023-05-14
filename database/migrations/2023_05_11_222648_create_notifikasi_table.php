@@ -16,7 +16,7 @@ return new class extends Migration
             //FK Kolom id dari table users
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
+            $table->enum('tipe_pesan', ['low', 'med', 'high']);
 
             $table->string('pesan');
             $table->string('link')->nullable();

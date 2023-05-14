@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- Custom fonts for this template -->
 <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -22,8 +23,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 {{-- custom --}}
-
-{{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {{-- script untuk tanda tangan  --}}
 
@@ -39,5 +39,6 @@
 <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css"> --}}
 
 <script src="{{ asset('custom_script/js/signature.js') }}"></script>
+<script src="{{ asset('custom_script/js/notifikasi.js') }}"></script>
 
 {{-- end script untuk tanda tangan  --}}

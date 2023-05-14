@@ -16,11 +16,13 @@ class NotifikasiSeeder extends Seeder
         $notif = [
             [
                 'user_id' => 5,
+                'tipe_pesan' => 'high',
                 'pesan' => 'Ini adalah pesan otomatis dari sistem.',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'user_id' => 5,
+                'tipe_pesan' => 'med',
                 'pesan' => 'Ini adalah pesan otomatis kedua dari sistem.',
                 'created_at' => \Carbon\Carbon::now(),
             ],

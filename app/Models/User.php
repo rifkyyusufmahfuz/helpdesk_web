@@ -115,4 +115,9 @@ class User extends Authenticatable
     {
         return $this->notifications()->whereNull('read_at');
     }
+
+    public function allNotifications()
+    {
+        return $this->notifications()->orderBy('created_at', 'desc');
+    }
 }

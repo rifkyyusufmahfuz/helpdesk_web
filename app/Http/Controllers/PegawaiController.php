@@ -68,10 +68,6 @@ class PegawaiController extends Controller
         $diproses = $hardware_proses + $software_diproses;
         $selesai = $hardware_selesai;
 
-        // untuk notifikasi
-        $user = auth()->user();
-        $notifikasi = $user->unreadNotifications;
-
         return view('pegawai.index', compact(
             'software_total',
             'software_pending',
@@ -85,7 +81,6 @@ class PegawaiController extends Controller
             'pending',
             'diproses',
             'selesai',
-            'notifikasi'
         ));
     }
 
