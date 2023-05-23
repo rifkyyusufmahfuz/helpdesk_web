@@ -88,6 +88,8 @@ Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
 });
 
 Route::get('/notifications', [NotifikasiController::class, 'index']);
-Route::delete('/notifikasi/hapus/{id}', [NotifikasiController::class, 'destroy']);
-Route::put('/notifikasi/read/{id}', [NotifikasiController::class, 'tandai_telah_dibaca']);
-Route::put('/notifikasi/read_all', [NotifikasiController::class, 'tandai_semua_telah_dibaca']);
+Route::delete('/notifikasi/hapus/{id_notifikasi}', [NotifikasiController::class, 'destroy']);
+Route::put('/notifikasi/read/{id_notifikasi}', [NotifikasiController::class, 'tandai_telah_dibaca']);
+
+Route::put('/notifikasi/pegawai/read_all/{id}', [NotifikasiController::class, 'read_all_notif_pegawai']);
+Route::put('/notifikasi/admin/read_all/{id_role}', [NotifikasiController::class, 'read_all_notif_admin']);
