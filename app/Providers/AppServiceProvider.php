@@ -13,14 +13,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        View::composer('*', function ($view) {
-            $user = Auth::user();
-            $notifikasi = $user ? $user->allNotifications : null;
-            $totalnotifikasi = $user ? $user->unreadNotifications->count() : 0;
+        // View::composer('*', function ($view) {
+        //     $user = Auth::user();
+        //     $notifikasi = $user ? $user->allNotifications : null;
+        //     $totalnotifikasi = $user ? $user->unreadNotifications->count() : 0;
 
-            $view->with('notifikasi', $notifikasi);
-            $view->with('totalnotifikasi', $totalnotifikasi);
-        });
+        //     $view->with('notifikasi', $notifikasi);
+        //     $view->with('totalnotifikasi', $totalnotifikasi);
+        // });
     }
 
     /**

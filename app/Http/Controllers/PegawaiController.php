@@ -7,6 +7,7 @@ use App\Models\PegawaiModel;
 use App\Models\PermintaanModel;
 use Illuminate\Http\Request;
 use app\Models\KategoriSoftwareModel;
+use App\Models\TindakLanjutModel;
 use Illuminate\Support\Facades\DB;
 
 class PegawaiController extends Controller
@@ -101,12 +102,12 @@ class PegawaiController extends Controller
         }
     }
 
+    // fungsi untuk form permintaan instalasi software
     public function getDataRequest($id_permintaan)
     {
-
         $list_software = array(
             "Microsoft Windows",
-            "Microsoft Office Standart",
+            "Microsoft Office Standar",
             "Microsoft Visio",
             "Microsoft Project",
             "Autocad",
@@ -126,6 +127,7 @@ class PegawaiController extends Controller
             "SAP",
             "Software Lainnya"
         );
+
         // Ambil data permintaan
         $permintaan = PermintaanModel::findOrFail($id_permintaan);
 
@@ -138,10 +140,17 @@ class PegawaiController extends Controller
 
         $otorisasi = OtorisasiModel::where('id_otorisasi', $permintaan->id_otorisasi)->first();
 
+        // Ambil data software yang telah dipilih
+        $selectedSoftware = $table_software->pluck('nama_software')->toArray();
+
+        // Ambil data dari table tindak lanjut admin
+        $tindaklanjut = TindakLanjutModel::where('id_permintaan', $id_permintaan)->firstOrFail();
+
+        // Ambil data admin berdasarkan id pada tabel users
+        $data_admin = PegawaiModel::where('nip', $tindaklanjut->user->nip)->first();
 
         return view('pegawai.permintaan.cetak.form_permintaan_instalasi_software', [
             'id_permintaan' => $permintaan->id_permintaan,
-            // 'tanggal_permintaan' => date('d/m/Y', strtotime($permintaan->tanggal_permintaan)),
             'tanggal_permintaan' => $permintaan->tanggal_permintaan,
             'nama' => $pegawai->nama,
             'nip' => $pegawai->nip,
@@ -154,8 +163,12 @@ class PegawaiController extends Controller
             'list_software' => $list_software,
             'table_software' => $table_software,
             'otorisasi' => $otorisasi,
+            'selectedSoftware' => $selectedSoftware, // Untuk Tambahkan data software yang telah dipilih
+            'ttd_admin' => $tindaklanjut->ttd_admin,
+            'nama_admin' => $data_admin->nama,
         ]);
     }
+
 
 
     /**

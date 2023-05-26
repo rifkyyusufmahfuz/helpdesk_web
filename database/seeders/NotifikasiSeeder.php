@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use League\CommonMark\Util\LinkParserHelper;
 
 class NotifikasiSeeder extends Seeder
 {
@@ -15,15 +16,31 @@ class NotifikasiSeeder extends Seeder
     {
         $notif = [
             [
-                'user_id' => 5,
-                'tipe_pesan' => 'high',
-                'pesan' => 'Ini adalah pesan otomatis dari sistem.',
+                'user_id' => 4,
+                'role_id' => null,
+                'pesan' => 'Ini adalah pesan otomatis dari sistem untuk pegawai 1.',
+                'tautan' => '#',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'user_id' => 5,
-                'tipe_pesan' => 'med',
+                'role_id' => null,
                 'pesan' => 'Ini adalah pesan otomatis kedua dari sistem.',
+                'tautan' => '#',
+                'created_at' => \Carbon\Carbon::now(),
+            ],
+            [
+                'user_id' => null,
+                'role_id' => 2,
+                'pesan' => 'Pemberitahuan untuk admin',
+                'tautan' => '#',
+                'created_at' => \Carbon\Carbon::now(),
+            ],
+            [
+                'user_id' => null,
+                'role_id' => 2,
+                'pesan' => 'Pemberitahuan untuk admin 2',
+                'tautan' => '#',
                 'created_at' => \Carbon\Carbon::now(),
             ],
         ];

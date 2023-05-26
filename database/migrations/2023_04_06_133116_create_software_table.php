@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('software', function (Blueprint $table) {
             $table->increments('id_software');
             $table->string('nama_software', 30);
-            $table->string('versi_software', 15);
-            $table->string('notes', 50);
+            $table->string('versi_software', 15)->nullable();
+            $table->string('notes', 50)->nullable();
             $table->unsignedInteger('id_permintaan');
             $table->timestamps();
 

@@ -230,6 +230,7 @@
                     <td class="header-kolom-admin">*Notes</td> --}}
                 </tr>
             </thead>
+
             <tbody>
                 <!-- software loop -->
                 @foreach ($list_software as $software)
@@ -249,7 +250,7 @@
                         </td>
                         {{-- Kolom Version --}}
                         <td class="kolom_version" id="garis_bawah">
-                            @if ($selected_software)
+                            @if ($selected_software && isset($selected_software->version))
                                 {{ $selected_software->version }}
                             @else
                                 &nbsp;
@@ -257,7 +258,7 @@
                         </td>
                         {{-- Kolom Notes  --}}
                         <td class="kolom_notes" id="garis_bawah">
-                            @if ($selected_software)
+                            @if ($selected_software && isset($selected_software->notes))
                                 {{ $selected_software->notes }}
                             @else
                                 &nbsp;
@@ -266,13 +267,15 @@
                     </tr>
                 @endforeach
             </tbody>
+
+
         </table>
 
         <div class="pembungkus">
             {{-- kolom ttd admin --}}
             <div class="tabel_ttd_request_owner" border="0" cellspacing="0">
                 <div class="kolom_ttd_request_owner">
-                    @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
+                    {{-- @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
                         <div>
                             <div class="kotak_ttd_request_owner">
                                 <figcaption class="judul_ttd_request_owner">Request Owner</figcaption>
@@ -281,28 +284,28 @@
                                 <figcaption id="garis_bawah_request_owner">{{ $nama }}</figcaption>
                             </div>
                         </div>
-                    @else
-                        <div>
-                            <div class="kotak_ttd_request_owner">
-                                <figcaption class="judul_ttd_request_owner">Request Owner</figcaption>
-                                <img>
-                                <figcaption id="garis_bawah_request_owner_kosong"></figcaption>
-                            </div>
+                    @else --}}
+                    <div>
+                        <div class="kotak_ttd_request_owner">
+                            <figcaption class="judul_ttd_request_owner">Request Owner</figcaption>
+                            <img>
+                            <figcaption id="garis_bawah_request_owner_kosong"></figcaption>
                         </div>
-                    @endif
+                    </div>
+                    {{-- @endif --}}
                 </div>
             </div>
 
             <div class="tabel_ttd_admin">
                 {{-- ttd admin --}}
                 <div class="kolom_ttd_admin">
-                    @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
+                    @if (file_exists(public_path('/tandatangan/admin/' . $ttd_admin)))
                         <div class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
                         <div>
                             <div class="kotak-ttd">
-                                <img class="gambar_ttd" src="{{ asset('tandatangan/requestor/' . $ttd_requestor) }}"
-                                    title="Tanda tangan {{ $nama }}">
-                                <figcaption>{{ $nama }}</figcaption>
+                                <img class="gambar_ttd" src="{{ asset('tandatangan/admin/' . $ttd_admin) }}"
+                                    title="Tanda tangan {{ $nama_admin }}">
+                                <figcaption>{{ $nama_admin }}</figcaption>
                             </div>
                         </div>
                     @else

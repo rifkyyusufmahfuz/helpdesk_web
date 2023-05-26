@@ -14,7 +14,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div id="detail_barang">
-                        <h6>Spesifikasi PC / Laptop</h6>
+                        <h5>Spesifikasi PC / Laptop</h5>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
                             <input type="text" class="form-control" id="kode_barang" name="kode_barang"
@@ -49,101 +49,143 @@
                     </div>
 
                     <div id="detail_permintaan">
-                        <h6>Detail Permintaan</h6>
-                        <div class="form-group mb-0">
-                            <label>Kategori Software</label>
+                        <h5>Detail Permintaan</h5>
+                        <h6>Pilih Software</h6>
+                        <div class="form-group">
                             <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" name="os" type="checkbox" id="os"
-                                            value="1">
-                                        <label class="form-check-label" for="os">Operating System</label>
+                                <div class="col">
+                                    <label>Operating System</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox" id="os1"
+                                            value="Microsoft Windows">
+                                        <label class="form-check-label" for="os1">Microsoft Windows</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="mo" type="checkbox" id="mo"
-                                            value="2">
-                                        <label class="form-check-label" for="mo">Microsoft Office</label>
+                                        <input class="form-check-input" name="software[]" type="checkbox" id="os2"
+                                            value="Linux OS">
+                                        <label class="form-check-label" for="os2">Linux OS</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox" id="os3"
+                                            value="Mac OS">
+                                        <label class="form-check-label" for="os3">Mac OS</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-5">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" name="sd" type="checkbox" id="sd"
-                                            value="3">
-                                        <label class="form-check-label" for="sd">Software Design</label>
+                                <div class="col">
+                                    <label>Microsoft Office</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox" id="office1"
+                                            value="Microsoft Office Standar">
+                                        <label class="form-check-label" for="office1">Microsoft Office
+                                            Standar</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="sl" type="checkbox" id="sl"
-                                            value="4">
-                                        <label class="form-check-label" for="sl">Software Lainnya</label>
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="office2" value="Microsoft Office For Mac">
+                                        <label class="form-check-label" for="office2">Microsoft Office For
+                                            Mac</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group mb-2">
+                            <label>Software Design</label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design5" value="Adobe After Effect">
+                                        <label class="form-check-label" for="design5">Adobe After Effect</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design1" value="Adobe Photoshop">
+                                        <label class="form-check-label" for="design1">Adobe Photoshop</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design2" value="Adobe Premiere">
+                                        <label class="form-check-label" for="design2">Adobe Premiere</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design3" value="Adobe Ilustrator">
+                                        <label class="form-check-label" for="design3">Adobe Ilustrator</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design4" value="Autocad">
+                                        <label class="form-check-label" for="design4">Autocad</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design6" value="Corel Draw">
+                                        <label class="form-check-label" for="design6">Corel Draw</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design7" value="Microsoft Project">
+                                        <label class="form-check-label" for="design7">Microsoft Project</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design8" value="Microsoft Visio">
+                                        <label class="form-check-label" for="design8">Microsoft Visio</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design9" value="Sketch Up Pro">
+                                        <label class="form-check-label" for="design9">Sketch Up Pro</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="design10" value="Vray Fr Sketchup">
+                                        <label class="form-check-label" for="design10">Vray fr Sketchup</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group mb-2">
+                            <label>Software Lainnya</label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="other1" value="Antivirus">
+                                        <label class="form-check-label" for="other1">Antivirus</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="other5" value="Nitro PDF Pro">
+                                        <label class="form-check-label" for="other5">Nitro PDF Pro</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="other2" value="Open Office">
+                                        <label class="form-check-label" for="other2">Open Office</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="other3" value="SAP">
+                                        <label class="form-check-label" for="other3">SAP</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="other4" value="Software Lainnya">
+                                        <label class="form-check-label" for="other4">Software Lainnya</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group" id="informasi_software" tabindex="0">
-                            <div class="accordion" id="accordionExample">
-                                <div class="card border-0 rounded">
-                                    <div id="informasi_software_header" class="card-header collapsed bg-white p-1"
-                                        data-toggle="collapse" data-target="#collapseThree" aria-expanded="false">
-                                        <span class="title text-info">Informasi Software</span>
-                                    </div>
-                                    <div id="collapseThree" class="collapse" data-parent="#accordionExample">
-                                        <div class="border rounded">
-                                            <div class="card-body">
-                                                <div class="row small">
-                                                    <div class="col-sm-6">
-                                                        <dl>
-                                                            <dt>Operating System</dt>
-                                                            <dd>- Microsoft Windows</dd>
-                                                            <dd>- Linux OS</dd>
-                                                            <dd>- Mac OS</dd>
-                                                        </dl>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <dl>
-                                                            <dt>Microsoft Office</dt>
-                                                            <dd>- Word</dd>
-                                                            <dd>- Excel</dd>
-                                                            <dd>- Power Point</dd>
-                                                        </dl>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <dl>
-                                                            <dt>Software Design</dt>
-                                                            <dd>- Microsoft Project</dd>
-                                                            <dd>- Microsoft Visio</dd>
-                                                            <dd>- Autocad</dd>
-                                                            <dd>- Corel Draw</dd>
-                                                            <dd>- Adobe Photoshop</dd>
-                                                            <dd>- Adobe Premiere</dd>
-                                                            <dd>- Adobe Ilustrator</dd>
-                                                            <dd>- Sketch UP Pro</dd>
-                                                            <dd>- Vray fr Sketchup</dd>
-                                                        </dl>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <dl>
-                                                            <dt>Software Lainnya</dt>
-                                                            <dd>- Antivirus</dd>
-                                                            <dd>- Open Office</dd>
-                                                            <dd>- SAP</dd>
-                                                        </dl>
-                                                    </div>
 
-                                                    <span class="text-danger mx-2">*Untuk software yang tidak ada di
-                                                        list,
-                                                        silakan pilih software lainnya
-                                                        dan tulis di uraian
-                                                        kebutuhan.</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <hr>
                         <div class="form-group">
                             <label for="uraian_kebutuhan">Uraian Kebutuhan</label>
                             <textarea class="form-control" id="uraian_kebutuhan" name="uraian_kebutuhan" rows="2"></textarea>
@@ -307,67 +349,59 @@
 
 
 <script>
-    // disable tombol lanjut pada awalnya
-    $('#btn_lanjut_2').prop('disabled', true);
-    // dapatkan elemen checkbox dan textarea
-    const osCheckbox = document.getElementById('os');
-    const moCheckbox = document.getElementById('mo');
-    const sdCheckbox = document.getElementById('sd');
-    const slCheckbox = document.getElementById('sl');
-    const uraianKebutuhanTextarea = document.getElementById('uraian_kebutuhan');
-
-    // dapatkan elemen tombol lanjut 2
-    const lanjutBtn = document.getElementById('btn_lanjut_2');
-
-    // tambahkan listener untuk setiap perubahan pada checkbox dan textarea
-    osCheckbox.addEventListener('change', validateForm);
-    moCheckbox.addEventListener('change', validateForm);
-    sdCheckbox.addEventListener('change', validateForm);
-    slCheckbox.addEventListener('change', validateForm);
-    uraianKebutuhanTextarea.addEventListener('input', validateForm);
-
-    // fungsi untuk mengecek apakah form sudah terisi atau belum
-    function validateForm() {
-        // dapatkan nilai dari setiap checkbox dan textarea
-        const osCheckboxValue = osCheckbox.checked;
-        const moCheckboxValue = moCheckbox.checked;
-        const sdCheckboxValue = sdCheckbox.checked;
-        const slCheckboxValue = slCheckbox.checked;
-        const uraianKebutuhanTextareaValue = uraianKebutuhanTextarea.value;
-
-        // cek apakah setidaknya satu checkbox sudah dicentang dan textarea diisi
-        if (
-            (osCheckboxValue || moCheckboxValue || sdCheckboxValue || slCheckboxValue) &&
-            uraianKebutuhanTextareaValue.trim().length > 0
-        ) {
-            // jika sudah terisi, maka aktifkan tombol lanjut 2
-            lanjutBtn.disabled = false;
-        } else {
-            // jika belum terisi, maka nonaktifkan tombol lanjut 2
-            lanjutBtn.disabled = true;
-        }
-    }
-
-    // Handler tombol Close
-    $('#modal_instalasi_software').on('hidden.bs.modal', function() {
-        $(this).find('input[type=text]').not('#detail_pegawai input[type=text]').val('');
-        // $(this).find('button[type=submit]').prop('disabled', true);
-        $('#detail_barang').show();
-        $('#detail_permintaan').hide();
-        $('#detail_pegawai').hide();
-
-        // hapus centang pada setiap checkbox
-        osCheckbox.checked = false;
-        moCheckbox.checked = false;
-        sdCheckbox.checked = false;
-        slCheckbox.checked = false;
-        //kosongkan text area
-        uraianKebutuhanTextarea.value = '';
-
-        $('#btn_lanjut_1').prop('disabled', true);
+    $(document).ready(function() {
+        // nonaktifkan tombol lanjut pada awalnya
         $('#btn_lanjut_2').prop('disabled', true);
-        $('#btn-simpan').hide();
 
+        // dapatkan elemen checkbox dan textarea
+        const checkboxes = document.querySelectorAll('input[name="software[]"]');
+        const uraianKebutuhanTextarea = document.getElementById('uraian_kebutuhan');
+
+        // dapatkan elemen tombol lanjut 2
+        const lanjutBtn = document.getElementById('btn_lanjut_2');
+
+        // tambahkan listener untuk setiap perubahan pada checkbox dan textarea
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', validasiForm);
+        });
+        uraianKebutuhanTextarea.addEventListener('input', validasiForm);
+
+        // fungsi untuk memvalidasi apakah form sudah terisi atau belum
+        function validasiForm() {
+            // cek apakah setidaknya satu checkbox sudah dicentang dan textarea diisi
+            if (
+                Array.from(checkboxes).some(function(checkbox) {
+                    return checkbox.checked;
+                }) &&
+                uraianKebutuhanTextarea.value.trim().length > 0
+            ) {
+                // jika sudah terisi, maka aktifkan tombol lanjut 2
+                lanjutBtn.disabled = false;
+            } else {
+                // jika belum terisi, maka nonaktifkan tombol lanjut 2
+                lanjutBtn.disabled = true;
+            }
+        }
+
+        // Handler tombol Tutup
+        $('#modal_instalasi_software').on('hidden.bs.modal', function() {
+            $(this).find('input[type=text]').not('#detail_pegawai input[type=text]').val('');
+            // $(this).find('button[type=submit]').prop('disabled', true);
+            $('#detail_barang').show();
+            $('#detail_permintaan').hide();
+            $('#detail_pegawai').hide();
+
+            // hapus centang pada setiap checkbox
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+            // kosongkan textarea
+            uraianKebutuhanTextarea.value = '';
+
+            $('#btn_lanjut_1').prop('disabled', true);
+            $('#btn_lanjut_2').prop('disabled', true);
+            $('#btn-simpan').hide();
+        });
     });
 </script>
 
