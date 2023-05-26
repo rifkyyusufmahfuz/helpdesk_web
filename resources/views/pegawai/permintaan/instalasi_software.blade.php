@@ -4,54 +4,7 @@
     <!-- HTML -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Permintaan Instalasi Software</h6><br>
-
-            {{-- Menambahkan prosedur --}}
-            <div class="form-group" id="informasi_software" tabindex="0">
-                <div class="accordion" id="accordionExample">
-                    <div class="card border-0 rounded">
-                        <div id="informasi_software_header" class="card-header collapsed bg-white p-1" data-toggle="collapse"
-                            data-target="#collapseThree" aria-expanded="false">
-                            <span class="title text-info">Prosedur Permintaan Instalasi Software</span>
-                        </div>
-                        <div id="collapseThree" class="collapse" data-parent="#accordionExample">
-                            <div class="border rounded">
-                                <div class="card-body">
-                                    <div class="small">
-                                        <h6>Prosedur Permintaan Instalasi Software</h6><br>
-                                        <span>Pengajuan Permintaan Instalasi Software</span>
-                                        <ol>
-                                            <li>Pegawai Mengajukan Permintaan Instalasi Software Melalui Menu Permintaan
-                                                Layanan > Instalasi Software > Tombol Ajukan Permintaan.</li>
-                                            <li>Melengkapi Form Spesifikasi PC atau Laptop yang akan dilakukan instalasi
-                                                software.</li>
-                                            <li>Melengkapi detail permintaan dengan memilih kategori software sesuai
-                                                kebutuhan.</li>
-                                            <li>Menandatangani form secara digital pada kolom input tanda tangan yang telah
-                                                disediakan.</li>
-                                            <li>Setelah ditandatangani, klik tombol simpan untuk mengajukan permintaan
-                                                instalasi software.</li>
-                                        </ol>
-                                        <span>Proses Permintaan Instalasi Software</span>
-                                        <ol>
-                                            <li>Menunggu admin memproses permintaan, dapat dicek pada kolom status
-                                                permintaan
-                                                untuk memantau progres permintaan.</li>
-                                            <li>Admin akan memilih software yang sesuai dengan permintaan dan spesifikasi PC
-                                                atau Laptop yang Anda ajukan.</li>
-                                            <li>Admin akan mengajukan terlebih dahulu permintaan Anda ke Manajer untuk
-                                                mendapatkan persetujuan instalasi software yang diminta</li>
-                                        </ol>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- end of informasi prosedur --}}
+            <h6 class="m-0 font-weight-bold text-primary">Permintaan Instalasi Software</h6>
         </div>
         <div class="card-body">
             <button type="button" class="btn btn-primary mb-3 btn-sm float-left" data-toggle="modal"
@@ -97,8 +50,7 @@
                                 {{-- kolom aksi --}}
                                 <td class="text-center">
                                     <a href="{{ route('lihat_form', ['id' => $p->id_permintaan]) }}"
-                                        class="btn btn-sm bg-warning text-white"
-                                        onclick="event.preventDefault(); window.open('{{ route('lihat_form', ['id' => $p->id_permintaan]) }}', '_blank').print();">
+                                        class="btn btn-sm bg-warning text-white">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>

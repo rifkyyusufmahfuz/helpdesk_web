@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class NotifikasiModel extends Model
 {
     protected $table = 'notifikasi';
-    protected $primaryKey = 'id_notifikasi';
 
     protected $fillable = [
         'user_id',
-        'role_id',
         'pesan',
+        'tipe_pesan',
         'read_at'
     ];
 
@@ -23,4 +22,5 @@ class NotifikasiModel extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

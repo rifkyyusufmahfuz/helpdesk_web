@@ -110,7 +110,7 @@
 
                             <figcaption class="mb-2">Tanda Tangan</figcaption>
                             <div class="border rounded p-2">
-                                <img class="gambar_ttd" src="{{ asset('tandatangan/requestor/' . $data->ttd_requestor) }}"
+                                <img class="gambar_ttd" src="{{ asset('tandatangan/' . $data->ttd_requestor) }}"
                                     title="Tanda tangan {{ $data->nama }}">
                                 <figcaption>{{ $data->nama }}</figcaption>
                             </div>

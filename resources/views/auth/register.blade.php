@@ -161,26 +161,25 @@
                                 <div class="row">
                                     <div class="form-group col-sm-5">
                                         <label for="nip">NIPP<span class="text-danger">*</span></label>
-                                        <input onkeypress="return event.charCode >= 48 && event.charCode <=57"
-                                            name="nip" id="nip" type="text" class="form-control"
+                                        <input name="nip" id="nip" type="text" class="form-control"
                                             maxlength="5" />
                                     </div>
                                     <div class="form-group col-sm-7">
                                         <label for="nama">Nama</label>
-                                        <input name="nama" id="nama" type="text" class="form-control"
-                                            onkeypress="return event.charCode < 48 || event.charCode > 57" />
+                                        <input name="nama" id="nama" type="text" class="form-control" />
                                     </div>
+
                                 </div>
 
                                 <div class="row">
                                     <div class="form-group col-sm-5">
                                         <label for="bagian">Unit/Bagian</label>
-                                        <input name="bagian" id="bagian" type="text" class="form-control" />
+                                        <input name="bagian" id="bagian" type="text" class="form-control"/>
                                     </div>
 
                                     <div class="form-group col-sm-7">
                                         <label for="jabatan">Jabatan</label>
-                                        <input name="jabatan" id="jabatan" type="text" class="form-control" />
+                                        <input name="jabatan" id="jabatan" type="text" class="form-control"/>
                                     </div>
                                 </div>
 
@@ -191,8 +190,7 @@
 
                                 <div class="form-group">
                                     <label class="form-label" for="lokasi">Lokasi</label>
-                                    <input list="stasiun_list" class="form-control" id="lokasi" name="lokasi"
-                                        placeholder="Pilih lokasi">
+                                    <input list="stasiun_list" class="form-control" id="lokasi" name="lokasi" placeholder="Pilih lokasi">
                                     <datalist id="stasiun_list">
                                         @foreach ($data_stasiun as $stasiun)
                                             <option value="{{ $stasiun->nama_stasiun }}"></option>
@@ -211,17 +209,17 @@
                                 <hr>
                                 <div class="form-group">
                                     <label for="username">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" />
+                                    <input type="email" name="email" id="email" class="form-control"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input name="password" id="password" type="password" class="form-control" />
+                                    <input name="password" id="password" type="password" class="form-control"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="konfirmasi_password">Konfirmasi Password</label>
                                     <input name="konfirmasi_password" id="konfirmasi_password" type="password"
-                                        class="form-control" />
+                                        class="form-control"/>
                                 </div>
                             </div>
                         </div>

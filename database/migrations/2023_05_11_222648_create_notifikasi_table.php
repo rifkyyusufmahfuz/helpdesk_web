@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifikasi', function (Blueprint $table) {
-            $table->id('id_notifikasi');
+            $table->id();
+            //FK Kolom id dari table users
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('tipe_pesan', ['low', 'med', 'high']);
+
             $table->string('pesan');
-            $table->string('tautan')->nullable();
+            $table->string('link')->nullable();
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
-            $table->unsignedInteger('user_id')->nullable();
-            $table->unsignedInteger('role_id')->nullable();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('role_id')->references('id_role')->on('roles')->onDelete('cascade');
         });
     }
 

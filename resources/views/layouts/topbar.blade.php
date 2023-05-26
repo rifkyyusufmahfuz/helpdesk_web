@@ -27,29 +27,9 @@
                 <div id="notifications">
                     {{-- kolom ini di-load secara otomatis dari notifikasi.js --}}
                 </div>
-
-
-                {{-- <div class="dropdown-item text-center small" href="#">
+                <div class="dropdown-item text-center small" href="#">
                     <a href="#" class="text-gray-500" id="read_all_notifikasi">Tandai semua telah dibaca</a>
-                </div> --}}
-                @if (Auth::user()->id_role == 4)
-                    <!-- Tombol untuk pegawai -->
-                    <div class="dropdown-item text-center small" href="#">
-                        <a href="" class="text-gray-500" id="read_all_notifikasi"
-                            data-id="{{ Auth::user()->id }}">Tandai semua telah dibaca</a>
-                    </div>
-                @else
-                    <!-- Tombol untuk admin, manajer, atau superadmin -->
-                    <div class="dropdown-item text-center small" href="#">
-                        <a href="" class="text-gray-500" id="read_all_notifikasi"
-                            data-id="{{ Auth::user()->id_role }}">Tandai semua telah dibaca</a>
-                    </div>
-                @endif
-
-
-
-
-
+                </div>
             </div>
         </li>
 

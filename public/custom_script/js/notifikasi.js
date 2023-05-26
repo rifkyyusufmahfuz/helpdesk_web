@@ -23,12 +23,12 @@ function getNotifications() {
                     // create notification item
                     let item = document.createElement('a');
                     item.classList.add('dropdown-item', 'd-flex', 'align-items-center');
-                    item.setAttribute('data-id', notif.id_notifikasi);
-                    item.href = notif.tautan;
+                    item.setAttribute('data-id', notif.id);
+                    item.href = notif.id;
                     // add click event listener to remove notification
                     item.addEventListener('click', function(e) {
-                        // e.preventDefault();
-                        read_notifikasi(notif.id_notifikasi);
+                        e.preventDefault();
+                        read_notifikasi(notif.id);
                         getNotifications();
                     });
 
@@ -68,9 +68,9 @@ function getNotifications() {
                     // aksi untuk menjalankan fungsi read_all_notifikasi()
                     let read_all = document.querySelector('#read_all_notifikasi');
                     read_all.addEventListener('click', function(e) {
+                        e.preventDefault();
                         read_all_notifikasi();
                         getNotifications();
-                        e.preventDefault();
                     });
 
                     // add delete button
@@ -114,8 +114,8 @@ function getNotifications() {
                             reverseButtons: true,
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                HapusNotifikasi(notif.id_notifikasi);
                                 item.remove();
+                                HapusNotifikasi(notif.id);
                                 getNotifications();
                                 // menampilkan toast sebagai konfirmasi hapus
                                 Alert_hapus.fire({
@@ -150,8 +150,8 @@ function getNotifications() {
 }
 
 //fungsi untuk hapus notifikasi berdasarkan id notifikasi
-function HapusNotifikasi(id_notifikasi) {
-    fetch(`/notifikasi/hapus/${id_notifikasi}`, {
+function HapusNotifikasi(id) {
+    fetch(`/notifikasi/hapus/${id}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -165,8 +165,8 @@ function HapusNotifikasi(id_notifikasi) {
 }
 
 //fungsi untuk menandai notifikasi telah dibaca berdasarkan id notifikasi
-function read_notifikasi(id_notifikasi) {
-    fetch(`/notifikasi/read/${id_notifikasi}`, {
+function read_notifikasi(id) {
+    fetch(`/notifikasi/read/${id}`, {
             method: 'PUT',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -179,41 +179,20 @@ function read_notifikasi(id_notifikasi) {
         .catch(error => console.log(error));
 }
 
-
-// fungsi untuk menandai semua notifikasi telah dibaca
+//fungsi untuk menandai semua notifikasi telah dibaca
 function read_all_notifikasi() {
-    let read_all = document.querySelector('#read_all_notifikasi');
-    let id = read_all.dataset.id;
-
-    if (id === '1' || id === '2' || id === '3') {
-        // Admin, Manajer, atau Superadmin
-        fetch(`/notifikasi/admin/read_all/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.message);
-            })
-            .catch(error => console.log(error));
-    } else {
-        // Pegawai
-        fetch(`/notifikasi/pegawai/read_all/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.message);
-            })
-            .catch(error => console.log(error));
-    }
+    fetch(`/notifikasi/read_all`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+        })
+        .catch(error => console.log(error));
 }
-
 
 // fungsi untuk menghindari dropdown tertutup selain klik tombol dropdown itu sendiri
 $(document).ready(function() {

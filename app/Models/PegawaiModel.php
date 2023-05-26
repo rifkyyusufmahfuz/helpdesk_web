@@ -25,7 +25,7 @@ class PegawaiModel extends Model
     {
         return $this->hasMany(User::class, 'nip');
     }
-    //Relasi ke ke tabel stasiun
+    //Relasi
     public function stasiun()
     {
         return $this->belongsTo(StasiunModel::class, 'id_stasiun');
@@ -41,42 +41,33 @@ class PegawaiModel extends Model
 
     public function simpan_permintaan_software(Request $request)
     {
-        //ambil data array checkbox software yang dipilih
-        $selectedSoftware = $request->input('software', []);
 
-        // Tentukan kategori software berdasarkan nilai checkbox yang dipilih
-        $kategoriData = [
-            'operating_system' =>
-            in_array('Microsoft Windows', $selectedSoftware)
-                || in_array('Linux OS', $selectedSoftware)
-                || in_array('Mac OS', $selectedSoftware),
+        //definisi untuk simpan kategori
+        $os = 0;
+        $mo = 0;
+        $sd = 0;
+        $sl = 0;
 
-            'microsoft_office' =>
-            in_array('Microsoft Office Standar', $selectedSoftware)
-                || in_array('Microsoft Office For Mac', $selectedSoftware),
+        if ($request->has('os')) {
+            $os++;
+        }
+        if ($request->has('mo')) {
+            $mo++;
+        }
+        if ($request->has('sd')) {
+            $sd++;
+        }
+        if ($request->has('sl')) {
+            $sl++;
+        }
 
-            'software_design' =>
-            in_array('Adobe Photoshop', $selectedSoftware)
-                || in_array('Adobe After Effect', $selectedSoftware)
-                || in_array('Adobe Premiere', $selectedSoftware)
-                || in_array('Adobe Ilustrator', $selectedSoftware)
-                || in_array('Autocad', $selectedSoftware)
-                || in_array('Sketch Up Pro', $selectedSoftware)
-                || in_array('Corel Draw', $selectedSoftware)
-                || in_array('Microsoft Project', $selectedSoftware)
-                || in_array('Microsoft Visio', $selectedSoftware)
-                || in_array('Vray Fr Sketchup', $selectedSoftware),
-
-            'software_lainnya' =>
-            in_array('Antivirus', $selectedSoftware)
-                || in_array('Nitro PDF Pro', $selectedSoftware)
-                || in_array('Open Office', $selectedSoftware)
-                || in_array('SAP', $selectedSoftware)
-                || in_array('Lainnya', $selectedSoftware),
-        ];
-
-        // Simpan data ke tabel kategori_software
-        $simpan_kategori = DB::table('kategori_software')->insert($kategoriData);
+        // simpan ke table kategori
+        $simpan_kategori = DB::table('kategori_software')->insert([
+            'operating_system' => $os,
+            'microsoft_office' => $mo,
+            'software_design' => $sd,
+            'software_lainnya' => $sl
+        ]);
 
 
         // ambil kode id_kategori untuk disimpan di table permintaan
@@ -145,20 +136,19 @@ class PegawaiModel extends Model
             ]);
         }
 
-
-        // mengambil record terbaru dan nilai id_permintaan tertinggi
-        $permintaanterbaru = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
-
-        // mengambil nilai id_permintaan dari record terbaru jika tersedia, jika tidak ada set nilai id_permintaan menjadi 1
-        $newIdPermintaan = $permintaanterbaru ? $permintaanterbaru->id_otorisasi + 1 : 1;
-
         // simpan ke table permintaan
         $now = now();
         $id = auth()->user()->id;
 
+        // mengambil record terbaru dan nilai id_permintaan tertinggi
+        // $permintaanterbaru = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
+
+        // mengambil nilai id_permintaan dari record terbaru jika tersedia, jika tidak ada set nilai id_permintaan menjadi 1
+        // $newIdPermintaan = $permintaanterbaru ? $permintaanterbaru->id_otorisasi + 1 : 1;
+
         //simpan permintaan
         $simpan_permintaan = DB::table('permintaan')->insert([
-            'id_permintaan' => $newIdPermintaan,
+            // 'id_permintaan' => $newIdPermintaan,
             'keluhan_kebutuhan' => $request->input('uraian_kebutuhan'),
             'tipe_permintaan' => "software",
             'status_permintaan' => 1,
@@ -172,27 +162,9 @@ class PegawaiModel extends Model
             'updated_at' => $now
         ]);
 
-        // simpan software
-        $softwareData = [];
-        foreach ($selectedSoftware as $software) {
-            $softwareData[] = [
-                'nama_software' => $software,
-                'id_permintaan' => $newIdPermintaan,
-            ];
-        }
-        $simpan_software = DB::table('software')->insert($softwareData);
-
-        //kirim notifikasi ke admin
-        $nama = ucwords(auth()->user()->pegawai->nama);
-        $simpan_notifikasi = DB::table('notifikasi')->insert([
-            'role_id' => 2,
-            'pesan' => 'Permintaan instalasi software baru dari pegawai ' . $nama,
-            'tautan' => 'admin/permintaan_software',
-            'created_at' => now()
-        ]);
 
 
-        if ($simpan_kategori && $simpan_otorisasi && $simpan_permintaan && $simpan_barang && $simpan_software && $simpan_notifikasi) {
+        if ($simpan_kategori && $simpan_otorisasi && $simpan_permintaan && $simpan_barang) {
             return true;
         } else {
             return false;
