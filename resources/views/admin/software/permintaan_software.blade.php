@@ -47,8 +47,37 @@
 
                                 <td class="text-center">
                                     <span
-                                        class="badge badge-{{ $data->status_permintaan == '1' ? 'danger' : ($data->status_permintaan == '2' ? 'warning' : ($data->status_permintaan == '3' ? 'primary' : ($data->status_permintaan == '4' ? 'warning' : 'success'))) }} p-2">
-                                        {{ $data->status_permintaan == '1' ? 'Pending' : ($data->status_permintaan == '2' ? 'Pending' : ($data->status_permintaan == '3' ? 'Proses' : ($data->status_permintaan == '4' ? 'Selesai' : 'Selesai'))) }}
+                                        class="badge badge-{{ $data->status_permintaan == '1'
+                                            ? 'danger'
+                                            : ($data->status_permintaan == '2'
+                                                ? 'warning'
+                                                : ($data->status_permintaan == '3'
+                                                    ? 'primary'
+                                                    : ($data->status_permintaan == '4'
+                                                        ? 'primary'
+                                                        : ($data->status_permintaan == '5'
+                                                            ? 'success'
+                                                            : ($data->status_permintaan == '0'
+                                                                ? 'danger'
+                                                                : ($data->status_permintaan == '6'
+                                                                    ? 'success'
+                                                                    : 'success')))))) }} p-2">
+
+                                        {{ $data->status_permintaan == '1'
+                                            ? 'Pending'
+                                            : ($data->status_permintaan == '2'
+                                                ? 'Menunggu persetujuan'
+                                                : ($data->status_permintaan == '3'
+                                                    ? 'Diterima'
+                                                    : ($data->status_permintaan == '4'
+                                                        ? 'Diproses'
+                                                        : ($data->status_permintaan == '5'
+                                                            ? 'Instalasi selesai'
+                                                            : ($data->status_permintaan == '0'
+                                                                ? 'Ditolak'
+                                                                : ($data->status_permintaan == '6'
+                                                                    ? 'Selesai'
+                                                                    : 'Selesai')))))) }}
                                     </span>
                                 </td>
 
@@ -70,14 +99,17 @@
                                             method="GET" style="display: inline-block;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-primary text-white mx-1"
-                                                title="Pengajuan Software">
+                                                title="Pengajuan Software"
+                                                {{ $data->status_permintaan != '1' ? 'disabled' : '' }}>
                                                 <i class="fas fa-cogs"></i>
                                             </button>
                                         </form>
+
                                         <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
                                             method="GET" style="display: inline-block;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success text-white" title="BAST">
+                                            <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
+                                                {{ $data->status_permintaan == '3' || $data->status_permintaan == '5' ? '' : 'disabled' }}>
                                                 <i class="fas fa-receipt"></i>
                                             </button>
                                         </form>

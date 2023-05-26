@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('yang_menerima')->references('nip')->on('pegawai');
 
             //FK dari tabel permintaan
-            $table->unsignedInteger('id_permintaan');
+            $table->string('id_permintaan', 30);
             $table->foreign('id_permintaan')->references('id_permintaan')->on('permintaan');
 
             //FK dari tabel stasiun

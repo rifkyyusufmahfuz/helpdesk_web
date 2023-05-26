@@ -84,14 +84,19 @@ class AdminModel extends Model
         return DB::table('permintaan')->where('id_permintaan', $id)->update($data) ? true : false;
     }
 
-    // public function get_data_barang()
+    // public function get_data_barang($kode_barang)
     // {
-    //     return DB::table('barang')->get();
+    //     return DB::table('barang')
+    //         ->where('kode_barang', $kode_barang)
+    //         ->get();
     // }
 
     public function get_barang_by_id_permintaan($id)
     {
-        return DB::table('barang')->where('id_permintaan', $id)->get();
+        return DB::table('permintaan')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->where('permintaan.id_permintaan', $id)
+            ->get();
     }
 
 
@@ -102,6 +107,11 @@ class AdminModel extends Model
         } else {
             return false;
         }
+    }
+
+    public function update_software($data, $id)
+    {
+        return DB::table('software')->where('id_software', $id)->update($data) ? true : false;
     }
 
     public function tindak_lanjut_permintaan_software(Request $request)
@@ -123,6 +133,22 @@ class AdminModel extends Model
         $id_otorisasi = $request->input('id_otorisasi');
         $id = auth()->user()->id;
 
+
+        // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+        $permintaan = PermintaanModel::find($id_permintaan);
+        $pegawaiId = $permintaan->id;
+
+        // Mengirim notifikasi ke pegawai
+        $pesan = 'Permintaan instalasi software Anda sedang diajukan ke manajer, terima kasih.';
+        $tautan = '/pegawai/permintaan_software';
+
+        $kirim_notifikasi = DB::table('notifikasi')->insert([
+            'pesan' => $pesan,
+            'tautan' => $tautan,
+            'user_id' => $pegawaiId,
+            'created_at' => now()
+        ]);
+
         $tindak_lanjut_software = DB::table('tindak_lanjut')->insert([
             'tanggal_penanganan' => null,
             'ttd_admin' => $filename,
@@ -142,7 +168,7 @@ class AdminModel extends Model
         ]);
 
 
-        if ($ajukan_ke_manager && $tindak_lanjut_software && $update_permintaan) {
+        if ($ajukan_ke_manager && $tindak_lanjut_software && $update_permintaan && $kirim_notifikasi) {
             return true;
         } else {
             return false;

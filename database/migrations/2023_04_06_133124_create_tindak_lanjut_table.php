@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('tanggal_penanganan')->nullable();
             $table->string('ttd_admin', 255);
             $table->unsignedInteger('id');
-            $table->unsignedInteger('id_permintaan');
+            $table->string('id_permintaan', 30);
 
             $table->foreign('id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_permintaan')->references('id_permintaan')->on('permintaan')->onDelete('cascade');

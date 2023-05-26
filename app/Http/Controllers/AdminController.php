@@ -66,7 +66,6 @@ class AdminController extends Controller
 
     public function tambah_software($id_permintaan)
     {
-
         $list_software = array(
             "Microsoft Windows",
             "Microsoft Office Standart",
@@ -93,15 +92,27 @@ class AdminController extends Controller
         $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
         $software = $this->modeladmin->get_software_by_id($id_permintaan);
 
+        $isSoftwareFilled = false;
+        if ($software) {
+            foreach ($software as $sw) {
+                if (!empty($sw->versi_software) && !empty($sw->notes)) {
+                    $isSoftwareFilled = true;
+                    break;
+                }
+            }
+        }
+
         return view(
             'admin.software.tindak_lanjut_software',
             [
                 'permintaan' => $permintaan,
                 'software' => $software,
                 'list_software' => $list_software,
+                'isSoftwareFilled' => $isSoftwareFilled,
             ]
         );
     }
+
 
     public function bast_software($id_permintaan)
     {
@@ -229,18 +240,20 @@ class AdminController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'status_permintaan' => 'required|sometimes|different:' . $request->status_permintaan
+            'versi_software' => 'required',
+
         ], [
-            'status_permintaan.required' => 'Pilih status permintaan!',
-            'status_permintaan.different' => 'Status permintaan tidak boleh sama dengan sebelumnya!'
+            'versi_software.required' => 'Isi versi software!',
         ]);
 
+        $catatan = $request->notes ?: '-';
         $data = [
-            'status_permintaan' => $request->status_permintaan,
+            'versi_software' => $request->versi_software,
+            'notes' => $catatan,
             'updated_at' => now(),
         ];
 
-        return $this->modeladmin->update_permintaan($data, $id) ? back()->with('toast_success', 'Status permintaan telah diubah!') : back()->with('toast_success', 'Status permintaan telah diubah!');
+        return $this->modeladmin->update_software($data, $id) ? back()->with('toast_success', 'Versi software dan catatan berhasil diinput!') : back()->with('toast_success', 'Versi software dan catatan gagal diinput!');
     }
 
     /**

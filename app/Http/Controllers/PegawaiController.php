@@ -144,13 +144,16 @@ class PegawaiController extends Controller
         $selectedSoftware = $table_software->pluck('nama_software')->toArray();
 
         // Ambil data dari table tindak lanjut admin
-        $tindaklanjut = TindakLanjutModel::where('id_permintaan', $id_permintaan)->firstOrFail();
+        $tindaklanjut = TindakLanjutModel::where('id_permintaan', $id_permintaan)->first();
 
         // Ambil data admin berdasarkan id pada tabel users
-        $data_admin = PegawaiModel::where('nip', $tindaklanjut->user->nip)->first();
+        $data_admin = null;
+        if ($tindaklanjut) {
+            $data_admin = PegawaiModel::where('nip', $tindaklanjut->user->nip)->first();
+        }
 
         return view('pegawai.permintaan.cetak.form_permintaan_instalasi_software', [
-            'id_permintaan' => $permintaan->id_permintaan,
+            'id_permintaan' => $id_permintaan,
             'tanggal_permintaan' => $permintaan->tanggal_permintaan,
             'nama' => $pegawai->nama,
             'nip' => $pegawai->nip,
@@ -164,8 +167,8 @@ class PegawaiController extends Controller
             'table_software' => $table_software,
             'otorisasi' => $otorisasi,
             'selectedSoftware' => $selectedSoftware, // Untuk Tambahkan data software yang telah dipilih
-            'ttd_admin' => $tindaklanjut->ttd_admin,
-            'nama_admin' => $data_admin->nama,
+            'ttd_admin' => $tindaklanjut ? $tindaklanjut->ttd_admin : null,
+            'nama_admin' => $data_admin ? $data_admin->nama : null,
         ]);
     }
 

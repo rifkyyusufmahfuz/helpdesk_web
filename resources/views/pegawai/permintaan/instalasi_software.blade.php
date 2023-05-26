@@ -75,30 +75,51 @@
                                 <td>{{ $p->id_permintaan }}</td>
                                 <td>{{ $p->created_at }}</td>
                                 {{-- kolom status permintaan --}}
-                                @if ($p->status_permintaan == '1' || $p->status_permintaan == '2')
+
+                                {{-- status pada saat permintaan diajukan --}}
+                                @if ($p->status_permintaan == '1')
                                     <td>Pending</td>
+
+                                    {{-- status permintaan pada saat admin mengajukan permintaan ke manajer --}}
+                                @elseif ($p->status_permintaan == '2')
+                                    <td>Menunggu Persetujuan</td>
+
+                                    {{-- status permintaan ketika manajer menerima permintaan --}}
                                 @elseif ($p->status_permintaan == '3')
-                                    <td>Proses</td>
-                                @elseif ($p->status_permintaan == '4' || $p->status_permintaan == '5')
+                                    <td>Diterima</td>
+
+                                    {{-- status permintaan ketika admin menerima barang --}}
+                                @elseif ($p->status_permintaan == '4')
+                                    <td>Diproses</td>
+
+                                    {{-- status ketika instalasi selesai --}}
+                                @elseif ($p->status_permintaan == '5')
+                                    <td>Instalasi selesai</td>
+                                @elseif ($p->status_permintaan == '6')
                                     <td>Selesai</td>
+                                @elseif ($p->status_permintaan == '0')
+                                    <td>Ditolak</td>
                                 @endif
                                 {{-- kolom keterangan diambil dari status permintaan --}}
                                 @if ($p->status_permintaan == '1')
                                     <td class="text-center">-</td>
                                 @elseif($p->status_permintaan == '2')
-                                    <td>Menunggu unit diserahkan</td>
+                                    <td>Sedang diajukan ke manajer</td>
                                 @elseif ($p->status_permintaan == '3')
-                                    <td>Unit diterima di NOC</td>
+                                    <td>Menunggu PC / Laptop diserahkan ke NOC</td>
                                 @elseif ($p->status_permintaan == '4')
-                                    <td>Unit sudah bisa diambil di NOC</td>
+                                    <td>Unit sudah diterima, dan sedang diproses oleh admin</td>
                                 @elseif ($p->status_permintaan == '5')
-                                    <td>Unit sudah dikembalikan</td>
+                                    <td>Unit siap diambil</td>
+                                @elseif ($p->status_permintaan == '6')
+                                    <td>Selesai</td>
+                                @elseif ($p->status_permintaan == '0')
+                                    <td>Permintaan ditolak karena tidak memenuhi persyaratan</td>
                                 @endif
                                 {{-- kolom aksi --}}
                                 <td class="text-center">
-                                    <a href="{{ route('lihat_form', ['id' => $p->id_permintaan]) }}"
-                                        class="btn btn-sm bg-warning text-white"
-                                        onclick="event.preventDefault(); window.open('{{ route('lihat_form', ['id' => $p->id_permintaan]) }}', '_blank').print();">
+                                    <a href="{{ route('lihat_form', ['id' => $p->id_permintaan]) }}" target="_blank"
+                                        class="btn btn-sm bg-warning text-white">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>

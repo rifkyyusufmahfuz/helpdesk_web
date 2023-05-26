@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('komponen', 50);
             $table->enum('status_hardware', ['OK', 'NOK']);
             $table->string('problem', 100);
-            $table->unsignedInteger('id_permintaan');
+            $table->string('id_permintaan', 30);
             $table->foreign('id_permintaan')->references('id_permintaan')->on('permintaan');
             $table->timestamps();
         });

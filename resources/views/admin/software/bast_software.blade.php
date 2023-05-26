@@ -54,7 +54,6 @@
                             <th>No.</th>
                             <th>ID Barang</th>
                             <th>Nama Barang</th>
-                            <th>Perihal</th>
                             <th>Status Barang</th>
                             <th>Aksi</th>
                         </tr>
@@ -67,7 +66,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->kode_barang }}</td>
                                 <td>{{ $data->nama_barang }}</td>
-                                <td>{{ $data->perihal }}</td>
+                                {{-- <td>{{ $data->perihal }}</td> --}}
                                 <td>
                                     @if ($data->status_barang == 1)
                                         <span>Belum Diterima</span>
@@ -78,12 +77,20 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
-                                        data-bs-target="#modal_input_barang{{ $data->id_permintaan }}" title="Terima barang">
+                                    <button class="btn btn-sm btn-warning text-white" data-bs-toggle="modal"
+                                        data-bs-target="#detail_barang_{{ $data->kode_barang }}" title="Detail barang">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+
+                                    <button {{ $data->status_barang != '1' ? 'disabled' : '' }}
+                                        class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
+                                        data-bs-target="#modal_input_barang{{ $data->id_permintaan }}"
+                                        title="Terima barang">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger text-white" data-toggle="modal"
-                                        data-target="#modal_input_bast{{ $data->id_barang }}" title="Serahkan barang">
+                                    <button {{ $data->status_barang != '2' ? 'disabled' : '' }}
+                                        class="btn btn-sm btn-danger text-white" data-toggle="modal"
+                                        data-target="#modal_input_bast{{ $data->kode_barang }}" title="Serahkan barang">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                 </td>
@@ -97,4 +104,5 @@
         </div>
     </div>
     @include('admin.software.modal.input_barang')
+    @include('admin.software.modal.detail_barang')
 @endsection

@@ -75,6 +75,9 @@
                 <td>:</td>
                 <td>{{ $id_permintaan }}</td>
             </tr>
+        </table>
+        <table>
+
             <tr>
                 <td class="jarak-kiri">Tanggal Request</td>
                 <td>:</td>
@@ -93,9 +96,8 @@
 
             </tr>
         </table>
-
-
     </div>
+
     <div class="container">
         <table width="100%" cellpadding="0" class="table-data-requestor">
             <thead>
@@ -230,7 +232,6 @@
                     <td class="header-kolom-admin">*Notes</td> --}}
                 </tr>
             </thead>
-
             <tbody>
                 <!-- software loop -->
                 @foreach ($list_software as $software)
@@ -250,15 +251,15 @@
                         </td>
                         {{-- Kolom Version --}}
                         <td class="kolom_version" id="garis_bawah">
-                            @if ($selected_software && isset($selected_software->version))
-                                {{ $selected_software->version }}
+                            @if ($selected_software)
+                                {{ $selected_software->versi_software }}
                             @else
                                 &nbsp;
                             @endif
                         </td>
                         {{-- Kolom Notes  --}}
                         <td class="kolom_notes" id="garis_bawah">
-                            @if ($selected_software && isset($selected_software->notes))
+                            @if ($selected_software)
                                 {{ $selected_software->notes }}
                             @else
                                 &nbsp;
@@ -267,8 +268,6 @@
                     </tr>
                 @endforeach
             </tbody>
-
-
         </table>
 
         <div class="pembungkus">
@@ -299,7 +298,7 @@
             <div class="tabel_ttd_admin">
                 {{-- ttd admin --}}
                 <div class="kolom_ttd_admin">
-                    @if (file_exists(public_path('/tandatangan/admin/' . $ttd_admin)))
+                    @if (!empty($ttd_admin) && file_exists(public_path('/tandatangan/admin/' . $ttd_admin)))
                         <div class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
                         <div>
                             <div class="kotak-ttd">
@@ -316,6 +315,7 @@
                     @endif
                 </div>
             </div>
+
         </div>
 
         <table border="0" width="100%" cellpadding="0">

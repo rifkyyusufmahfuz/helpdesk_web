@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_software', 30);
             $table->string('versi_software', 15)->nullable();
             $table->string('notes', 50)->nullable();
-            $table->unsignedInteger('id_permintaan');
+            $table->string('id_permintaan', 30);
             $table->timestamps();
 
             $table->foreign('id_permintaan')->references('id_permintaan')->on('permintaan')->onDelete('cascade');

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Utils\RomanNumberConverter;
 
 class PegawaiModel extends Model
 {
@@ -146,11 +147,22 @@ class PegawaiModel extends Model
         }
 
 
-        // mengambil record terbaru dan nilai id_permintaan tertinggi
+        //membuat id permintaan
         $permintaanterbaru = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
 
-        // mengambil nilai id_permintaan dari record terbaru jika tersedia, jika tidak ada set nilai id_permintaan menjadi 1
-        $newIdPermintaan = $permintaanterbaru ? $permintaanterbaru->id_otorisasi + 1 : 1;
+        $bulanSebelumnya = $permintaanterbaru ? substr($permintaanterbaru->id_permintaan, 20, 1) : '';
+        $tahunSebelumnya = $permintaanterbaru ? substr($permintaanterbaru->id_permintaan, 22, 4) : '';
+
+        $bulanSekarang = date('n');
+        $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+        // || $tahunSebelumnya !== date('Y')
+
+        if ($bulanSebelumnya !== $kodeBulanSekarang || $tahunSebelumnya !== date('Y')) {
+            $newIdPermintaan = '0001-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . date('Y');
+        } else {
+            $nomorUrut = substr($permintaanterbaru->id_permintaan, 0, 4) + 1;
+            $newIdPermintaan = sprintf('%04d', $nomorUrut) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . date('Y');
+        }
 
         // simpan ke table permintaan
         $now = now();
@@ -172,6 +184,8 @@ class PegawaiModel extends Model
             'updated_at' => $now
         ]);
 
+
+
         // simpan software
         $softwareData = [];
         foreach ($selectedSoftware as $software) {
@@ -187,7 +201,7 @@ class PegawaiModel extends Model
         $simpan_notifikasi = DB::table('notifikasi')->insert([
             'role_id' => 2,
             'pesan' => 'Permintaan instalasi software baru dari pegawai ' . $nama,
-            'tautan' => 'admin/permintaan_software',
+            'tautan' => '/admin/permintaan_software',
             'created_at' => now()
         ]);
 

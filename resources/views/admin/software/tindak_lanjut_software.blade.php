@@ -64,10 +64,13 @@
                 @foreach ($permintaan as $data)
                     <button class="btn btn-md btn-info mb-3" data-toggle="modal"
                         data-target="#ajukan_ke_manager_{{ $data->id_permintaan }}"
-                        {{ count($software) == 0 ? 'disabled' : '' }}>
+                        {{ !$isSoftwareFilled ? 'disabled' : '' }}>
                         <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager
                     </button>
                 @endforeach
+
+
+
             </div>
 
             <div class="table-responsive">
@@ -91,9 +94,10 @@
                                 <td>{{ $data2->versi_software }}</td>
                                 <td>{{ $data2->notes }}</td>
                                 <td class="text-center">
-                                    {{-- <button class="btn-sm btn-danger">
-                                        <i class=" fas fa-trash"></i>
-                                    </button> --}}
+                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
+                                        data-target="#editModal{{ $data2->id_software }}">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
 
                                     <form id="form-delete-{{ $data2->id_software }}"
                                         action="/admin/crud/{{ $data2->id_software }}" method="POST"
@@ -115,4 +119,5 @@
     </div>
     @include('admin.software.modal.tambah_software')
     @include('admin.software.modal.ajukan_ke_manager')
+    @include('admin.software.modal.edit_software')
 @endsection

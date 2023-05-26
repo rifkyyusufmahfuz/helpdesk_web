@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('permintaan', function (Blueprint $table) {
-            $table->increments('id_permintaan');
+            $table->string('id_permintaan', 30)->primary();
             $table->string('keluhan_kebutuhan');
             $table->enum('tipe_permintaan', ['hardware', 'software']);
-            $table->enum('status_permintaan', ['1', '2', '3', '4', '5', '6', '7']);
+            $table->enum('status_permintaan', ['1', '2', '3', '4', '5', '6', '0']);
             // 1 = belum diproses (status pending warna merah)
             // 2 = sedang diajukan ke manager (status pending warna kuning)
             // 3 = Serahkan PC/Laptop ke NOC (status permintaan diterima warna hijau)
