@@ -45,3 +45,38 @@ $(document).ready(function() {
         });
     });
 });
+
+//untuk data pegawai pihak 1
+$(document).ready(function() {
+    // Inisialisasi data awal
+    var nip_p1 = $('#nip_pegawai_p1').val();
+    $.ajax({
+        type: 'GET',
+        url: '/getpegawaidata/' + nip_p1,
+        dataType: 'json',
+        success: function(response) {
+            $('#nama_pegawai_p1').val(response.nama);
+            $('#bagian_pegawai_p1').val(response.bagian);
+            $('#jabatan_pegawai_p1').val(response.jabatan);
+            $('#lokasi_pegawai_p1').val(response.lokasi);
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+        }
+    });
+
+    $('#nip_pegawai_p1').on('input', function() {
+        var nip_p1 = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: '/getpegawaidata/' + nip_p1,
+            dataType: 'json',
+            success: function(response) {
+                $('#nama_pegawai_p1').val(response.nama);
+                $('#bagian_pegawai_p1').val(response.bagian);
+                $('#jabatan_pegawai_p1').val(response.jabatan);
+                $('#lokasi_pegawai_p1').val(response.lokasi);
+            },
+        });
+    });
+});

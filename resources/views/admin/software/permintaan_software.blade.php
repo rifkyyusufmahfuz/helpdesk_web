@@ -3,9 +3,11 @@
 @section('contents')
     <!-- HTML -->
     <div class="card shadow mb-4">
-        <div class="card-header row">
-            <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
-            <p class="small text-gray-800">Daftar permintaan instalasi software</p>
+        <div class="card-header py-3">
+            <div class="row">
+                <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
+                <p class="small text-gray-800">Daftar permintaan instalasi software</p>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -90,15 +92,31 @@
                                             <i class="fas fa-edit"></i>
                                         </button> --}}
 
-                                        <button class="btn btn-sm btn-warning text-white" data-toggle="modal"
+                                        <form id="instalasi_selesai-{{ $data->id_permintaan }}"
+                                            action="/admin/crud/{{ $data->id_permintaan }}" method="POST"
+                                            style="display: inline-block;">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status_permintaan" value="5">
+                                            <input type="hidden" name="id_permintaan" value="{{ $data->id_permintaan }}">
+                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
+                                                title="Instalasi selesai" type="button" class="btn btn-sm btn-success"
+                                                onclick="instalasi_selesai('{{ $data->id_permintaan }}')">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+
+
+                                        <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
                                             title="Lihat Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
-                                        <form action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
+                                        <form
+                                            action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
                                             method="GET" style="display: inline-block;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary text-white mx-1"
+                                            <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
                                                 title="Pengajuan Software"
                                                 {{ $data->status_permintaan != '1' ? 'disabled' : '' }}>
                                                 <i class="fas fa-cogs"></i>
@@ -127,7 +145,7 @@
 
     @if (isset($data))
         @include('admin.software.modal.proses_software')
-        @include('admin.software.modal.input_barang')
+        {{-- @include('admin.software.modal.input_barang') --}}
         @include('admin.software.modal.detail_permintaan_software')
     @endif
 @endsection

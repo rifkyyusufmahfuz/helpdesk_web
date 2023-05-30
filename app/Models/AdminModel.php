@@ -174,4 +174,19 @@ class AdminModel extends Model
             return false;
         }
     }
+
+    public function input_notifikasi($notifikasi)
+    {
+        return DB::table('notifikasi')->insert($notifikasi) ? true : false;
+    }
+
+    public function cari_id_bast()
+    {
+        return DB::table('bast')->orderByDesc('id_bast')->first();
+    }
+
+    public function input_bast($data_bast)
+    {
+        return DB::table('bast')->insert($data_bast) ? true : false;
+    }
 }

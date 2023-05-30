@@ -48,6 +48,22 @@ function aktivasi_user(id) {
     });
 }
 
+function instalasi_selesai(id) {
+    Swal.fire({
+        title: 'Instalasi selesai',
+        text: 'Proses instalasi software selesai, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk mengambil PC / Laptop.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Submit form jika user menekan tombol "Ya, hapus"
+            document.querySelector('#instalasi_selesai-' + id).submit();
+        }
+    });
+}
+
 // tombol aktivasi semua user
 function aktivasi_semua_user() {
     Swal.fire({

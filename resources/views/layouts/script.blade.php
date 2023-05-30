@@ -41,6 +41,7 @@
 <script src="{{ asset('custom_script/js/cari_data_barang.js') }}"></script>
 <script src="{{ asset('custom_script/js/fungsi_tombol.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan.js') }}"></script>
+<script src="{{ asset('custom_script/js/tanda_tangan_bast.js') }}"></script>
 
 <script>
     $(function() {

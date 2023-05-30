@@ -15,16 +15,6 @@ class NotifikasiController extends Controller
      */
     public function index()
     {
-        // $user = Auth::user();
-        // $notifikasi = $user ? $user->allNotifications : null;
-        // $totalnotifikasi = $user ? $user->unreadNotifications->count() : 0;
-
-        // return response()->json([
-        //     'notifikasi' => $notifikasi,
-        //     'totalnotifikasi' => $totalnotifikasi,
-        // ]);
-
-
         $user = Auth::user();
         $notifikasi = null;
         $totalnotifikasi = 0;
@@ -41,6 +31,7 @@ class NotifikasiController extends Controller
                             ->orWhereNull('role_id')
                             ->Where('user_id', $userId);
                     })
+                    ->orderByDesc('created_at')
                     // ->whereNull('read_at')
                     ->get();
                 $totalnotifikasi = $user->unreadNotifications->count();
@@ -51,6 +42,7 @@ class NotifikasiController extends Controller
                         // ->orWhereNull('role_id');
                     })
                     // ->whereNull('read_at')
+                    ->orderByDesc('created_at')
                     ->get();
 
                 $totalnotifikasi = DB::table('notifikasi')
@@ -191,7 +183,7 @@ class NotifikasiController extends Controller
             $notification->read_at = now();
             $notification->save();
         }
-        
+
         $user = Auth::user();
         $notifikasi = $user ? $user->allNotifications : null;
         return response()->json([

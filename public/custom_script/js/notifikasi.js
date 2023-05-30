@@ -51,7 +51,7 @@ function getNotifications() {
                     content.appendChild(contentSmall);
                     let contentBold = document.createElement('span');
                     contentBold.classList.add('font-weight-bold');
-
+                    contentBold.classList.add('text-justify');
 
                     if (notif.read_at === null) {
                         // hide notification count

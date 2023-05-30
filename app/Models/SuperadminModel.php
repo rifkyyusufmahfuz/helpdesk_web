@@ -29,7 +29,7 @@ class SuperadminModel extends Model
         $user = DB::table('users')
             ->join('roles', 'users.id_role', '=', 'roles.id_role')
             ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
-            ->select('users.id', 'users.email', 'users.id_role', 'roles.nama_role', 'pegawai.nama', 'pegawai.bagian', 'pegawai.jabatan')
+            ->select('users.id', 'users.email', 'users.id_role', 'roles.nama_role', 'pegawai.nama', 'pegawai.nip', 'pegawai.bagian', 'pegawai.jabatan')
             ->where('users.id', '=', $id)
             ->first();
         return $user;
@@ -158,6 +158,12 @@ class SuperadminModel extends Model
         }
     }
 
+    public function get_data_pegawai($nip)
+    {
+        return DB::table('pegawai')->where('nip', $nip)->first();
+    }
+
+
     public function get_nip_unregistered()
     {
         // Mengambil NIP dari tabel pegawai yang belum memiliki akun user
@@ -223,5 +229,10 @@ class SuperadminModel extends Model
         } else {
             return false;
         }
+    }
+
+    public function input_notifikasi($notifikasi)
+    {
+        return DB::table('notifikasi')->insert($notifikasi) ? true : false;
     }
 }

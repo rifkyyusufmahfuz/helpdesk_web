@@ -4,9 +4,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header row">
-                    <h4 class="card-title mx-2">Data User Aktif</h4>
-                    <p class="small text-gray-800">Daftar user aktif</p>
+                <div class="card-header py-3">
+                    <div class="row">
+                        <h4 class="card-title mx-2">Data User Aktif</h4>
+                        <p class="small text-gray-800">Daftar user aktif</p>
+                    </div>
                 </div>
                 <div class="row ml-2 mt-2">
                     <div class="col-md-12">

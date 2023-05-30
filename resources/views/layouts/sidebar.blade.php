@@ -99,8 +99,8 @@
 
         {{-- MENU PERMINTAAN LAYANAN --}}
         <li
-            class="nav-item {{ request()->is('admin/permintaan_software') | request()->is('admin/permintaan_hardware') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('admin/permintaan_software') || request()->is('admin/permintaan_hardware') ? '' : 'collapsed' }}"
+            class="nav-item {{ request()->is('admin/permintaan_software*') | request()->is('admin/permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Layanan</span>
@@ -114,11 +114,11 @@
                 @endif
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('admin/permintaan_software') || request()->is('/admin/permintaan_hardware') ? 'show' : '' }}"
+                class="collapse {{ request()->is('admin/permintaan_software*') || request()->is('/admin/permintaan_hardware') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     {{-- PERMINTAAN INSTALASI SOFTWARE --}}
-                    <a class="collapse-item {{ request()->is('admin/permintaan_software') ? 'active' : '' }}"
+                    <a class="collapse-item {{ request()->is('admin/permintaan_software*') ? 'active' : '' }}"
                         href="/admin/permintaan_software">
                         <i class="fas fa-fw fa-laptop-code"></i>
                         <span>Instalasi Software</span>

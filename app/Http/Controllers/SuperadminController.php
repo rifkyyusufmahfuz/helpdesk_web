@@ -98,7 +98,26 @@ class SuperadminController extends Controller
     // fungsi untuk mengaktivasi semua user yang nonaktif
     public function aktivasi_semua_user()
     {
+        $users = User::where('status', false)->get();
         User::where('status', false)->update(['status' => true]);
+
+        foreach ($users as $user) {
+            // Ambil data nama dari tabel pegawai
+            $pegawai = $this->modelsuperadmin->get_data_pegawai($user->nip);
+            $nama = $pegawai->nama;
+
+            // Buat entri notifikasi untuk pengguna yang diaktifkan
+            $pesan = "Halo " . $nama . "! Selamat datang di Sistem Informasi IT Helpdesk! Akun Anda telah aktif dan dapat menggunakan fitur-fitur yang telah disediakan. Terima kasih!";
+
+            $notifikasi = [
+                'pesan' => $pesan,
+                'tautan' => '#',
+                'user_id' => $user->id,
+                'created_at' => now()
+            ];
+
+            $this->modelsuperadmin->input_notifikasi($notifikasi);
+        }
 
         return redirect()->back()->with('toast_success', 'Semua user berhasil diaktivasi!');
     }
@@ -329,6 +348,21 @@ class SuperadminController extends Controller
             // kirim data ke model update user 
             if ($this->modelsuperadmin->update_user($data, $id)) {
                 if ($aktivasi == 1) {
+                    // Ambil data nama dari tabel pegawai
+                    $pegawai = $this->modelsuperadmin->get_data_pegawai($user->nip);
+                    $nama = $pegawai->nama;
+                    // Buat entri notifikasi untuk pengguna yang diaktifkan
+                    $pesan = "Halo " . $nama . "! Selamat datang di Sistem Informasi IT Helpdesk! Akun Anda telah aktif dan dapat menggunakan fitur-fitur yang telah disediakan. Terima kasih!";
+
+                    $notifikasi = [
+                        'pesan' => $pesan,
+                        'tautan' => '#',
+                        'user_id' => $user->id,
+                        'created_at' => now()
+                    ];
+
+                    $this->modelsuperadmin->input_notifikasi($notifikasi);
+
                     return redirect('/superadmin/datausernonaktif')->with('toast_success', 'User telah diaktivasi!');
                 } elseif ($aktivasi == 0) {
                     return redirect('/superadmin/datauseraktif')->with('toast_success', 'User telah dinonaktifkan!');

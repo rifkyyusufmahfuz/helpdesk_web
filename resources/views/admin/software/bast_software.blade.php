@@ -32,21 +32,11 @@
                         <div><b>Lokasi</b></div>
                         <div>{{ $data->nama_stasiun }}</div>
                     </div>
-
-                    {{-- <div class="form-group px-3">
-                        <div><b>Lokasi</b></div>
-                        <div>{{ $data->nama_stasiun }}</div>
-                    </div> --}}
                 </div>
             @endforeach
         </div>
 
         <div class="card-body">
-            {{-- @foreach ($permintaan as $data)
-                <button class="btn btn-md btn-primary mb-3" data-bs-toggle="modal" title="Tambah barang"
-                    data-bs-target="#modal_input_barang{{ $data->id_permintaan }}"><i
-                        class="fas fa-plus fa-sm mr-2"></i>Tambah Barang</button>
-            @endforeach --}}
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -84,8 +74,7 @@
 
                                     <button {{ $data->status_barang != '1' ? 'disabled' : '' }}
                                         class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
-                                        data-bs-target="#modal_input_barang{{ $data->id_permintaan }}"
-                                        title="Terima barang">
+                                        data-bs-target="#modal_input_bast{{ $data->id_permintaan }}" title="Terima barang">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
                                     <button {{ $data->status_barang != '2' ? 'disabled' : '' }}
@@ -103,6 +92,6 @@
             </div>
         </div>
     </div>
-    @include('admin.software.modal.input_barang')
+    @include('admin.software.modal.input_barang_masuk')
     @include('admin.software.modal.detail_barang')
 @endsection

@@ -6,6 +6,7 @@ use App\Models\AdminModel;
 use App\Models\OtorisasiModel;
 use App\Models\PermintaanModel;
 use Illuminate\Http\Request;
+use App\Utils\RomanNumberConverter;
 
 class AdminController extends Controller
 {
@@ -168,7 +169,6 @@ class AdminController extends Controller
                 ]
             );
 
-
             $catatan = $request->notes ?: '-';
 
             $data = [
@@ -185,36 +185,87 @@ class AdminController extends Controller
             } else {
                 return back()->with('toast_error', 'Tambah software gagal!');
             }
-        } else if ($request->has('kode_barang')) {
-            $request->validate(
-                // validasi form 
-                [
-                    'kode_barang' => 'required',
-                    'nama_barang' => 'required',
-                    'perihal' => 'required',
-                ],
-                // custom error notifikasi
-                [
-                    'kode_barang.required' => 'ID Barang wajib diisi!',
-                    'nama_barang.required' => 'Nama Barang wajib diisi!',
-                    'perihal.required' => 'Perihal wajib diisi!',
-                ]
-            );
+        } else if ($request->has('nip_p1')) {
+            //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
+            $folderPath_p1 = public_path('tandatangan/bast/yang_menyerahkan/');
+            if (!is_dir($folderPath_p1)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p1, 0777, true);
+            }
+            $filename_ttd_p1 = "bast_pihakpertama_" . uniqid() . ".png";
+            $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
+            file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
 
-            $data2 = [
-                'kode_barang' => $request->kode_barang,
-                'nama_barang' => $request->nama_barang,
-                'jumlah_barang' => 1,
-                'perihal' => $request->perihal,
+            //Tanda tangan yang menerima barang / Pihak kedua / P2
+            $folderPath_p2 = public_path('tandatangan/bast/yang_menerima/');
+            if (!is_dir($folderPath_p2)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p2, 0777, true);
+            }
+
+            $filename_ttd_p2 = "bast_pihakkedua_" . uniqid() . ".png";
+            $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
+            file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
+
+            // generate id_bast / nomor bast
+            //membuat id permintaan
+            $bast_terbaru = $this->modeladmin->cari_id_bast();
+
+            $bulanSebelumnya = $bast_terbaru ? substr($bast_terbaru->id_bast, 14, 1) : '';
+            $tahunSebelumnya = $bast_terbaru ? substr($bast_terbaru->id_bast, 16, 4) : '';
+
+            $bulanSekarang = date('n');
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+            // || $tahunSebelumnya !== date('Y')
+
+            if ($bulanSebelumnya !== $kodeBulanSekarang || $tahunSebelumnya !== date('Y')) {
+                $id_bast_baru = '0001-KCI-BAST-' . $kodeBulanSekarang . '-' . date('Y');
+            } else {
+                $nomorUrut = substr($bast_terbaru->id_bast, 0, 4) + 1;
+                $id_bast_baru = sprintf('%04d', $nomorUrut) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . date('Y');
+            }
+
+            $data_bast = [
+                'id_bast' => $id_bast_baru,
+                'tanggal_bast' => now(),
+                'jenis_bast' => $request->jenis_bast,
+                'perihal' => 'Instalasi software dengan software berikut ini: ',
+                'ttd_menyerahkan' => $filename_ttd_p1,
+                'yang_menyerahkan' => $request->nip_p1,
+                'ttd_menerima' => $filename_ttd_p2,
+                'yang_menerima' => $request->nip_pegawai,
                 'id_permintaan' => $request->id_permintaan,
-                'updated_at' => \Carbon\Carbon::now(),
+                'id_stasiun' => 'JUA',
+                'created_at' => now(),
             ];
 
-            if ($this->modeladmin->input_barang($data2)) {
-                return back()->with('toast_success', 'Tambah barang berhasil!');
-            } else {
-                return back()->with('toast_error', 'Tambah barang gagal!');
-            }
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $id_permintaan = $request->id_permintaan;
+
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+
+            $notifikasi = [
+                'pesan' => 'Anda baru saja melakukan Serah Terima Barang dengan Nomor BAST : ' . $id_bast_baru . '.',
+                'tautan' => '/pegawai/bast',
+                'created_at' => now(),
+                'user_id' => $pegawaiId,
+            ];
+
+            $data_permintaan = [
+                'status_permintaan' => 4,
+                'updated_at' => now(),
+            ];
+
+            $update_permintaan = $this->modeladmin->update_permintaan($data_permintaan, $id_permintaan);
+            $input_bast_barang_masuk = $this->modeladmin->input_bast($data_bast);
+            $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
+
+            // menggunakan operator ternary (pengganti kondisi dengan if else)
+            //untuk mengembalikan pesan apakah berhasil atau tidak
+            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan)
+                ? back()->with('toast_success', 'Input BAST berhasil!')
+                : back()->with('toast_error', 'Input BAST gagal!');
         }
     }
 
@@ -239,21 +290,45 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'versi_software' => 'required',
+        if ($request->has('status_permintaan')) {
+            $data = [
+                'status_permintaan' => $request->status_permintaan,
+                'updated_at' => now()
+            ];
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $id_permintaan = $request->id_permintaan;
 
-        ], [
-            'versi_software.required' => 'Isi versi software!',
-        ]);
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
 
-        $catatan = $request->notes ?: '-';
-        $data = [
-            'versi_software' => $request->versi_software,
-            'notes' => $catatan,
-            'updated_at' => now(),
-        ];
+            $notifikasi = [
+                'pesan' => 'Permintaan instalasi software Anda dengan ID Permintaan = ' . $id_permintaan . ' telah selesai. Silakan ambil PC / Laptop Anda di NOC. Terima kasih!',
+                'tautan' => '/pegawai/permintaan_software',
+                'created_at' => now(),
+                'user_id' => $pegawaiId,
+            ];
 
-        return $this->modeladmin->update_software($data, $id) ? back()->with('toast_success', 'Versi software dan catatan berhasil diinput!') : back()->with('toast_success', 'Versi software dan catatan gagal diinput!');
+            $update_permintaan = $this->modeladmin->update_permintaan($data, $id);
+            $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
+
+
+            return $update_permintaan && $kirim_notifikasi ? back()->with('toast_success', 'Status permintaan telah diubah!') : back()->with('toast_success', 'Status permintaan gagal diubah!');
+        } else {
+            $request->validate([
+                'versi_software' => 'required',
+
+            ], [
+                'versi_software.required' => 'Isi versi software!',
+            ]);
+
+            $catatan = $request->notes ?: '-';
+            $data = [
+                'versi_software' => $request->versi_software,
+                'notes' => $catatan,
+                'updated_at' => now(),
+            ];
+            return $this->modeladmin->update_software($data, $id) ? back()->with('toast_success', 'Versi software dan catatan berhasil diinput!') : back()->with('toast_success', 'Versi software dan catatan gagal diinput!');
+        }
     }
 
     /**

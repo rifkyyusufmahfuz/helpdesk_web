@@ -95,8 +95,10 @@
                                     {{-- status ketika instalasi selesai --}}
                                 @elseif ($p->status_permintaan == '5')
                                     <td>Instalasi selesai</td>
+                                    {{-- status ketika permintaan telah selesai --}}
                                 @elseif ($p->status_permintaan == '6')
                                     <td>Selesai</td>
+                                    {{-- status ketika permintaan ditolak --}}
                                 @elseif ($p->status_permintaan == '0')
                                     <td>Ditolak</td>
                                 @endif
