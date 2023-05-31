@@ -257,13 +257,21 @@ class AdminController extends Controller
                 'updated_at' => now(),
             ];
 
+            $kode_barang = $request->kode_barang;
+
+            $data_barang = [
+                'status_barang' => 2,
+                'updated_at' => now(),
+            ];
+
             $update_permintaan = $this->modeladmin->update_permintaan($data_permintaan, $id_permintaan);
+            $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
             $input_bast_barang_masuk = $this->modeladmin->input_bast($data_bast);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
             // menggunakan operator ternary (pengganti kondisi dengan if else)
             //untuk mengembalikan pesan apakah berhasil atau tidak
-            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan)
+            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang)
                 ? back()->with('toast_success', 'Input BAST berhasil!')
                 : back()->with('toast_error', 'Input BAST gagal!');
         }

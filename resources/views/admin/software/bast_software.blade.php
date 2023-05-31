@@ -11,26 +11,26 @@
             <div class="row px-3">
                 <p>Serah terima barang untuk :</p>
             </div>
-            @foreach ($permintaan as $data)
+            @foreach ($permintaan as $data_permintaan)
                 <div class="row">
                     <div class="form-group px-3">
                         <div><b>ID Permintaan</b></div>
-                        <div>{{ $data->id_permintaan }}</div>
+                        <div>{{ $data_permintaan->id_permintaan }}</div>
                     </div>
 
                     <div class="form-group px-3">
                         <div><b>Tanggal Permintaan</b></div>
-                        <div>{{ $data->tanggal_permintaan }}</div>
+                        <div>{{ $data_permintaan->tanggal_permintaan }}</div>
                     </div>
 
                     <div class="form-group px-3">
                         <div><b>Requestor</b></div>
-                        <div>{{ $data->nama }}</div>
+                        <div>{{ $data_permintaan->nama }}</div>
                     </div>
 
                     <div class="form-group px-3">
                         <div><b>Lokasi</b></div>
-                        <div>{{ $data->nama_stasiun }}</div>
+                        <div>{{ $data_permintaan->nama_stasiun }}</div>
                     </div>
                 </div>
             @endforeach
@@ -45,41 +45,69 @@
                             <th>ID Barang</th>
                             <th>Nama Barang</th>
                             <th>Status Barang</th>
+                            <th>Diserahkan Oleh</th>
+                            <th>Diterima Oleh</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
-                    @foreach ($barang as $data)
+                    @foreach ($barang as $data_barang)
                         <tbody>
                             <?php $no = 1; ?>
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->kode_barang }}</td>
-                                <td>{{ $data->nama_barang }}</td>
-                                {{-- <td>{{ $data->perihal }}</td> --}}
+                                <td>{{ $data_barang->kode_barang }}</td>
+                                <td>{{ $data_barang->nama_barang }}</td>
+                                {{-- <td>{{ $data_barang->perihal }}</td> --}}
                                 <td>
-                                    @if ($data->status_barang == 1)
+                                    @if ($data_barang->status_barang == 1)
                                         <span>Belum Diterima</span>
-                                    @elseif ($data->status_barang == 2)
+                                    @elseif ($data_barang->status_barang == 2)
                                         <span>Diterima</span>
-                                    @elseif ($data->status_barang == 3)
+                                    @elseif ($data_barang->status_barang == 3)
                                         <span>Dikembalikan</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    {{ $data_barang->nama_menyerahkan != null ? $data_barang->nama_menyerahkan : '-' }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $data_barang->nama_menerima != null ? $data_barang->nama_menerima : '-' }}
+                                </td>
+                                <td class="text-center">
                                     <button class="btn btn-sm btn-warning text-white" data-bs-toggle="modal"
-                                        data-bs-target="#detail_barang_{{ $data->kode_barang }}" title="Detail barang">
+                                        data-bs-target="#detail_barang_{{ $data_barang->kode_barang }}"
+                                        title="Detail barang">
                                         <i class="fas fa-eye"></i>
                                     </button>
 
-                                    <button {{ $data->status_barang != '1' ? 'disabled' : '' }}
+                                    @if ($data_barang->status_barang != '1')
+                                        {{-- <a href="/cetak_bast/barang_masuk/{{ $data_barang->id_bast }}" target="_blank"
+                                            class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk">
+                                            <i class="fa fa-print"></i>
+                                        </a> --}}
+                                        <a href="/cetak_bast/barang_masuk/" target="_blank"
+                                            class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk">
+                                            <i class="fa fa-print"></i>
+                                        </a>
+                                    @else
+                                        <button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
+                                            data-bs-target="#modal_input_bast_masuk{{ $data_barang->id_permintaan }}"
+                                            title="Terima barang">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    @endif
+                                    {{-- <button {{ $data_barang->status_barang != '1' ? 'disabled' : '' }}
                                         class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
-                                        data-bs-target="#modal_input_bast{{ $data->id_permintaan }}" title="Terima barang">
+                                        data-bs-target="#modal_input_bast_masuk{{ $data_barang->id_permintaan }}"
+                                        title="Terima barang">
                                         <i class="fas fa-arrow-down"></i>
-                                    </button>
-                                    <button {{ $data->status_barang != '2' ? 'disabled' : '' }}
+                                    </button> --}}
+
+                                    <button {{ $data_barang->status_barang != '2' ? 'disabled' : '' }}
                                         class="btn btn-sm btn-danger text-white" data-toggle="modal"
-                                        data-target="#modal_input_bast{{ $data->kode_barang }}" title="Serahkan barang">
+                                        data-target="#modal_input_bast{{ $data_barang->kode_barang }}"
+                                        title="Serahkan barang">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                 </td>

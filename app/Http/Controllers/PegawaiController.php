@@ -152,7 +152,7 @@ class PegawaiController extends Controller
             $data_admin = PegawaiModel::where('nip', $tindaklanjut->user->nip)->first();
         }
 
-        return view('pegawai.permintaan.cetak.form_permintaan_instalasi_software', [
+        return view('cetak.form_permintaan_instalasi_software', [
             'id_permintaan' => $id_permintaan,
             'tanggal_permintaan' => $permintaan->tanggal_permintaan,
             'nama' => $pegawai->nama,

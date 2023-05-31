@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CetakDokumenController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\RegisterController;
@@ -87,9 +88,13 @@ Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
     Route::get('/form_instalasi_software/{id}', [PegawaiController::class, 'getDataRequest'])->name('lihat_form');
 });
 
+//untuk notifikasi
 Route::get('/notifications', [NotifikasiController::class, 'index']);
 Route::delete('/notifikasi/hapus/{id_notifikasi}', [NotifikasiController::class, 'destroy']);
 Route::put('/notifikasi/read/{id_notifikasi}', [NotifikasiController::class, 'tandai_telah_dibaca']);
-
 Route::put('/notifikasi/pegawai/read_all/{id}', [NotifikasiController::class, 'read_all_notif_pegawai']);
 Route::put('/notifikasi/admin/read_all/{id_role}', [NotifikasiController::class, 'read_all_notif_admin']);
+
+
+//untuk cetak dokumen
+Route::get('/cetak_bast/barang_masuk', [CetakDokumenController::class, 'cetak_bast_barang_masuk']);

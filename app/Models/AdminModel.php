@@ -95,9 +95,21 @@ class AdminModel extends Model
     {
         return DB::table('permintaan')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->leftJoin('bast', 'permintaan.id_permintaan', '=', 'bast.id_permintaan')
+            ->leftJoin('pegawai as pegawai_menyerahkan', 'bast.yang_menyerahkan', '=', 'pegawai_menyerahkan.nip')
+            ->leftJoin('pegawai as pegawai_menerima', 'bast.yang_menerima', '=', 'pegawai_menerima.nip')
+            ->leftJoin('users', 'users.nip', '=', 'pegawai_menyerahkan.nip')
             ->where('permintaan.id_permintaan', $id)
+            ->select(
+                'permintaan.*',
+                'barang.*',
+                'bast.*',
+                'pegawai_menyerahkan.nama as nama_menyerahkan',
+                'pegawai_menerima.nama as nama_menerima'
+            )
             ->get();
     }
+
 
 
     public function input_barang($data2)
@@ -107,6 +119,11 @@ class AdminModel extends Model
         } else {
             return false;
         }
+    }
+
+    public function update_barang($data_barang, $kode_barang)
+    {
+        return DB::table('barang')->where('kode_barang', $kode_barang)->update($data_barang) ? true : false;
     }
 
     public function update_software($data, $id)

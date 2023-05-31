@@ -1,10 +1,10 @@
 <!-- Modal -->
-<div class="modal fade" id="modal_input_bast{{ $data->id_permintaan }}" tabindex="-1" role="dialog"
-    aria-labelledby="modal_input_bast_label" aria-hidden="true">
+<div class="modal fade" id="modal_input_bast_masuk{{ $data_barang->id_permintaan }}" tabindex="-1" role="dialog"
+    aria-labelledby="modal_input_bast_masuk_label" aria-hidden="true">
     <div class="modal-dialog" role="document" id="signature-pad">
         <div class="modal-content" id="signature-pad2">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal_input_bast_label">Form BAST</h5>
+                <h5 class="modal-title" id="modal_input_bast_masuk_label">Form BAST</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,8 +17,8 @@
                         <h6>Pihak Pertama - Yang Menyerahkan Barang</h6>
                         <div class="row">
                             @foreach ($permintaan as $data2)
-                                <input type="hidden" value="{{ $data->id_permintaan }}" name="id_permintaan"
-                                    id="id_permintaan">
+                                <input type="hidden" value="{{ $data2->id_permintaan }}" name="id_permintaan">
+                                <input type="hidden" value="{{ $data2->kode_barang }}" name="kode_barang">
                                 <div class="form-group col-sm-5">
                                     <label for="nip_p1">NIP</label>
                                     <input readonly type="text" class="form-control" id="nip_pegawai_p1"
@@ -205,7 +205,7 @@
         });
 
         // Handler untuk tombol Close
-        $('#modal_input_bast{{ $data->id_permintaan }}').on('hidden.bs.modal', function() {
+        $('#modal_input_bast_masuk{{ $data_barang->id_permintaan }}').on('hidden.bs.modal', function() {
             // $(this).find('input[type=text]').val('');
             $(this).find('button[type=submit]').prop('disabled', true);
             // Show the "Bagian Yang Menyerahkan" section
