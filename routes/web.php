@@ -97,4 +97,4 @@ Route::put('/notifikasi/admin/read_all/{id_role}', [NotifikasiController::class,
 
 
 //untuk cetak dokumen
-Route::get('/cetak_bast/barang_masuk', [CetakDokumenController::class, 'cetak_bast_barang_masuk']);
+Route::get('/cetak_bast/barang_masuk/{kode_barang}', [CetakDokumenController::class, 'cetak_bast_barang_masuk']);

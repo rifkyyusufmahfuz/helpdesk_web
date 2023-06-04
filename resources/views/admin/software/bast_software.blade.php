@@ -86,8 +86,9 @@
                                             class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk">
                                             <i class="fa fa-print"></i>
                                         </a> --}}
-                                        <a href="/cetak_bast/barang_masuk/" target="_blank"
-                                            class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk">
+                                        <a href="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
+                                            target="_blank" class="btn btn-sm bg-primary text-white"
+                                            title="Cetak BAST Barang Masuk">
                                             <i class="fa fa-print"></i>
                                         </a>
                                     @else

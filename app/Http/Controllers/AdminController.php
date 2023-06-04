@@ -119,11 +119,14 @@ class AdminController extends Controller
     {
         $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
         $barang = $this->modeladmin->get_barang_by_id_permintaan($id_permintaan);
+        // $bast = $this->modeladmin->get_bast_by_id_permintaan($id_permintaan);
+
         return view(
             'admin.software.bast_software',
             [
                 'permintaan' => $permintaan,
                 'barang' => $barang,
+                // 'bast' => $bast,
             ]
         );
     }
