@@ -2,105 +2,11 @@
 <html>
 
 <head>
-    <title>Berita Acara Serah Terima Barang</title>
-    <style>
-        /* CSS untuk tampilan surat */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .header {
-            /* text-align: center; */
-            margin-bottom: 30px;
-            border-bottom: 1px solid;
-        }
-
-        .header img {
-            height: 80px;
-        }
-
-        .title {
-            text-align: center;
-            text-decoration: underline;
-            margin-bottom: 20px;
-        }
-
-        .subtitle {
-            margin-bottom: 10px;
-        }
-
-        .subtitle span {
-            font-weight: bold;
-        }
-
-        .table-container {
-            margin-bottom: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        p {
-            text-indent: 50px;
-            text-align: justify;
-            line-height: 1.5;
-        }
-
-        .data-barang {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .signature-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-        }
-
-        .signature {
-            width: 40%;
-        }
-
-        .signature p {
-            margin-bottom: 10px;
-        }
-
-        #alamat {
-            line-height: 0.1;
-            font-size: 10px;
-            text-indent: 0px;
-        }
-
-        #nomor_bast {
-            text-align: center !important;
-            margin-top: -15px;
-        }
-
-        .tabel-data-pegawai {
-            margin-left: 50px;
-            border: hidden !important;
-        }
-
-        /* Cetak ke media A4 */
-
-        @media print {
-            @page {
-                size: A4;
-                margin: 7mm;
-            }
-
-            html,
-            body {
-                width: 210mm;
-                height: 297mm;
-                /* margin: 20mm 20mm 20mm 20mm; */
-            }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Form BAST Barang Masuk</title>
+    <link href="{{ asset('custom_script/css/form-bast.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -116,154 +22,191 @@
         <h2>BERITA ACARA SERAH TERIMA BARANG</h2>
     </div>
 
-    @foreach ($data_bast_masuk as $data)
-        @php
-            $nomorBast = str_replace('-', '/', $data->id_bast);
-        @endphp
-        <div>
-            <p id="nomor_bast">Nomor: {{ $nomorBast }}</p>
-        </div>
-
-
-        <div>
-            <p>Pada hari ini {{ $hari }}, tanggal {{ $tanggal }}, di Kantor Pusat Stasiun Juanda,
-                kami yang
-                bertanda
-                tangan
-                di bawah ini:</p>
-        </div>
-        <div class="subtitle">
-            <span>Pihak Pertama:</span>
-            <table class="tabel-data-pegawai">
-                <tr>
-                    <td>
-                        Nama
-                    </td>
-                    <td>:</td>
-                    <td>[Nama Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        NIP
-                    </td>
-                    <td>:</td>
-                    <td>[NIP Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        Bagian/Divisi
-                    </td>
-                    <td>:</td>
-                    <td>[Bagian/Divisi Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        Jabatan
-                    </td>
-                    <td>:</td>
-                    <td>[Jabatan Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        Lokasi Kerja
-                    </td>
-                    <td>:</td>
-                    <td>[Lokasi Kerja Pihak Pertama]</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="subtitle">
-            <span>Pihak Kedua:</span>
-            <table class="tabel-data-pegawai">
-                <tr>
-                    <td>
-                        Nama
-                    </td>
-                    <td>:</td>
-                    <td>[Nama Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        NIP
-                    </td>
-                    <td>:</td>
-                    <td>[NIP Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        Bagian/Divisi
-                    </td>
-                    <td>:</td>
-                    <td>[Bagian/Divisi Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        Jabatan
-                    </td>
-                    <td>:</td>
-                    <td>[Jabatan Pihak Pertama]</td>
-                </tr>
-                <tr>
-                    <td>
-                        Lokasi Kerja
-                    </td>
-                    <td>:</td>
-                    <td>[Lokasi Kerja Pihak Pertama]</td>
-                </tr>
-            </table>
-        </div>
-
-        <div>
-            <p>Dengan ini menyatakan bahwa PIHAK PERTAMA telah menyerahkan barang kepada PIHAK KEDUA dengan detail
-                berikut:
-            </p>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <tr>
-                    <th class="data-barang">No.</th>
-                    <th class="data-barang">Kode Barang</th>
-                    <th class="data-barang">Nama Barang</th>
-                    <th class="data-barang">Tipe Barang</th>
-                    <th class="data-barang">Jumlah Barang</th>
-                    <th class="data-barang">Keterangan</th>
-                </tr>
-                <tr>
-                    <td class="data-barang">1</td>
-                    <td class="data-barang">[Kode Barang]</td>
-                    <td class="data-barang">[Nama Barang]</td>
-                    <td class="data-barang">[Tipe Barang]</td>
-                    <td class="data-barang">[Jumlah Barang]</td>
-                    <td class="data-barang">[Keterangan tentang barang]</td>
-                </tr>
-            </table>
-        </div>
-
-        <div>
-            <p>Pihak kedua telah menerima barang tersebut dalam kondisi baik, lengkap, dan
-                sesuai dengan deskripsi yang tertera dalam tabel di atas. <br>
-                Kedua belah pihak setuju bahwa barang yang diserahkan oleh pihak pertama telah diterima dengan baik oleh
-                pihak kedua untuk keperluan Layanan IT <i>Helpdesk</i> instalasi <i>software</i>.</p>
-            <p>Selanjutnya, pihak kedua bertanggung jawab atas penggunaan barang tersebut sesuai dengan keperluan yang
-                telah
-                disepakati dan akan dikembalikan segera setelah proses instalasi <i>software</i> selesai.</p>
-        </div>
-
-        <div class="signature-container">
-            <div class="signature">
-                <p>Yang Menyerahkan,</p>
-                <p>[Nama Pihak Pertama]</p>
-                <p>[Jabatan Pihak Pertama]</p>
+    <div>
+        @foreach ($data_bast_masuk as $data)
+            @php
+                $nomorBast = str_replace('-', '/', $data->id_bast);
+            @endphp
+            <div>
+                <p id="nomor_bast">Nomor: {{ $nomorBast }}</p>
             </div>
 
-            <div class="signature">
-                <p>Yang Menerima,</p>
-                <p>Admin IT Support</p>
+
+            <div>
+                <p class="text-indent">Pada hari ini <b>{{ $hari }}</b>, tanggal <b>{{ $tanggal }}</b>
+                    bulan
+                    <b>{{ $bulan }}</b> tahun <b>{{ $tahun }}</b>, di Kantor Pusat Stasiun Juanda, kami
+                    yang
+                    bertanda tangan di bawah ini:
+                </p>
             </div>
-        </div>
-    @endforeach
+            <div class="subtitle">
+                <span>Pihak Pertama:</span>
+                <table class="tabel-data-pegawai">
+                    <tr>
+                        <td id="kolom-1">Nama Lengkap</td>
+                        <td id="kolom-2">:</td>
+                        <td>{{ $data->nama_p1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>NIP</td>
+                        <td>:</td>
+                        <td>{{ $data->nip_p1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bagian/Divisi</td>
+                        <td>:</td>
+                        <td>{{ $data->bagian_p1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jabatan</td>
+                        <td>:</td>
+                        <td>{{ $data->jabatan_p1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Lokasi Kerja</td>
+                        <td>:</td>
+                        <td>Stasiun {{ $data->lokasi_p1 }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="subtitle">
+                <span>Pihak Kedua:</span>
+                <table class="tabel-data-pegawai">
+                    <tr>
+                        <td id="kolom-1">Nama Lengkap</td>
+                        <td id="kolom-2">:</td>
+                        <td>{{ $data->nama_p2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>NIP</td>
+                        <td>:</td>
+                        <td>{{ $data->nip_p2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bagian/Divisi</td>
+                        <td>:</td>
+                        <td>{{ $data->bagian_p2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jabatan</td>
+                        <td>:</td>
+                        <td>{{ $data->jabatan_p2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Lokasi Kerja</td>
+                        <td>:</td>
+                        <td>Stasiun {{ $data->lokasi_p2 }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <p class="text-indent">Dengan ini menyatakan bahwa PIHAK PERTAMA telah menyerahkan barang kepada PIHAK
+                    KEDUA dengan detail berikut:
+                </p>
+            </div>
+
+            <div class="table-data-barang">
+                <table>
+                    <tr>
+                        <th>No.</th>
+                        <th id="kode_barang">Kode Barang</th>
+                        <th id="nama_barang">Nama Barang</th>
+                        <th id="jumlah_barang">Jumlah Barang</th>
+                        <th id="keperluan">Keperluan</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>{{ $data->kode_barang }}</td>
+                        <td>{{ $data->nama_barang }}</td>
+                        <td>{{ $data->jumlah_barang }} Unit</td>
+                        @php
+                            $nomorpermintaan = str_replace('-', '/', $data->id_permintaan);
+                        @endphp
+                        <td>
+                            Instalasi software sesuai permintaan pada Formulir Permintaan Instalasi Software dengan
+                            nomor:
+                            <b>{{ $nomorpermintaan }}</b>
+                            {{-- @foreach ($data_software as $data2)
+                                <p>- {{ $data2->nama_software }}</p>
+                                <p>- {{ $data2->nama_software }}</p>
+                                <p>- {{ $data2->nama_software }}</p>
+                            @endforeach --}}
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <p class="text-indent">
+                    Pihak kedua telah menerima barang tersebut dalam kondisi baik, lengkap, dan sesuai dengan deskripsi
+                    yang
+                    tertera pada tabel di atas dan kedua belah pihak setuju bahwa barang yang diserahkan oleh pihak
+                    pertama
+                    telah diterima dengan baik oleh pihak kedua untuk keperluan Layanan IT <i>Helpdesk</i> instalasi
+                    <i>software</i>. Selanjutnya, pihak kedua bertanggung jawab atas penggunaan barang tersebut sesuai
+                    dengan keperluan yang telah disepakati dan akan dikembalikan segera setelah proses instalasi
+                    <i>software</i> selesai.
+                </p>
+                <p>Demikian Berita Acara Serah Terima Barang ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+            </div>
+
+            <div>
+                <p class="tanggal_ttd">Jakarta Pusat, {{ $tanggal_ttd }}</p>
+            </div>
+            <div class="signature-container">
+                <div class="yang_menyerahkan">
+                    @if (!empty($data->ttd_menerima) && file_exists(public_path('/tandatangan/bast/yang_menerima/' . $data->ttd_menerima)))
+                        <div>
+                            <div class="kotak-ttd">
+                                <div class="isi-ttd">
+                                    <figcaption>Yang Menyerahkan,</figcaption>
+                                    <img class="gambar_ttd"
+                                        src="{{ asset('tandatangan/bast/yang_menyerahkan/' . $data->ttd_menyerahkan) }}"
+                                        title="Tanda tangan {{ $data->nama_p1 }}">
+                                    <figcaption>{{ $data->nama_p1 }}</figcaption>
+                                </div>
+                                <figcaption>Requestor</figcaption>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div class="kotak-ttd">
+                                <figcaption>Yang Menerima,</figcaption>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="yang_menerima">
+                    @if (!empty($data->ttd_menerima) && file_exists(public_path('/tandatangan/bast/yang_menerima/' . $data->ttd_menerima)))
+                        <div>
+                            <div class="kotak-ttd">
+                                <div class="isi-ttd">
+                                    <figcaption>Yang Menerima,</figcaption>
+                                    <img class="gambar_ttd"
+                                        src="{{ asset('tandatangan/bast/yang_menerima/' . $data->ttd_menerima) }}"
+                                        title="Tanda tangan {{ $data->nama_p2 }}">
+                                    <figcaption>{{ $data->nama_p2 }}</figcaption>
+                                </div>
+                                <figcaption>Admin Layanan IT Helpdesk</figcaption>
+                            </div>
+                        </div>
+                    @else
+                        <div>
+                            <div class="kotak-ttd">
+                                <figcaption>Yang Menerima,</figcaption>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endforeach
+    </div>
+
 </body>
 
 </html>

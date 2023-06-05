@@ -6,9 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link href="{{ asset('css/formulir.css') }}" rel="stylesheet">
-
+    <title>Form Permintaan Instalasi Software</title>
+    <link href="{{ asset('custom_script/css/form-permintaan_instalasi_software.css') }}" rel="stylesheet">
 </head>
 
 <body style="font-size: 12px;">
