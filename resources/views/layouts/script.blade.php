@@ -12,7 +12,8 @@
 <!-- Page level plugins -->
 <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-{{-- <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script> --}}
+
+<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 
 <!-- Page level custom scripts -->
 <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
@@ -42,6 +43,14 @@
 <script src="{{ asset('custom_script/js/fungsi_tombol.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan_bast.js') }}"></script>
+
+{{-- untuk grafik dashboard --}}
+<script src="{{ asset('custom_script/js/dashboard_manager/dashboard_manager.js') }}"></script>
+
+<!-- Tambahkan ini pada bagian bawah halaman atau di bagian footer -->
+{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+
+
 
 <script>
     $(function() {

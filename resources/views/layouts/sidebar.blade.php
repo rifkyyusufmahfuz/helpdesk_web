@@ -129,7 +129,8 @@
                                 ->count();
                         @endphp
                         @if ($permintaan_software_count > 0)
-                            <span class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
+                            <span
+                                class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
                         @endif
                     </a>
                     {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
@@ -144,13 +145,84 @@
                                 ->count();
                         @endphp
                         @if ($permintaan_hardware_count > 0)
-                            <span class="badge badge-danger badge-counter badge-pill">{{ $permintaan_hardware_count }}</span>
+                            <span
+                                class="badge badge-danger badge-counter badge-pill">{{ $permintaan_hardware_count }}</span>
                         @endif
                     </a>
                 </div>
             </div>
         </li>
     @endif
+
+
+
+    {{-- MENU UNTUK USER MANAGER --}}
+    @if (auth()->user()->id_role == '3')
+        <li class="nav-item {{ request()->is('manager') ? 'active' : '' }}">
+            <a class="nav-link" href="/manager">
+                <i class="fas fa-fw fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        {{-- MENU PERMINTAAN LAYANAN --}}
+        <li
+            class="nav-item {{ request()->is('manager/permintaan_software*') | request()->is('manager/permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_hardware') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Permintaan Layanan</span>
+                @php
+                    $permintaan_count = DB::table('permintaan')
+                        ->where('status_permintaan', '1')
+                        ->count();
+                @endphp
+                @if ($permintaan_count > 0)
+                    <span class="badge badge-danger badge-pill badge-counter">{{ $permintaan_count }}</span>
+                @endif
+            </a>
+            <div id="collapseSuperadmin"
+                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
+                    <a class="collapse-item {{ request()->is('manager/permintaan_software*') ? 'active' : '' }}"
+                        href="/manager/permintaan_software">
+                        <i class="fas fa-fw fa-laptop-code"></i>
+                        <span>Instalasi Software</span>
+                        @php
+                            $permintaan_software_count = DB::table('permintaan')
+                                ->where('status_permintaan', '1')
+                                ->where('tipe_permintaan', 'software')
+                                ->count();
+                        @endphp
+                        @if ($permintaan_software_count > 0)
+                            <span
+                                class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
+                        @endif
+                    </a>
+                    {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
+                    <a class="collapse-item {{ request()->is('manager/permintaan_hardware') ? 'active' : '' }}"
+                        href="/manager/permintaan_hardware">
+                        <i class="fas fa-fw fa-tools"></i>
+                        <span>Pengecekan Hardware</span>
+                        @php
+                            $permintaan_hardware_count = DB::table('permintaan')
+                                ->where('status_permintaan', '1')
+                                ->where('tipe_permintaan', 'hardware')
+                                ->count();
+                        @endphp
+                        @if ($permintaan_hardware_count > 0)
+                            <span
+                                class="badge badge-danger badge-counter badge-pill">{{ $permintaan_hardware_count }}</span>
+                        @endif
+                    </a>
+                </div>
+            </div>
+        </li>
+    @endif
+
+
 
 
 

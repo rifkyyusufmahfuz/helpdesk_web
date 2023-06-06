@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Utils\RomanNumberConverter;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,10 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(StasiunSeeder::class);
-        $this->call(PegawaiSeeder::class);
-        $this->call(RolesSeeder::class);
-        $this->call(UsersSeeder::class);
-        $this->call(NotifikasiSeeder::class);
+        $this->call([
+            StasiunSeeder::class,
+            PegawaiSeeder::class,
+            RolesSeeder::class,
+            UsersSeeder::class,
+            NotifikasiSeeder::class,
+
+            PermintaanSeeder::class,
+        ]);
     }
 }

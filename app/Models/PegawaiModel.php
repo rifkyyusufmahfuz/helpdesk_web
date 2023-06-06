@@ -36,7 +36,8 @@ class PegawaiModel extends Model
 
     public function get_permintaan_software_by_id($id)
     {
-        return DB::table('permintaan')->where('id', $id)->get();
+        return DB::table('permintaan')->where('id', $id)
+        ->get();
     }
 
 
@@ -147,22 +148,33 @@ class PegawaiModel extends Model
         }
 
 
-        //membuat id permintaan
-        $permintaanterbaru = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
+        $latestPermintaan = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
 
-        $bulanSebelumnya = $permintaanterbaru ? substr($permintaanterbaru->id_permintaan, 20, 1) : '';
-        $tahunSebelumnya = $permintaanterbaru ? substr($permintaanterbaru->id_permintaan, 22, 4) : '';
+        if ($latestPermintaan) {
+            $latestId = $latestPermintaan->id_permintaan;
+            $lastIdParts = explode('-', $latestId);
+            $lastUrutan = intval($lastIdParts[0]);
+            $lastBulan = $lastIdParts[3];
+            $lastTahun = $lastIdParts[4];
 
-        $bulanSekarang = date('n');
-        $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
-        // || $tahunSebelumnya !== date('Y')
+            $bulanSekarang = date('n');
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+            $tahunSekarang = date('Y');
 
-        if ($bulanSebelumnya !== $kodeBulanSekarang || $tahunSebelumnya !== date('Y')) {
-            $newIdPermintaan = '0001-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . date('Y');
+            if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
+                $urutanBaru = 1;
+            } else {
+                $urutanBaru = $lastUrutan + 1;
+            }
         } else {
-            $nomorUrut = substr($permintaanterbaru->id_permintaan, 0, 4) + 1;
-            $newIdPermintaan = sprintf('%04d', $nomorUrut) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . date('Y');
+            $urutanBaru = 1;
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman(date('n'));
+            $tahunSekarang = date('Y');
         }
+
+        $newIdPermintaan = sprintf('%04d', $urutanBaru) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
+
 
         // simpan ke table permintaan
         $now = now();
