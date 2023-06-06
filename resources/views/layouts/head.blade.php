@@ -43,3 +43,6 @@
 <script src="{{ asset('custom_script/js/notifikasi.js') }}"></script>
 
 {{-- end script untuk tanda tangan  --}}
+
+{{-- css custom --}}
+<link href="{{ asset('custom_script/css/custom.css') }}" rel="stylesheet">

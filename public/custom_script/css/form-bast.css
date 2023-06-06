@@ -1,5 +1,12 @@
      /* CSS untuk tampilan surat */
      
+     html {
+         padding-bottom: 10rem;
+         padding-top: 1rem;
+         padding-left: 2rem;
+         padding-right: 2rem;
+     }
+     
      body {
          font-family: Arial, sans-serif;
          margin: 20px;
@@ -133,6 +140,6 @@
          body {
              width: 210mm;
              height: 297mm;
-             margin: 10mm 20mm 20mm 10mm;
+             margin: 5mm 20mm 20mm 5mm;
          }
      }
