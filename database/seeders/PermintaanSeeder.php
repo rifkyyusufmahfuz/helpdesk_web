@@ -36,7 +36,7 @@ class PermintaanSeeder extends Seeder
 
 
         //B
-        for ($i = 1; $i <= 10292; $i++) {
+        for ($i = 1; $i <= 200; $i++) {
             DB::table('barang')->insert([
                 'kode_barang' => 'ABC' . $i,
                 'nama_barang' => 'Nama Barang ' . $i,
@@ -74,7 +74,7 @@ class PermintaanSeeder extends Seeder
             $tahunSekarang = date('Y');
         }
 
-        for ($i = 1; $i <= 10292; $i++) {
+        for ($i = 1; $i <= 200; $i++) {
             $newIdPermintaan = sprintf('%04d', $urutanBaru) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . $tahunSekarang;
 
             $randomDate = \Carbon\Carbon::now()->subDays(rand(1, 365));
