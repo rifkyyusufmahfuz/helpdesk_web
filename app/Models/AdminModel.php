@@ -133,62 +133,132 @@ class AdminModel extends Model
 
     public function tindak_lanjut_permintaan_software(Request $request)
     {
-        //Tanda tangan
-        $folderPath = public_path('tandatangan/admin/');
-        if (!is_dir($folderPath)) {
-            //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
-            mkdir($folderPath, 0777, true);
-        }
-
-        $filename = "admin_" . uniqid() . ".png";
-        $nama_file = $folderPath . $filename;
-        file_put_contents($nama_file, file_get_contents($request->input('signature')));
-
-
-        //Mendefinisikan beberapa data utama
         $id_permintaan = $request->input('id_permintaan');
-        $id_otorisasi = $request->input('id_otorisasi');
-        $id = auth()->user()->id;
+
+        if (!DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->exists()) {
+            //Tanda tangan
+            $folderPath = public_path('tandatangan/admin/');
+            if (!is_dir($folderPath)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath, 0777, true);
+            }
+
+            $filename = "admin_" . uniqid() . ".png";
+            $nama_file = $folderPath . $filename;
+            file_put_contents($nama_file, file_get_contents($request->input('signature')));
 
 
-        // Mendapatkan ID pegawai dan role_id dari tabel permintaan
-        $permintaan = PermintaanModel::find($id_permintaan);
-        $pegawaiId = $permintaan->id;
-
-        // Mengirim notifikasi ke pegawai
-        $pesan = 'Permintaan instalasi software Anda sedang diajukan ke manajer, terima kasih.';
-        $tautan = '/pegawai/permintaan_software';
-
-        $kirim_notifikasi = DB::table('notifikasi')->insert([
-            'pesan' => $pesan,
-            'tautan' => $tautan,
-            'user_id' => $pegawaiId,
-            'created_at' => now()
-        ]);
-
-        $tindak_lanjut_software = DB::table('tindak_lanjut')->insert([
-            'tanggal_penanganan' => null,
-            'ttd_admin' => $filename,
-            'id' => $id,
-            'id_permintaan' => $id_permintaan,
-            'created_at' => now(),
-        ]);
-
-        $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
-            'status_approval' => 'waiting',
-            'updated_at' => now()
-        ]);
-
-        $update_permintaan = DB::table('permintaan')->where('id_permintaan', $id_permintaan)->update([
-            'status_permintaan' => 2,
-            'updated_at' => now(),
-        ]);
+            //Mendefinisikan beberapa data utama
+            $id_permintaan = $request->input('id_permintaan');
+            $id_otorisasi = $request->input('id_otorisasi');
+            $id = auth()->user()->id;
 
 
-        if ($ajukan_ke_manager && $tindak_lanjut_software && $update_permintaan && $kirim_notifikasi) {
-            return true;
-        } else {
-            return false;
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+
+            // Mengirim notifikasi ke pegawai
+            $pesan = 'Permintaan instalasi software Anda sedang diajukan ke manajer, terima kasih.';
+            $tautan = '/pegawai/permintaan_software';
+
+            $kirim_notifikasi = DB::table('notifikasi')->insert([
+                'pesan' => $pesan,
+                'tautan' => $tautan,
+                'user_id' => $pegawaiId,
+                'created_at' => now()
+            ]);
+
+            $tindak_lanjut_software = DB::table('tindak_lanjut')->insert([
+                'tanggal_penanganan' => null,
+                'ttd_admin' => $filename,
+                'id' => $id,
+                'id_permintaan' => $id_permintaan,
+                'created_at' => now(),
+            ]);
+
+            $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
+                'status_approval' => 'waiting',
+                'updated_at' => now()
+            ]);
+
+            $update_permintaan = DB::table('permintaan')->where('id_permintaan', $id_permintaan)->update([
+                'status_permintaan' => 2,
+                'updated_at' => now(),
+            ]);
+
+            //kirim notifikasi ke manager
+            $nama = ucwords(auth()->user()->pegawai->nama);
+            $simpan_notifikasi = DB::table('notifikasi')->insert([
+                'role_id' => 3,
+                'pesan' => 'Permintaan instalasi software diproses oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'tautan' => '/manager/permintaan_software',
+                'created_at' => now()
+            ]);
+
+
+            if ($ajukan_ke_manager && $tindak_lanjut_software && $update_permintaan && $kirim_notifikasi) {
+                return true;
+            } else {
+                return false;
+            }
+        } elseif (DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->exists()) {
+            //Tanda tangan
+            $folderPath = public_path('tandatangan/admin/');
+            if (!is_dir($folderPath)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath, 0777, true);
+            }
+
+            $filename = "admin_" . uniqid() . ".png";
+            $nama_file = $folderPath . $filename;
+            file_put_contents($nama_file, file_get_contents($request->input('signature')));
+
+
+            //Mendefinisikan beberapa data utama
+            $id_permintaan = $request->input('id_permintaan');
+            $id_otorisasi = $request->input('id_otorisasi');
+            $id = auth()->user()->id;
+
+
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+            // Mendapatkan ID tindak_lanjut
+            $id_tindak_lanjut = DB::table('tindak_lanjut')
+                ->where('id_permintaan', $id_permintaan)
+                ->select('tindak_lanjut.id_tindak_lanjut')
+                ->first()
+                ->id_tindak_lanjut;
+
+            $tindak_lanjut_software = DB::table('tindak_lanjut')
+                ->where('id_tindak_lanjut', $id_tindak_lanjut)
+                ->update([
+                    'ttd_admin' => $filename,
+                    'id' => $id,
+                    'updated_at' => now(),
+                ]);
+
+            $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
+                'status_approval' => 'waiting',
+                'updated_at' => now()
+            ]);
+
+            //kirim notifikasi ke manager
+            $nama = ucwords(auth()->user()->pegawai->nama);
+            $simpan_notifikasi = DB::table('notifikasi')->insert([
+                'role_id' => 3,
+                'pesan' => 'Permintaan instalasi software ' . $id_permintaan . ' telah direvisi oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'tautan' => '/manager/permintaan_software',
+                'created_at' => now()
+            ]);
+
+
+            if ($ajukan_ke_manager && $tindak_lanjut_software && $simpan_notifikasi) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

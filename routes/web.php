@@ -78,7 +78,10 @@ Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], fun
 // untuk Manager
 Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], function () {
     Route::get('/manager', [ManagerController::class, 'index']);
+    Route::resource('/manager/crud', ManagerController::class);
     Route::get('/manager/dashboard/data', [ManagerController::class, 'getData']);
+    Route::get('/manager/permintaan_software', [ManagerController::class, 'permintaan_software']);
+    Route::get('/manager/permintaan_revisi', [ManagerController::class, 'permintaan_revisi']);
 });
 
 // untuk pegawai

@@ -235,11 +235,12 @@
                         </div>
                         <hr>
 
-                        <div class="form-group">
-                            <label for="">Signature</label>
-                            <div class="form-ttd" onmouseover="my_function();">
+                        <div class="form-group text-center">
+                            <label for="">Tanda Tangan</label>
+                            <div>
                                 <div id="note">Silakan tanda tangan di area kolom ini</div>
-                                <canvas id="the_canvas" class="isi-ttd" height="150px"></canvas>
+                                <canvas onmouseover="my_function();" class="form-ttd" id="the_canvas"
+                                    class="isi-ttd" height="150px"></canvas>
                             </div>
                             <div style="margin:10px;">
                                 <input type="hidden" id="signature" name="signature">
@@ -247,6 +248,7 @@
                                     data-action="clear">Clear</button>
                             </div>
                         </div>
+
                         <div class="d-flex justify-content-end my-2" id="tombol_detail_pegawai">
                             <button type="button" class="btn btn-sm btn-danger mr-1" id="tombol_kembali_2"><i
                                     class="fas fa-arrow-left"></i> Kembali</button>

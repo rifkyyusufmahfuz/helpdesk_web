@@ -6,7 +6,7 @@
         <div class="card-header py-3">
             <div class="row">
                 <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
-                <p class="small text-gray-800">Daftar permintaan instalasi software</p>
+                <p class="small text-gray-800">Otorisasi permintaan instalasi software</p>
             </div>
         </div>
         <div class="card-body">
@@ -17,9 +17,9 @@
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            <th>Kategori Software</th>
+                            {{-- <th>Kategori Software</th> --}}
                             {{-- <th>Uraian Kebutuhan</th> --}}
-                            <th>Nama Pegawai</th>
+                            {{-- <th>Nama Pegawai</th> --}}
                             <th>Status Otorisasi</th>
                             <th class="text-center">Status Permintaan</th>
                             <th class="text-center">Aksi</th>
@@ -27,13 +27,13 @@
                     </thead>
                     {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
                     <tbody>
-                        <?php $no = 1; ?>
                         @foreach ($permintaan as $data)
+                            <?php $no = 1; ?>
                             <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                <td>
+                                {{-- <td>
                                     @if ($data->operating_system)
                                         <span>Sistem Operasi</span>
                                     @elseif($data->microsoft_office)
@@ -43,9 +43,9 @@
                                     @elseif ($data->software_lainnya)
                                         <span>Software Lainnya</span>
                                     @endif
-                                </td>
+                                </td> --}}
                                 {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
-                                <td>{{ $data->nama }}</td>
+                                {{-- <td>{{ $data->nama }}</td> --}}
                                 <td>{{ ucwords($data->status_approval) }}</td>
 
 
@@ -85,54 +85,58 @@
                                     </span>
                                 </td>
 
-
                                 <td class="text-center">
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
-                                        {{-- <button class="btn btn-sm btn-primary text-white" data-toggle="modal"
-                                            data-target="#modalProses{{ $data->id_permintaan }}" title="Proses">
-                                            <i class="fas fa-edit"></i>
-                                        </button> --}}
 
-                                        <form id="instalasi_selesai-{{ $data->id_permintaan }}"
-                                            action="/admin/crud/{{ $data->id_permintaan }}" method="POST"
-                                            style="display: inline-block;">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status_permintaan" value="5">
-                                            <input type="hidden" name="id_permintaan" value="{{ $data->id_permintaan }}">
-                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
-                                                title="Instalasi selesai" type="button" class="btn btn-sm btn-success"
-                                                onclick="instalasi_selesai('{{ $data->id_permintaan }}')">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        </form>
+                                        {{-- <form id="setujui_permintaan-{{ $data->id_permintaan }}"
+                                                action="/manager/crud/{{ $data->id_permintaan }}" method="POST"
+                                                style="display: inline-block;">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status_permintaan" value="3">
+                                                <input type="hidden" name="status_approval" value="approved">
+                                                <input type="hidden" name="id_permintaan"
+                                                    value="{{ $data->id_permintaan }}">
 
+                                                <button {{ $data->status_approval != 'waiting' ? 'disabled' : '' }}
+                                                    type="button" class="btn btn-sm btn-success"
+                                                    onclick="setujui_permintaan('{{ $data->id_permintaan }}')"
+                                                    title="Setujui Permintaan">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
 
-                                        <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
-                                            data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            </form> --}}
+
+                                        <button class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#setujui_permintaan_{{ $data->id_permintaan }}"
+                                            title="Setujui Permintaan">
+                                            <i class="fas fa-check"></i>
                                         </button>
 
-                                        <form
-                                            action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
-                                            method="GET" style="display: inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
-                                                title="Pengajuan Software"
-                                                {{ $data->status_permintaan != '1' && $data->status_approval != 'revision' ? 'disabled' : '' }}>
-                                                <i class="fas fa-cogs"></i>
-                                            </button>
-                                        </form>
+                                        <button class="btn btn-sm btn-primary rounded text-white mx-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal_revisi_permintaan_{{ $data->id_permintaan }}"><i
+                                                class="fa fa-undo"></i>
+                                        </button>
 
-                                        <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
-                                            method="GET" style="display: inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
-                                                {{ $data->status_permintaan == '3' || $data->status_permintaan == '5' ? '' : 'disabled' }}>
-                                                <i class="fas fa-receipt"></i>
+                                        {{-- tombol view detail --}}
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-warning rounded text-white dropdown-toggle"
+                                                data-toggle="dropdown" title="Lihat Detail">
+                                                <i class="fas fa-eye"></i>
                                             </button>
-                                        </form>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                    data-target="#detail_permintaan_pegawai_{{ $data->id_permintaan }}">
+                                                    Detail Permintaan
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                    data-target="#detail_permintaan_admin_{{ $data->id_permintaan }}">
+                                                    Detail Software
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </td>
@@ -146,8 +150,9 @@
     </div>
 
     @if (isset($data))
-        @include('admin.software.modal.proses_software')
-        {{-- @include('admin.software.modal.input_barang') --}}
-        @include('admin.software.modal.detail_permintaan_software')
+        @include('manager.modal.detail_permintaan')
+        @include('manager.modal.detail_software')
+        @include('manager.modal.revisi_permintaan')
+        @include('manager.modal.setujui_permintaan')
     @endif
 @endsection

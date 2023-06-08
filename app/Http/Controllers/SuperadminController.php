@@ -315,7 +315,7 @@ class SuperadminController extends Controller
                     'konfirmasi_password2.same' => 'Konfirmasi password tidak cocok!',
                 ]
 
-            );
+            );  
 
             // input data yang telah divalidasi
             $data = [

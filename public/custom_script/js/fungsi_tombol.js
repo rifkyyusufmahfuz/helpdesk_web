@@ -4,8 +4,8 @@ function confirmDelete(id) {
         title: 'Anda yakin ingin menghapus user ini?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, hapus',
-        cancelButtonText: 'Tidak, batalkan',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"
@@ -21,8 +21,8 @@ function confirm_delete_pegawai(id) {
         text: 'Menghapus data pegawai juga akan menghapus akun user dan data yang terkait pada akun tersebut!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, hapus',
-        cancelButtonText: 'Tidak, batalkan',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"
@@ -38,8 +38,8 @@ function aktivasi_user(id) {
         text: 'User bisa melakukan login apabila diaktivasi!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, aktivasi',
-        cancelButtonText: 'Tidak, batalkan',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"
@@ -71,8 +71,8 @@ function aktivasi_semua_user() {
         text: 'Aksi ini akan mengaktivasi semua user nonaktif!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, aktivasi',
-        cancelButtonText: 'Tidak, batalkan',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, aktivasi"
@@ -129,12 +129,31 @@ function confirm_delete_software(id) {
         text: 'Membatalkan software yang akan diinstal pada permintaan ini.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, hapus',
-        cancelButtonText: 'Tidak, batalkan',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"
             document.querySelector('#form-delete-' + id).submit();
+        }
+    });
+}
+
+
+
+// UNTUK MANAGER 
+function setujui_permintaan(id) {
+    Swal.fire({
+        title: 'Setujui Permintaan',
+        text: 'Proses instalasi software akan disetujui dan status permintaan akan diubah. Requestor akan mendapatkan notifikasi untuk menyerahkan PC / Laptop yang akan diinstalasi ke NOC.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Submit form jika user menekan tombol "Ya, hapus"
+            document.querySelector('#setujui_permintaan-' + id).submit();
         }
     });
 }

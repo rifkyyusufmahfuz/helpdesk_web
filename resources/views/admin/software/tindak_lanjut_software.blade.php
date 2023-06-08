@@ -50,6 +50,15 @@
                         <div>{{ $data->keluhan_kebutuhan }}</div>
                     </div>
                 </div>
+                @if ($data->status_approval == 'revision')
+                    <div class="row">
+                        <div class="form-group px-3">
+                            <div><b>Catatan dari Manager</b></div>
+                            <div class="text-danger font-weight-bold">{{ $data->catatan }}</div>
+                        </div>
+                    </div>
+                @else
+                @endif
             @endforeach
         </div>
 
@@ -68,8 +77,6 @@
                         <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager
                     </button>
                 @endforeach
-
-
 
             </div>
 

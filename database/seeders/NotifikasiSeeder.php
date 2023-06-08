@@ -18,14 +18,14 @@ class NotifikasiSeeder extends Seeder
             [
                 'user_id' => 4,
                 'role_id' => null,
-                'pesan' => 'Ini adalah pesan otomatis dari sistem untuk pegawai 1.',
+                'pesan' => 'Selamat datang di Sistem Informasi IT Helpdesk!',
                 'tautan' => '#',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'user_id' => 5,
                 'role_id' => null,
-                'pesan' => 'Ini adalah pesan otomatis kedua dari sistem.',
+                'pesan' => 'Selamat datang di Sistem Informasi IT Helpdesk!',
                 'tautan' => '#',
                 'created_at' => \Carbon\Carbon::now(),
             ],

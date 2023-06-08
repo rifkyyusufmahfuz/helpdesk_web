@@ -167,14 +167,15 @@
 
         {{-- MENU PERMINTAAN LAYANAN --}}
         <li
-            class="nav-item {{ request()->is('manager/permintaan_software*') | request()->is('manager/permintaan_hardware') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_hardware') ? '' : 'collapsed' }}"
+            class="nav-item {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_revisi*') || request()->is('manager/permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_revisi*') || request()->is('manager/permintaan_hardware') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Permintaan Layanan</span>
+                <span>Permintaan Software</span>
                 @php
                     $permintaan_count = DB::table('permintaan')
-                        ->where('status_permintaan', '1')
+                        ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
+                        ->where('status_approval', 'waiting')
                         ->count();
                 @endphp
                 @if ($permintaan_count > 0)
@@ -182,18 +183,18 @@
                 @endif
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
+                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_revisi*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     {{-- PERMINTAAN INSTALASI SOFTWARE --}}
                     <a class="collapse-item {{ request()->is('manager/permintaan_software*') ? 'active' : '' }}"
                         href="/manager/permintaan_software">
-                        <i class="fas fa-fw fa-laptop-code"></i>
-                        <span>Instalasi Software</span>
+                        <i class="fas fa-fw fa-check"></i>
+                        <span class="custom-span">Otorisasi Permintaan</span>
                         @php
                             $permintaan_software_count = DB::table('permintaan')
-                                ->where('status_permintaan', '1')
-                                ->where('tipe_permintaan', 'software')
+                                ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
+                                ->where('status_approval', 'waiting')
                                 ->count();
                         @endphp
                         @if ($permintaan_software_count > 0)
@@ -201,11 +202,28 @@
                                 class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
                         @endif
                     </a>
+
+                    {{-- PERMINTAAN REVISI --}}
+                    <a class="collapse-item {{ request()->is('manager/permintaan_revisi*') ? 'active' : '' }}"
+                        href="/manager/permintaan_revisi">
+                        <i class="fas fa-fw fa-edit"></i>
+                        <span class="custom-span">Revisi Permintaan</span>
+                        {{-- @php
+                            $permintaan_software_count = DB::table('permintaan')
+                                ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
+                                ->where('status_approval', 'waiting')
+                                ->count();
+                        @endphp
+                        @if ($permintaan_software_count > 0)
+                            <span
+                                class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
+                        @endif --}}
+                    </a>
                     {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
                     <a class="collapse-item {{ request()->is('manager/permintaan_hardware') ? 'active' : '' }}"
                         href="/manager/permintaan_hardware">
-                        <i class="fas fa-fw fa-tools"></i>
-                        <span>Pengecekan Hardware</span>
+                        <i class="fas fa-fw fa-history"></i>
+                        <span class="custom-span">Riwayat Otorisasi</span>
                         @php
                             $permintaan_hardware_count = DB::table('permintaan')
                                 ->where('status_permintaan', '1')
