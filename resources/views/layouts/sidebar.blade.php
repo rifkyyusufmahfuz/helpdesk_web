@@ -2,7 +2,7 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
-        <img src="{{ asset('img/logo.webp') }}" width="100px">
+        <img src="{{ asset('custom_script/img/logo.webp') }}" width="100px">
     </a>
     <!-- Divider -->
     <hr class="sidebar-divider">

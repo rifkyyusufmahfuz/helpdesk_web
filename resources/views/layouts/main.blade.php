@@ -3,7 +3,7 @@
 
 <head>
     <title>KCI IT Helpdesk</title>
-    <link rel="icon" href="{!! asset('img/Logo_KAI_Commuter_kecil.png') !!}" />
+    <link rel="icon" href="{!! asset('custom_script/img/Logo_KAI_Commuter_kecil.png') !!}" />
     @include('layouts.head')
 </head>
 

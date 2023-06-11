@@ -14,7 +14,7 @@
     <table class="tabel" border="1" width="100%" cellpadding="0" cellspacing="0">
         <tr>
             <td rowspan="5">
-                <img src="{{ asset('img/logo_kci.png') }}" alt="logo_kci" width="100px" height="auto">
+                <img src="{{ asset('custom_script/img/logo_kci.png') }}" alt="logo_kci" width="100px" height="auto">
             </td>
             <td rowspan="2" id="judul_dokumen">PT. KERETA COMMUTER INDONESIA</td>
             <td id="informasi_dokumen">

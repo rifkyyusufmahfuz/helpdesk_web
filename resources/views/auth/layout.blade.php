@@ -19,7 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="icon" href="{!! asset('img/Logo_KAI_Commuter_kecil.png') !!}" />
+    <link rel="icon" href="{!! asset('custom_script/img/Logo_KAI_Commuter_kecil.png') !!}" />
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -32,7 +32,7 @@
 
 </head>
 
-<body background="{{ asset('img/bg-login.webp') }}" style="background-repeat: no-repeat;background-size: cover;">
+<body background="{{ asset('custom_script/img/bg-login.webp') }}" style="background-repeat: no-repeat;background-size: cover;">
 
 
 

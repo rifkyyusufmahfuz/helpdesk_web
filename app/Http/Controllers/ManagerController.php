@@ -138,10 +138,10 @@ class ManagerController extends Controller
         } elseif ($request->has('disetujui')) {
 
             // Validasi data yang diterima dari form
-            // $request->validate([
-            //     'catatan_manager_' . $id_permintaan => 'required',
-            //     'ttd_manager_' . $id_permintaan => 'required',
-            // ]);
+            $request->validate([
+                'catatan_manager_' . $id_permintaan => 'required',
+                'ttd_manager_' . $id_permintaan => 'required',
+            ]);
 
             //Tanda tangan manager untuk menyetujui permintaan
             $lokasi_simpan_ttd = public_path('tandatangan/manager/permintaan_software/');
@@ -166,7 +166,7 @@ class ManagerController extends Controller
                 'status_approval' => 'approved',
                 'catatan' => $request->input('catatan_manager_' . $id_permintaan),
                 'tanggal_approval' => now(),
-                // 'ttd_manager' => $nama_file_ttd_manager,
+                'ttd_manager' => $nama_file_ttd_manager,
             ];
 
             $permintaan = $this->modelmanager->cari_requestor($id_permintaan);

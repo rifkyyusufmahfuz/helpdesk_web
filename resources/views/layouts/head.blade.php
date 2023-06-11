@@ -24,7 +24,7 @@
 <!-- Bootstrap core JavaScript-->
 {{-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> --}}
-<script src="{{ asset('custom_script/js/vendor/jquery/jquery-370.min.js') }}"></script>
+<script src="{{ asset('custom_script/vendor/jquery/jquery-370.min.js') }}"></script>
 
 {{-- custom --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -8,8 +8,8 @@
                     <div class="card-header bg-white">
                         <div class="row d-flex flex-column m-0">
                             <div class="d-flex">
-                                <img class=" text-right" src="{{ asset('img/logo_it_helpdesk.png') }}" alt=""
-                                    width="200px" height="auto">
+                                <img class=" text-right" src="{{ asset('custom_script/img/logo_it_helpdesk.png') }}"
+                                    alt="" width="200px" height="auto">
                             </div>
                             <div class="d-flex">
                                 <h6 class="register-heading">Form Registrasi Akun Pegawai</h6>
@@ -47,7 +47,7 @@
                                         <input name="jabatan" id="jabatan" type="text" class="form-control" />
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="form-label" for="lokasi">Lokasi</label>
                                     <input list="stasiun_list" class="form-control" id="lokasi" name="lokasi"

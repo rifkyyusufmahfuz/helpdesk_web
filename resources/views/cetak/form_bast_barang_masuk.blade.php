@@ -11,7 +11,7 @@
 
 <body>
     <div class="header">
-        <img src="{{ asset('img/logo_kci.png') }}" alt="Logo Perusahaan">
+        <img src="{{ asset('custom_script/img/logo_kci.png') }}" alt="Logo Perusahaan">
         <br>
         <p id="alamat">Kantor Pusat (Stasiun Juanda)</p>
         <p id="alamat">Jl. Ir. H. Djuanda I Kota Jakarta Pusat</p>

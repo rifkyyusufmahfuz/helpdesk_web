@@ -129,7 +129,7 @@
             var canvas = document.getElementById("the_canvas_manager_" + id_permintaan);
             var dataUrl3 = canvas.toDataURL();
 
-            if (dataUrl3 === "") {
+            if (signaturePad.isEmpty()) {
                 event.preventDefault();
                 Swal.fire({
                     icon: 'error',
