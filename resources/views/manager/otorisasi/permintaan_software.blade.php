@@ -108,7 +108,7 @@
 
                                             </form> --}}
 
-                                        <button class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                        <button class="btn btn-sm btn-success rounded" data-bs-toggle="modal"
                                             data-bs-target="#setujui_permintaan_{{ $data->id_permintaan }}"
                                             title="Setujui Permintaan">
                                             <i class="fas fa-check"></i>

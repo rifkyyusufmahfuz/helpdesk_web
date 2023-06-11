@@ -112,13 +112,23 @@ class ManagerModel extends Model
             ->first();
     }
 
-    public function update_otorisasi($data, $id_otorisasi)
+    public function update_otorisasi($data_otorisasi, $id_otorisasi)
     {
-        return DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update($data) ? true : false;
+        return DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update($data_otorisasi) ? true : false;
+    }
+
+    public function update_permintaan($data_permintaan, $id_permintaan)
+    {
+        return DB::table('permintaan')->where('id_permintaan', $id_permintaan)->update($data_permintaan) ? true : false;
     }
 
     public function input_notifikasi($notifikasi)
     {
         return DB::table('notifikasi')->insert($notifikasi) ? true : false;
+    }
+
+    public function cari_requestor($id_permintaan)
+    {
+        return DB::table('permintaan')->where('id_permintaan', $id_permintaan)->first();
     }
 }

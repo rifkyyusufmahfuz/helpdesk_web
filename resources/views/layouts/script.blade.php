@@ -43,7 +43,6 @@
 <script src="{{ asset('custom_script/js/fungsi_tombol.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan.js') }}"></script>
 <script src="{{ asset('custom_script/js/tanda_tangan_bast.js') }}"></script>
-{{-- <script src="{{ asset('custom_script/js/tanda_tangan_manager.js') }}"></script> --}}
 
 
 {{-- untuk grafik dashboard --}}

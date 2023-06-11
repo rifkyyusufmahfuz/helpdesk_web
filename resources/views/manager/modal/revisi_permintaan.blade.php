@@ -17,6 +17,7 @@
                     <form action="/manager/crud/{{ $data->id_permintaan }}" method="POST" id="form-tambah-pegawai">
                         @csrf
                         @method('PUT')
+                        <input hidden id="revisi" name="revisi">
                         <input type="hidden" id="id_otorisasi" name="id_otorisasi" value="{{ $data->id_otorisasi }}">
                         <input type="hidden" id="id_permintaan" name="id_permintaan"
                             value="{{ $data->id_permintaan }}">
