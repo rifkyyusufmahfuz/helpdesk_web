@@ -37,7 +37,7 @@ class PegawaiModel extends Model
     public function get_permintaan_software_by_id($id)
     {
         return DB::table('permintaan')->where('id', $id)
-        ->get();
+            ->get();
     }
 
 
@@ -129,7 +129,7 @@ class PegawaiModel extends Model
                     'prosesor' => $request->input('prosesor'),
                     'ram' => $request->input('ram'),
                     'penyimpanan' => $request->input('penyimpanan'),
-                    'status_barang' => 1,
+                    'status_barang' => 'belum diterima',
                     'jumlah_barang' => 1,
                     'updated_at' => now()
                 ]);
@@ -233,10 +233,12 @@ class PegawaiModel extends Model
 
         if ($barang) {
             return [
+                'kode_barang' => $barang->kode_barang,
                 'nama_barang' => $barang->nama_barang,
                 'prosesor' => $barang->prosesor,
                 'ram' => $barang->ram,
                 'penyimpanan' => $barang->penyimpanan,
+                'status_barang' => $barang->status_barang,
             ];
         } else {
             return null;

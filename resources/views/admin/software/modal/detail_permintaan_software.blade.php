@@ -15,29 +15,24 @@
                         <h6>Spesifikasi PC / Laptop</h6>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
-                            <input disabled type="text" class="form-control" id="kode_barang" name="kode_barang"
-                                value="{{ $data->kode_barang }}">
+                            <input disabled class="form-control" value="{{ $data->kode_barang }}">
                         </div>
                         <div class="form-group">
                             <label for="nama_barang">Nama Barang</label>
-                            <input disabled type="text" class="form-control" id="nama_barang" name="nama_barang"
-                                value="{{ $data->nama_barang }}">
+                            <input disabled class="form-control" value="{{ $data->nama_barang }}">
                         </div>
                         <div class="form-group">
                             <label for="prosesor">Prosesor</label>
-                            <input disabled type="text" class="form-control" id="prosesor" name="prosesor"
-                                value="{{ $data->prosesor }}">
+                            <input disabled class="form-control" value="{{ $data->prosesor }}">
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="ram">RAM</label>
-                                <input disabled type="text" class="form-control" id="ram" name="ram"
-                                    value="{{ $data->ram }}">
+                                <input disabled class="form-control" value="{{ $data->ram }}">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="penyimpanan">Penyimpanan</label>
-                                <input disabled type="text" class="form-control" id="penyimpanan" name="penyimpanan"
-                                    value="{{ $data->penyimpanan }}">
+                                <input disabled class="form-control" value="{{ $data->penyimpanan }}">
                             </div>
                         </div>
                     </div>
@@ -66,7 +61,7 @@
 
                         <div class="form-group">
                             <label for="uraian_kebutuhan">Uraian Kebutuhan</label>
-                            <textarea disabled class="form-control" id="uraian_kebutuhan" name="uraian_kebutuhan" rows="3">{{ $data->keluhan_kebutuhan }}</textarea>
+                            <textarea disabled class="form-control" rows="3">{{ $data->keluhan_kebutuhan }}</textarea>
                         </div>
                     </div>
 
@@ -75,43 +70,40 @@
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="nip">NIP</label>
-                                <input disabled type="text" class="form-control" id="nip_pegawai" name="nip"
-                                    placeholder="Masukkan NIP" maxlength="5" required value="{{ $data->nip }}">
+                                <input disabled class="form-control" value="{{ $data->nip }}">
                             </div>
 
                             <div class="form-group col-sm-7">
                                 <label for="nama">Nama</label>
-                                <input type="text" class="form-control" id="nama_pegawai" name="nama"
-                                    placeholder="Nama" disabled>
+                                <input class="form-control" value="{{ $data->nama }}" disabled>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="bagian">Bagian</label>
-                                <input type="text" class="form-control" id="bagian_pegawai" name="bagian"
-                                    placeholder="Bagian" disabled>
+                                <input class="form-control" value="{{ $data->bagian }}" disabled>
                             </div>
 
                             <div class="form-group col-sm-7">
                                 <label for="jabatan">Jabatan</label>
-                                <input type="text" class="form-control" id="jabatan_pegawai" name="jabatan"
-                                    placeholder="Jabatan" disabled>
+                                <input class="form-control" value="{{ $data->jabatan }}" disabled>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi</label>
-                            <input type="text" class="form-control" id="lokasi_pegawai" name="lokasi"
-                                placeholder="Lokasi" disabled>
+                            <input class="form-control" value="{{ $data->nama_stasiun }}" disabled>
                         </div>
                         <hr>
- 
+
                         <div class="form-group text-center">
 
                             <figcaption class="mb-2">Tanda Tangan</figcaption>
                             <div class="border rounded p-2">
-                                <img class="gambar_ttd" src="{{ asset('tandatangan/requestor/' . $data->ttd_requestor) }}"
-                                    title="Tanda tangan {{ $data->nama }}">
+                                <img class="gambar_ttd"
+                                    src="{{ asset('tandatangan/requestor/' . $data->ttd_requestor) }}"
+                                    title="Tanda tangan {{ $data->nama }}" oncontextmenu="return false;"
+                                    ondragstart="return false;">
                                 <figcaption>{{ $data->nama }}</figcaption>
                             </div>
 

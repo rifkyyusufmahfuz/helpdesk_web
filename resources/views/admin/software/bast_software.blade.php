@@ -74,12 +74,14 @@
                                 <td>{{ $data_barang->nama_barang }}</td>
                                 {{-- <td>{{ $data_barang->perihal }}</td> --}}
                                 <td>
-                                    @if ($data_barang->status_barang == 1)
-                                        <span>Belum Diterima</span>
-                                    @elseif ($data_barang->status_barang == 2)
-                                        <span>Diterima</span>
-                                    @elseif ($data_barang->status_barang == 3)
-                                        <span>Dikembalikan</span>
+                                    @if ($data_barang->status_barang == 'belum diterima')
+                                        <span class="badge badge-secondary">Belum Diterima</span>
+                                    @elseif ($data_barang->status_barang == 'diterima')
+                                        <span class="badge badge-success">Diterima</span>
+                                    @elseif ($data_barang->status_barang == 'siap diambil')
+                                        <span class="badge badge-warning">Siap Diambil</span>
+                                    @elseif ($data_barang->status_barang == 'dikembalikan')
+                                        <span class="badge badge-success">Telah Dikembalikan</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -95,7 +97,7 @@
                                         <i class="fas fa-eye"></i>
                                     </button>
 
-                                    @if ($data_barang->status_barang != '1')
+                                    @if ($data_barang->status_barang != 'belum diterima')
                                         {{-- <a href="/cetak_bast/barang_masuk/{{ $data_barang->id_bast }}" target="_blank"
                                             class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk">
                                             <i class="fa fa-print"></i>
@@ -117,12 +119,19 @@
                                         <i class="fas fa-arrow-down"></i>
                                     </button> --}}
 
-                                    <button {{ $data_barang->status_barang != '2' ? 'disabled' : '' }}
-                                        class="btn btn-sm btn-danger text-white" data-toggle="modal"
-                                        data-target="#modal_input_bast{{ $data_barang->kode_barang }}"
-                                        title="Serahkan barang">
-                                        <i class="fas fa-arrow-up"></i>
-                                    </button>
+
+                                    @if ($data_barang->status_barang != 'dikembalikan')
+                                        <button {{ $data_barang->status_barang != 'siap diambil' ? 'disabled' : '' }}
+                                            class="btn btn-sm btn-danger text-white" data-toggle="modal"
+                                            data-target="#modal_input_bast{{ $data_barang->kode_barang }}"
+                                            title="Serahkan barang"><i class="fas fa-arrow-up"></i>
+                                        </button>
+                                    @else
+                                        <button id="view_bast_masuk" class="btn btn-sm bg-primary text-white"
+                                            title="Cetak BAST Barang Masuk"><i class="fa fa-print"></i>
+                                        </button>
+                                    @endif
+
                                 </td>
 
                             </tr>

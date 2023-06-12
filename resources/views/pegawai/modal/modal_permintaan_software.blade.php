@@ -13,6 +13,10 @@
                 <form action="/pegawai/simpan_software" method="POST" id="form-instalasi-software"
                     enctype="multipart/form-data">
                     @csrf
+                    <div hidden class="form-group">
+                        <input class="form-control" id="kode_barang_table" name="kode_barang_table">
+                        <input class="form-control" id="input_status_barang" name="input_status_barang">
+                    </div>
                     <div id="detail_barang">
                         <h5>Spesifikasi PC / Laptop</h5>
                         <div class="form-group">
@@ -42,6 +46,13 @@
                                     placeholder="...GB">
                             </div>
                         </div>
+
+                        <div hidden id="peringatan_barang" class="alert alert-warning fade show small" role="alert">
+                            <i class="fas fa-exclamation-triangle"> </i> Barang tersebut telah diinput dan sedang dalam
+                            proses
+                            pengajuan.
+                        </div>
+
                         <div class="d-flex justify-content-end my-2" id="tombol_detail_barang">
                             <button type="button" class="btn btn-sm btn-primary" id="btn_lanjut_1">Lanjut <i
                                     class="fas fa-arrow-right"></i></button>
@@ -66,16 +77,16 @@
                                         <label class="form-check-label" for="os2">Linux OS</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox" id="os3"
-                                            value="Mac OS">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="os3" value="Mac OS">
                                         <label class="form-check-label" for="os3">Mac OS</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <label>Microsoft Office</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox" id="office1"
-                                            value="Microsoft Office Standar">
+                                        <input class="form-check-input" name="software[]" type="checkbox"
+                                            id="office1" value="Microsoft Office Standar">
                                         <label class="form-check-label" for="office1">Microsoft Office
                                             Standar</label>
                                     </div>
@@ -278,8 +289,11 @@
             timeoutId = setTimeout(function() {
                 // cek apakah semua input diisi
                 var isFilled = true;
+                var status_barang = $('#input_status_barang').val();
+
                 $('#detail_barang input').each(function() {
-                    if ($(this).val() === '') {
+                    if ($(this).val() === '' || (status_barang !== 'dikembalikan' &&
+                            status_barang !== '')) {
                         isFilled = false;
                         return false; // keluar dari loop
                     }
@@ -288,11 +302,15 @@
                 // aktifkan tombol lanjut jika semua input diisi
                 if (isFilled) {
                     $('#btn_lanjut_1').prop('disabled', false);
+                    $('#peringatan_barang').prop('hidden', true);
+
                 } else {
                     $('#btn_lanjut_1').prop('disabled', true);
+                    $('#peringatan_barang').prop('hidden', false);
                 }
             }, 500);
         });
+
 
         // tampilan modal awal, sembunyikan form detail_permintaan dan detail_pegawai
         $('#detail_permintaan').hide();

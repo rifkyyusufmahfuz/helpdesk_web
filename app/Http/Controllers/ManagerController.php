@@ -46,7 +46,7 @@ class ManagerController extends Controller
         );
     }
 
-    public function permintaan_revisi()
+    public function riwayat_otorisasi()
     {
         $permintaan = $this->modelmanager->get_permintaan_revisi();
         $list_software = $this->modelmanager->get_list_software();
@@ -100,6 +100,10 @@ class ManagerController extends Controller
      */
     public function update(Request $request, string $id_permintaan)
     {
+        //untuk input ke table otorisasi
+        $id_manager = auth()->user()->id;
+        $id_otorisasi = $request->id_otorisasi;
+
         if ($request->has('revisi')) {
             $request->validate(
                 [
@@ -107,11 +111,6 @@ class ManagerController extends Controller
                     'catatan_manager' => 'required'
                 ]
             );
-
-            //untuk input ke table otorisasi
-            $id_manager = auth()->user()->id;
-            $id_otorisasi = $request->id_otorisasi;
-
             $data_otorisasi = [
                 'catatan' => $request->catatan_manager,
                 'status_approval' => 'revision',
@@ -159,7 +158,8 @@ class ManagerController extends Controller
                 'updated_at' => now(),
             ];
 
-            $id_otorisasi = $request->id_otorisasi;
+            // $id_otorisasi = $request->id_otorisasi;
+            // $id_manager = auth()->user()->id;
 
             // Update data pada tabel otorisasi
             $data_otorisasi = [
@@ -167,6 +167,8 @@ class ManagerController extends Controller
                 'catatan' => $request->input('catatan_manager_' . $id_permintaan),
                 'tanggal_approval' => now(),
                 'ttd_manager' => $nama_file_ttd_manager,
+                'id' => $id_manager,
+                'updated_at' => now(),
             ];
 
             $permintaan = $this->modelmanager->cari_requestor($id_permintaan);

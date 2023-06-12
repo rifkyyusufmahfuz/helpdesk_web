@@ -204,16 +204,20 @@ class PegawaiController extends Controller
         $barang = $this->modelpegawai->data_barang_by_kode_barang($kodebarang);
 
         if ($barang) {
+            $kode_barang_table = $barang['kode_barang'];
             $nama_barang = $barang['nama_barang'];
             $prosesor = $barang['prosesor'];
             $ram = $barang['ram'];
             $penyimpanan = $barang['penyimpanan'];
+            $status_barang = $barang['status_barang'];
 
             return response()->json([
+                'kode_barang_table' => $kode_barang_table,
                 'nama_barang' => $nama_barang,
                 'prosesor' => $prosesor,
                 'ram' => $ram,
-                'penyimpanan' => $penyimpanan
+                'penyimpanan' => $penyimpanan,
+                'status_barang' => $status_barang,
             ]);
         } else {
             return response()->json(null);

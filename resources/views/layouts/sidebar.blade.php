@@ -167,8 +167,8 @@
 
         {{-- MENU PERMINTAAN LAYANAN --}}
         <li
-            class="nav-item {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_revisi*') || request()->is('manager/permintaan_hardware') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_revisi*') || request()->is('manager/permintaan_hardware') ? '' : 'collapsed' }}"
+            class="nav-item {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('manager/permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('manager/permintaan_hardware') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Software</span>
@@ -183,7 +183,7 @@
                 @endif
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('manager/permintaan_revisi*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
+                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     {{-- PERMINTAAN INSTALASI SOFTWARE --}}
@@ -204,10 +204,10 @@
                     </a>
 
                     {{-- PERMINTAAN REVISI --}}
-                    <a class="collapse-item {{ request()->is('manager/permintaan_revisi*') ? 'active' : '' }}"
-                        href="/manager/permintaan_revisi">
-                        <i class="fas fa-fw fa-edit"></i>
-                        <span class="custom-span">Revisi Permintaan</span>
+                    <a class="collapse-item {{ request()->is('manager/riwayat_otorisasi*') ? 'active' : '' }}"
+                        href="/manager/riwayat_otorisasi">
+                        <i class="fas fa-fw fa-history"></i>
+                        <span class="custom-span">Riwayat Otorisasi</span>
                         {{-- @php
                             $permintaan_software_count = DB::table('permintaan')
                                 ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
@@ -218,22 +218,6 @@
                             <span
                                 class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
                         @endif --}}
-                    </a>
-                    {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
-                    <a class="collapse-item {{ request()->is('manager/permintaan_hardware') ? 'active' : '' }}"
-                        href="/manager/permintaan_hardware">
-                        <i class="fas fa-fw fa-history"></i>
-                        <span class="custom-span">Riwayat Otorisasi</span>
-                        @php
-                            $permintaan_hardware_count = DB::table('permintaan')
-                                ->where('status_permintaan', '1')
-                                ->where('tipe_permintaan', 'hardware')
-                                ->count();
-                        @endphp
-                        @if ($permintaan_hardware_count > 0)
-                            <span
-                                class="badge badge-danger badge-counter badge-pill">{{ $permintaan_hardware_count }}</span>
-                        @endif
                     </a>
                 </div>
             </div>

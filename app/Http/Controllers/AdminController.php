@@ -154,6 +154,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+        // fungsi untuk tambah software 
         if ($request->has('nama_software')) {
             $request->validate(
                 // validasi form 
@@ -188,7 +189,9 @@ class AdminController extends Controller
             } else {
                 return back()->with('toast_error', 'Tambah software gagal!');
             }
-        } else if ($request->has('nip_p1')) {
+        }
+        //fungsi untuk BAST Barang Masuk
+        else if ($request->has('nip_p1')) {
             //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
             $folderPath_p1 = public_path('tandatangan/bast/yang_menyerahkan/');
             if (!is_dir($folderPath_p1)) {
@@ -263,7 +266,7 @@ class AdminController extends Controller
             $kode_barang = $request->kode_barang;
 
             $data_barang = [
-                'status_barang' => 2,
+                'status_barang' => 'diterima',
                 'updated_at' => now(),
             ];
 
@@ -302,12 +305,20 @@ class AdminController extends Controller
     public function update(Request $request, string $id)
     {
         if ($request->has('status_permintaan')) {
+            //update table permintaan
             $data = [
                 'status_permintaan' => $request->status_permintaan,
                 'updated_at' => now()
             ];
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
             $id_permintaan = $request->id_permintaan;
+
+            //update table barang
+            $kode_barang = $request->kode_barang;
+            $data_barang = [
+                'status_barang' => 'siap diambil',
+                'updated_at' => now()
+            ];
 
             $permintaan = PermintaanModel::find($id_permintaan);
             $pegawaiId = $permintaan->id;
@@ -320,10 +331,11 @@ class AdminController extends Controller
             ];
 
             $update_permintaan = $this->modeladmin->update_permintaan($data, $id);
+            $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
 
-            return $update_permintaan && $kirim_notifikasi ? back()->with('toast_success', 'Status permintaan telah diubah!') : back()->with('toast_success', 'Status permintaan gagal diubah!');
+            return $update_permintaan && $update_barang && $kirim_notifikasi ? back()->with('toast_success', 'Status permintaan telah diubah!') : back()->with('toast_success', 'Status permintaan gagal diubah!');
         } else {
             $request->validate([
                 'versi_software' => 'required',

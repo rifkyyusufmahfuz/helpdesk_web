@@ -159,7 +159,7 @@ class AdminModel extends Model
             $pegawaiId = $permintaan->id;
 
             // Mengirim notifikasi ke pegawai
-            $pesan = 'Permintaan instalasi software Anda sedang diajukan ke manajer, terima kasih.';
+            $pesan = 'Permintaan instalasi software Anda dengan ID Permintaan "' . $id_permintaan . '" sedang diajukan ke manajer, terima kasih.';
             $tautan = '/pegawai/permintaan_software';
 
             $kirim_notifikasi = DB::table('notifikasi')->insert([
@@ -191,7 +191,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software diproses oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" diproses oleh ' . $nama . ' dan menunggu Approval dari Manager.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);
@@ -248,7 +248,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software ' . $id_permintaan . ' telah direvisi oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu Approval dari Manager.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);

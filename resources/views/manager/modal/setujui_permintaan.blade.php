@@ -6,7 +6,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="setujui_permintaan_label">Setujui Permintaan Instalasi Software</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -48,7 +48,7 @@
                         <hr>
                         <div class="form-group text-center">
                             <label for="catatan_manager_{{ $data->id_permintaan }}">Catatan Manager</label>
-                            <textarea class="form-control" name="catatan_manager_{{ $data->id_permintaan }}"
+                            <textarea class="form-control catatan-manager" name="catatan_manager_{{ $data->id_permintaan }}"
                                 id="catatan_manager_{{ $data->id_permintaan }}" cols="30" rows="5"></textarea>
                         </div>
                         <hr>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
+                                <input class="form-check-input konfirmasi-checkbox" type="checkbox"
                                     id="konfirmasi_{{ $data->id_permintaan }}">
                                 <label class="form-check-label text-justify"
                                     for="konfirmasi_{{ $data->id_permintaan }}">
@@ -83,7 +83,7 @@
                         <div class="modal-footer p-0">
                             <button type="reset" class="btn btn-sm btn-secondary"
                                 data-bs-dismiss="modal">Batal</button>
-                            <button disabled type="submit" class="btn btn-sm btn-primary"
+                            <button disabled type="submit" class="btn btn-sm btn-primary btn-simpan"
                                 id="btn-simpan">Simpan</button>
                         </div>
                     </form>
@@ -96,13 +96,8 @@
     <script>
         var wrapper = document.getElementById("signature_pad_manager_{{ $data->id_permintaan }}");
         var clearButtons = document.getElementsByClassName("clear-btn");
-
-        var canvas = wrapper.querySelector("#the_canvas_manager_{{ $data->id_permintaan }}");
         var catatan_ttd = document.getElementById("catatan_ttd_manager_{{ $data->id_permintaan }}");
-        var signaturePad = new SignaturePad(canvas, {
-            minWidth: 1,
-            maxWidth: 1,
-        });
+        var signaturePad;
 
         for (var i = 0; i < clearButtons.length; i++) {
             clearButtons[i].addEventListener('click', function() {
@@ -121,31 +116,49 @@
 
             // Reset value in hidden input
             document.getElementById("ttd_manager_" + id_permintaan).value = "";
+            signaturePad.clear();
+            // Call tanda tangan function again
+            initializeSignature(canvas);
         }
 
+        //fungsi tanda tangan
+        var canvasElements = document.getElementsByClassName('isi-ttd');
 
-        document.getElementById("setujui_{{ $data->id_permintaan }}").addEventListener('submit', function(event) {
-            var id_permintaan = this.getAttribute('data-id-permintaan');
-            var canvas = document.getElementById("the_canvas_manager_" + id_permintaan);
-            var dataUrl3 = canvas.toDataURL();
+        for (var i = 0; i < canvasElements.length; i++) {
+            initializeSignature(canvasElements[i]);
+        }
 
-            if (signaturePad.isEmpty()) {
+        function initializeSignature(canvas) {
+            // var canvas = document.getElementById("the_canvas_manager_" + id_permintaan);
+            signaturePad = new SignaturePad(canvas, {
+                minWidth: 1,
+                maxWidth: 1,
+            });
+
+            var setujuiForm = canvas.closest("form");
+
+            setujuiForm.addEventListener('submit', function(event) {
                 event.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Tanda tangan belum diisi!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-            } else {
-                document.getElementById("ttd_manager_" + id_permintaan).value = dataUrl3;
-            }
-        });
+                var id_permintaan = this.getAttribute('data-id-permintaan');
+                var dataUrl3 = canvas.toDataURL();
 
+                if (!signaturePad.isEmpty()) {
+                    setujuiForm.querySelector("#ttd_manager_" + id_permintaan).value = dataUrl3;
+                    setujuiForm.submit();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Tanda tangan belum diisi!',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                }
+            });
+        }
 
         function my_function3(id_permintaan) {
             var el_note = document.getElementById("catatan_ttd_manager_" + id_permintaan);
@@ -154,19 +167,30 @@
     </script>
 
     <script>
-        var checkboxes = document.querySelectorAll('input[type="checkbox"][id^="konfirmasi_"]');
+        var checkboxes = document.getElementsByClassName('konfirmasi-checkbox');
+        var textareas = document.getElementsByClassName('catatan-manager');
+        var submitBtns = document.getElementsByClassName('btn-simpan');
 
-        checkboxes.forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                var submitButton = document.querySelector('#setujui_' + this.id.split('_')[1] +
-                    ' #btn-simpan');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].addEventListener('change', validateForm);
+        }
 
-                if (this.checked) {
-                    submitButton.removeAttribute('disabled');
+        for (var j = 0; j < textareas.length; j++) {
+            textareas[j].addEventListener('input', validateForm);
+        }
+
+        function validateForm() {
+            for (var k = 0; k < checkboxes.length; k++) {
+                var checkbox = checkboxes[k];
+                var textarea = textareas[k];
+                var submitBtn = submitBtns[k];
+
+                if (checkbox.checked && textarea.value.trim() !== '') {
+                    submitBtn.disabled = false;
                 } else {
-                    submitButton.setAttribute('disabled', 'disabled');
+                    submitBtn.disabled = true;
                 }
-            });
-        });
+            }
+        }
     </script>
 @endforeach

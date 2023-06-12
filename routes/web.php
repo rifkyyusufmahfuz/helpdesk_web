@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], fun
     Route::resource('/manager/crud', ManagerController::class);
     Route::get('/manager/dashboard/data', [ManagerController::class, 'getData']);
     Route::get('/manager/permintaan_software', [ManagerController::class, 'permintaan_software']);
-    Route::get('/manager/permintaan_revisi', [ManagerController::class, 'permintaan_revisi']);
+    Route::get('/manager/riwayat_otorisasi', [ManagerController::class, 'riwayat_otorisasi']);
 });
 
 // untuk pegawai

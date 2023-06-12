@@ -10,6 +10,11 @@ $(document).ready(function() {
             $('#prosesor').val(response.prosesor);
             $('#ram').val(response.ram);
             $('#penyimpanan').val(response.penyimpanan);
+            $('#input_status_barang').val(response.status_barang);
+            $('#kode_barang_table').val(response.kode_barang_table);
+
+            // Memeriksa status_barang dan mengatur tombol "Lanjut"
+            // checkStatus(response.status_barang, response.kode_barang_table);
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
@@ -27,10 +32,14 @@ $(document).ready(function() {
                 $('#prosesor').val(response.prosesor);
                 $('#ram').val(response.ram);
                 $('#penyimpanan').val(response.penyimpanan);
+                $('#penyimpanan').val(response.penyimpanan);
+                $('#input_status_barang').val(response.status_barang);
+                $('#kode_barang_table').val(response.kode_barang_table);
 
-
+                // Memeriksa status_barang dan mengatur tombol "Lanjut"
+                // checkStatus(response.status_barang, response.kode_barang_table);
             },
-
         });
     });
+
 });

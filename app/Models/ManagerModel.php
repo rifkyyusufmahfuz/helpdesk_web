@@ -87,7 +87,8 @@ class ManagerModel extends Model
                 'pegawai_admin.jabatan AS jabatan_admin',
                 'stasiun_admin.nama_stasiun AS lokasi_admin'
             )
-            ->where('status_approval', '=', 'revision')
+            ->where('status_approval', '!=', 'pending')
+            ->where('status_approval', '!=', 'waiting')
             ->orderBy('permintaan.updated_at', 'asc')
             ->get()
             ->toArray();

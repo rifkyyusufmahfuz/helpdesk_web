@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('penyimpanan', 10)->nullable();
 
             $table->integer('jumlah_barang');
-            $table->enum('status_barang', ['1', '2', '3']);
+            $table->enum('status_barang', ['belum diterima', 'diterima', 'siap diambil', 'dikembalikan']);
             // 1 = belum diterima
             // 2 = diterima
             // 3 = dikembalikan

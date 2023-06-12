@@ -56,16 +56,16 @@
                                             : ($data->status_permintaan == '2'
                                                 ? 'warning'
                                                 : ($data->status_permintaan == '3'
-                                                    ? 'primary'
+                                                    ? 'success'
                                                     : ($data->status_permintaan == '4'
                                                         ? 'primary'
                                                         : ($data->status_permintaan == '5'
-                                                            ? 'success'
+                                                            ? 'info'
                                                             : ($data->status_permintaan == '0'
                                                                 ? 'danger'
                                                                 : ($data->status_permintaan == '6'
-                                                                    ? 'success'
-                                                                    : 'success')))))) }} p-2">
+                                                                    ? 'secondary'
+                                                                    : 'secondary')))))) }} p-2">
 
                                         {{ $data->status_permintaan == '1'
                                             ? 'Pending'
@@ -99,8 +99,9 @@
                                             style="display: inline-block;">
                                             @csrf
                                             @method('PUT')
-                                            <input type="hidden" name="status_permintaan" value="5">
-                                            <input type="hidden" name="id_permintaan" value="{{ $data->id_permintaan }}">
+                                            <input hidden name="status_permintaan" value="5">
+                                            <input hidden name="id_permintaan" value="{{ $data->id_permintaan }}">
+                                            <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
                                             <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
                                                 title="Instalasi selesai" type="button" class="btn btn-sm btn-success"
                                                 onclick="instalasi_selesai('{{ $data->id_permintaan }}')">
