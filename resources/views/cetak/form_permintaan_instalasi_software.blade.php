@@ -187,13 +187,14 @@
         </table>
 
         <table class="tabel_ttd_requestor" border="0" cellspacing="0">
-            @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
+            @if (file_exists(public_path('/tandatangan/instalasi_software/requestor/' . $ttd_requestor)))
                 <tr class="kolom_tanda_tangan">
                     <td class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
                     <td rowspan="8">
                         <div class="kotak-ttd">
                             {{-- <figure> --}}
-                            <img class="gambar_ttd" src="{{ asset('tandatangan/requestor/' . $ttd_requestor) }}"
+                            <img class="gambar_ttd"
+                                src="{{ asset('tandatangan/instalasi_software/requestor/' . $ttd_requestor) }}"
                                 title="Tanda tangan {{ $nama }}">
                             <figcaption>{{ $nama }}</figcaption>
                             {{-- </figure> --}}
@@ -250,7 +251,7 @@
                         </td>
                         {{-- Kolom Version --}}
                         <td class="kolom_version" id="garis_bawah">
-                            @if ($selected_software)
+                            @if ($selected_software && $selected_software->versi_software == !null)
                                 {{ $selected_software->versi_software }}
                             @else
                                 &nbsp;
@@ -258,7 +259,7 @@
                         </td>
                         {{-- Kolom Notes  --}}
                         <td class="kolom_notes" id="garis_bawah">
-                            @if ($selected_software)
+                            @if ($selected_software && $selected_software->notes == !null)
                                 {{ $selected_software->notes }}
                             @else
                                 &nbsp;
@@ -273,12 +274,12 @@
             {{-- kolom ttd admin --}}
             <div class="tabel_ttd_request_owner" border="0" cellspacing="0">
                 <div class="kolom_ttd_request_owner">
-                    {{-- @if (file_exists(public_path('/tandatangan/requestor/' . $ttd_requestor)))
+                    {{-- @if (file_exists(public_path('/tandatangan/instalasi_software/requestor/' . $ttd_requestor)))
                         <div>
                             <div class="kotak_ttd_request_owner">
                                 <figcaption class="judul_ttd_request_owner">Request Owner</figcaption>
                                 <img class="gambar_ttd_request_owner" title="Tanda tangan {{ $nama }}"
-                                    src="{{ asset('tandatangan/requestor/' . $ttd_requestor) }}">
+                                    src="{{ asset('tandatangan/instalasi_software/requestor/' . $ttd_requestor) }}">
                                 <figcaption id="garis_bawah_request_owner">{{ $nama }}</figcaption>
                             </div>
                         </div>
@@ -297,11 +298,12 @@
             <div class="tabel_ttd_admin">
                 {{-- ttd admin --}}
                 <div class="kolom_ttd_admin">
-                    @if (!empty($ttd_admin) && file_exists(public_path('/tandatangan/admin/' . $ttd_admin)))
+                    @if (!empty($ttd_admin) && file_exists(public_path('/tandatangan/instalasi_software/admin/' . $ttd_admin)))
                         <div class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
                         <div>
                             <div class="kotak-ttd">
-                                <img class="gambar_ttd" src="{{ asset('tandatangan/admin/' . $ttd_admin) }}"
+                                <img class="gambar_ttd"
+                                    src="{{ asset('tandatangan/instalasi_software/admin/' . $ttd_admin) }}"
                                     title="Tanda tangan {{ $nama_admin }}">
                                 <figcaption>{{ $nama_admin }}</figcaption>
                             </div>
@@ -325,40 +327,41 @@
             </thead>
             @php $status_otorisasi = '-'; @endphp
 
-            @if ($otorisasi->status_approval == 'approved')
+            @if ($otorisasi && $otorisasi->status_approval == 'approved')
                 @php $status_otorisasi = 'A'; @endphp
-            @elseif ($otorisasi->status_approval == 'rejected')
+            @elseif ($otorisasi && $otorisasi->status_approval == 'rejected')
                 @php $status_otorisasi = 'R'; @endphp
-            @elseif ($otorisasi->status_approval == 'revision')
+            @elseif ($otorisasi && $otorisasi->status_approval == 'revision')
                 @php $status_otorisasi = 'N'; @endphp
             @endif
+
             @php $tanggal = '__/__/____'; @endphp
 
-            @if ($otorisasi->tanggal_approval != '0000-00-00')
+            @if ($otorisasi && $otorisasi->tanggal_approval != '0000-00-00')
                 @php
-                    $tanggal = date('d/m/Y', strtotime($otorisasi->tanggal_request));
+                    $tanggal = date('d/m/Y', strtotime($otorisasi->tanggal_approval));
                 @endphp
             @endif
             <tbody>
                 <tr>
-                    <td class="table_otorisasi" align="right">
+                    <td class="table_otorisasi">
                         <table border="0">
                             <tr>
-                                <td>Otorisasi Persetujuan</td>
+                                <td class="jarak-table-otorisasi">Otorisasi Persetujuan</td>
                                 <td>:</td>
                                 <td>
                                     <div class="kotak_otorisasi" style="padding:4px; font-weight:bold;"
                                         align="center">
                                         {{ $status_otorisasi }}</div>
                                 </td>
-                                <td>(A) Approved, (R) Rejected, (N) Needed Revision</td>
+                                <td>(A) Approved, (R) Rejected, (N) Revision Needed</td>
                             </tr>
                             <tr>
                                 <td>Catatan</td>
                                 <td>:</td>
                                 <td colspan="2" id="garis_bawah">
-                                    @if ($otorisasi['catatan'] != '')
-                                        {{ $otorisasi['catatan'] }}
+                                    @if ($otorisasi && $otorisasi->catatan != '')
+                                        {{ $otorisasi->catatan }}
                                     @else
                                         -
                                     @endif
@@ -373,31 +376,59 @@
                             </tr>
 
                             <tr>
-                                <td colspan="4">IT Manager</td>
+                                <td colspan="4">Manager IT</td>
                             </tr>
                             <tr>
                                 <td colspan="2">Nama/Tanda Tangan</td>
-                                <td colspan="2" align="right">Jakarta, {{ $tanggal }}(dd/mm/yyyy)</td>
-                            </tr>
-                            @if (file_exists(public_path('assets/signature/' . $otorisasi->ttd_manager)))
-                                <tr style="position: relative;text-align: center;">
-                                    <td rowspan="7">
-                                        <div class="kotak-ttd">
-                                            <img src="{{ asset('assets/signature/' . $otorisasi->ttd_manager) }}"
-                                                width="130" height="auto">
-                                            <div style="position: absolute;top: 97.8%;left: 43%;">{{ $nama }}
+                                <td colspan="2" align="right">
+                                    <div class="tanggal-otorisasi">
+                                        <div class="jarak-kiri">Jakarta, </div>
+                                        @if ($otorisasi && $otorisasi->tanggal_approval)
+                                            <div id="garis_bawah" class="tgl-otorisasi">
+                                                {{ date('d', strtotime($otorisasi->tanggal_approval)) }}
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="kotak-ttd"></div>
-                                    </td>
-                                </tr>
-                            @endif
+                                            <div>/</div>
+                                            <div id="garis_bawah" class="tgl-otorisasi">
+                                                {{ date('m', strtotime($otorisasi->tanggal_approval)) }}
+                                            </div>
+                                            <div>/</div>
+                                            <div id="garis_bawah" class="tahun-otorisasi">
+                                                {{ date('Y', strtotime($otorisasi->tanggal_approval)) }}
+                                            </div>
+                                        @else
+                                            <div id="garis_bawah" class="tgl-otorisasi">-</div>
+                                            <div>/</div>
+                                            <div id="garis_bawah" class="tgl-otorisasi">-</div>
+                                            <div>/</div>
+                                            <div id="garis_bawah" class="tahun-otorisasi">-</div>
+                                        @endif
+                                        <div>&nbsp; &nbsp; (dd/mm/yyyy)</div>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+
                         </table>
+                        <div class="pembungkus-manager">
+                            <div class="tabel_ttd_admin">
+                                {{-- ttd admin --}}
+                                <div class="kolom_ttd_admin">
+                                    @if (
+                                        !empty($otorisasi->ttd_manager) &&
+                                            file_exists(public_path('/tandatangan/instalasi_software/manager/' . $otorisasi->ttd_manager)))
+                                        <div class="kotak-ttd-manager">
+                                            <img class="gambar_ttd"
+                                                src="{{ asset('tandatangan/instalasi_software/manager/' . $otorisasi->ttd_manager) }}"
+                                                title="Tanda tangan {{ $otorisasi->nama }}">
+                                            <figcaption>{{ $otorisasi->nama }}</figcaption>
+                                        </div>
+                                    @else
+                                        <div class="kotak-ttd-manager"></div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </tbody>

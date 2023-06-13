@@ -89,7 +89,6 @@ Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
     Route::get('/pegawai', [PegawaiController::class, 'index']);
     Route::get('/pegawai/permintaan_software', [PegawaiController::class, 'permintaan_software']);
     Route::post('/pegawai/simpan_software', [PegawaiController::class, 'simpan_software']);
-    Route::get('/form_instalasi_software/{id}', [PegawaiController::class, 'getDataRequest'])->name('lihat_form');
 });
 
 //untuk notifikasi
@@ -102,3 +101,5 @@ Route::put('/notifikasi/admin/read_all/{id_role}', [NotifikasiController::class,
 
 //untuk cetak dokumen
 Route::get('/cetak_bast/barang_masuk/{kode_barang}', [CetakDokumenController::class, 'cetak_bast_barang_masuk']);
+Route::get('/cetak_bast/barang_keluar/{kode_barang}', [CetakDokumenController::class, 'cetak_bast_barang_keluar']);
+Route::get('/form_instalasi_software/{id}', [CetakDokumenController::class, 'cetak_form_instalasi_software'])->name('lihat_form');

@@ -143,7 +143,7 @@ class ManagerController extends Controller
             ]);
 
             //Tanda tangan manager untuk menyetujui permintaan
-            $lokasi_simpan_ttd = public_path('tandatangan/manager/permintaan_software/');
+            $lokasi_simpan_ttd = public_path('tandatangan/instalasi_software/manager/');
             if (!is_dir($lokasi_simpan_ttd)) {
                 //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
                 mkdir($lokasi_simpan_ttd, 0777, true);

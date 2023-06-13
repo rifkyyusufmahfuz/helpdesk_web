@@ -36,37 +36,54 @@
         </div>
 
         <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>ID Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Status Barang</th>
+                            <th>Diserahkan Oleh</th>
+                            <th>Diterima Oleh</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
+                    <tbody>
+                        @foreach ($barang as $data_barang)
+                            <div class="overlay" id="overlay">
+                                <div class="iframe-container">
+                                    <a id="tombol-print" href="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
+                                        target="_blank" class="btn btn-sm bg-primary text-white"
+                                        title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                        <i class="fas fa-file-pdf"></i> Cetak Dokumen
+                                    </a>
+                                    <button id="tutup_bast_masuk" class="btn btn-sm bg-danger text-white"
+                                        title="Tutup Iframe">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <iframe id="myIframe"
+                                        src="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"></iframe>
+                                </div>
+                            </div>
 
-            @foreach ($barang as $data_barang)
-                <div class="overlay" id="overlay">
-                    <div class="iframe-container">
-                        <a id="tombol-print" href="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
-                            target="_blank" class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk"
-                            onclick="cetakPDF(event, this.href)">
-                            <i class="fas fa-file-pdf"></i> Cetak Dokumen
-                        </a>
-                        <button id="tutup_bast_masuk" class="btn btn-sm bg-danger text-white" title="Tutup Iframe">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <iframe id="myIframe" src="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"></iframe>
-                    </div>
-                </div>
+                            <div class="view_cetak_bast_barang_keluar" id="view_cetak_bast_barang_keluar">
+                                <div class="iframe-container">
+                                    <a id="tombol-print" href="/cetak_bast/barang_keluar/{{ $data_barang->id_permintaan }}"
+                                        target="_blank" class="btn btn-sm bg-primary text-white"
+                                        title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                        <i class="fas fa-file-pdf"></i> Cetak Dokumen
+                                    </a>
+                                    <button id="tutup_bast_keluar" class="btn btn-sm bg-danger text-white"
+                                        title="Tutup Iframe">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <iframe id="myIframe"
+                                        src="/cetak_bast/barang_keluar/{{ $data_barang->id_permintaan }}"></iframe>
+                                </div>
+                            </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>ID Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Status Barang</th>
-                                <th>Diserahkan Oleh</th>
-                                <th>Diterima Oleh</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
-                        <tbody>
                             <?php $no = 1; ?>
                             <tr>
                                 <td>{{ $no++ }}</td>
@@ -75,13 +92,13 @@
                                 {{-- <td>{{ $data_barang->perihal }}</td> --}}
                                 <td>
                                     @if ($data_barang->status_barang == 'belum diterima')
-                                        <span class="badge badge-secondary">Belum Diterima</span>
+                                        <span class="p-2 badge badge-secondary">Belum Diterima</span>
                                     @elseif ($data_barang->status_barang == 'diterima')
-                                        <span class="badge badge-success">Diterima</span>
+                                        <span class="p-2 badge badge-success">Diterima</span>
                                     @elseif ($data_barang->status_barang == 'siap diambil')
-                                        <span class="badge badge-warning">Siap Diambil</span>
+                                        <span class="p-2 badge badge-warning">Siap Diambil</span>
                                     @elseif ($data_barang->status_barang == 'dikembalikan')
-                                        <span class="badge badge-success">Telah Dikembalikan</span>
+                                        <span class="p-2 badge badge-success">Telah Dikembalikan</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -98,51 +115,40 @@
                                     </button>
 
                                     @if ($data_barang->status_barang != 'belum diterima')
-                                        {{-- <a href="/cetak_bast/barang_masuk/{{ $data_barang->id_bast }}" target="_blank"
-                                            class="btn btn-sm bg-primary text-white" title="Cetak BAST Barang Masuk">
-                                            <i class="fa fa-print"></i>
-                                        </a> --}}
                                         <button id="view_bast_masuk" class="btn btn-sm bg-primary text-white"
-                                            title="Cetak BAST Barang Masuk"><i class="fa fa-print"></i>
+                                            title="Cetak BAST Barang Masuk"><i class="fa fa-print">&nbsp;</i><i
+                                                class="fas fa-arrow-down"></i>
                                         </button>
                                     @else
                                         <button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
-                                            data-bs-target="#modal_input_bast_masuk{{ $data_barang->id_permintaan }}"
+                                            data-bs-target="#modal_input_bast_masuk{{ $data_barang->id_bast }}"
                                             title="Terima barang">
                                             <i class="fas fa-arrow-down"></i>
                                         </button>
                                     @endif
-                                    {{-- <button {{ $data_barang->status_barang != '1' ? 'disabled' : '' }}
-                                        class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
-                                        data-bs-target="#modal_input_bast_masuk{{ $data_barang->id_permintaan }}"
-                                        title="Terima barang">
-                                        <i class="fas fa-arrow-down"></i>
-                                    </button> --}}
-
 
                                     @if ($data_barang->status_barang != 'dikembalikan')
                                         <button {{ $data_barang->status_barang != 'siap diambil' ? 'disabled' : '' }}
-                                            class="btn btn-sm btn-danger text-white" data-toggle="modal"
-                                            data-target="#modal_input_bast{{ $data_barang->kode_barang }}"
+                                            class="btn btn-sm btn-danger text-white" data-bs-toggle="modal"
+                                            data-bs-target="#modal_input_bast_keluar_{{ $data_barang->id_bast }}"
                                             title="Serahkan barang"><i class="fas fa-arrow-up"></i>
                                         </button>
                                     @else
-                                        <button id="view_bast_masuk" class="btn btn-sm bg-primary text-white"
-                                            title="Cetak BAST Barang Masuk"><i class="fa fa-print"></i>
+                                        <button id="view_bast_keluar" class="btn btn-sm bg-primary text-white"
+                                            title="Cetak BAST Barang Keluar"><i class="fa fa-print"></i>&nbsp;<i
+                                                class="fas fa-arrow-up"></i>
                                         </button>
                                     @endif
 
                                 </td>
-
                             </tr>
-                        </tbody>
-
-                    </table>
-                    <iframe id="myIframe" src="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
-                        style="display: none;"></iframe>
-            @endforeach
+                            <iframe id="myIframe" src="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
+                                style="display: none;"></iframe>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>
@@ -181,8 +187,28 @@
             // Sembunyikan overlay
             document.getElementById('overlay').style.display = 'none';
         });
+
+
+        // Tangani klik tombol Tampilkan Iframe
+        document.getElementById('view_bast_keluar').addEventListener('click', function() {
+            // Tampilkan view_bast_keluar
+            document.getElementById('view_cetak_bast_barang_keluar').style.display = 'block';
+        });
+
+        // Tangani klik tombol Tutup Iframe
+        document.getElementById('tutup_bast_keluar').addEventListener('click', function() {
+            // Sembunyikan view_bast_keluar
+            document.getElementById('view_cetak_bast_barang_keluar').style.display = 'none';
+        });
     </script>
 
-    @include('admin.software.modal.input_barang_masuk')
+
+
     @include('admin.software.modal.detail_barang')
+
+    @if ($data_barang->status_barang != 'belum diterima')
+        @include('admin.software.modal.input_barang_keluar')
+    @else
+        @include('admin.software.modal.input_barang_masuk')
+    @endif
 @endsection

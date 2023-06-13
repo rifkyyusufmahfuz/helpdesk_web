@@ -101,12 +101,20 @@
                             <figcaption class="mb-2">Tanda Tangan</figcaption>
                             <div class="border rounded p-2">
                                 <img class="gambar_ttd"
-                                    src="{{ asset('tandatangan/requestor/' . $data->ttd_requestor) }}"
+                                    src="{{ asset('tandatangan/instalasi_software/requestor/' . $data->ttd_requestor) }}"
                                     title="Tanda tangan {{ $data->nama }}" oncontextmenu="return false;"
                                     ondragstart="return false;">
                                 <figcaption>{{ $data->nama }}</figcaption>
                             </div>
+                        </div>
 
+                        <div class="form-group text-center">
+                            <td class="text-center">
+                                <a href="{{ route('lihat_form', ['id' => $data->id_permintaan]) }}" target="_blank"
+                                    class="btn btn-sm bg-primary text-white">
+                                    <i class="fa fa-print"></i> Form Permintaan Instalasi Software
+                                </a>
+                            </td>
                         </div>
 
                         <div class="modal-footer">

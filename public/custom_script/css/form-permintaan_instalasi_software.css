@@ -93,11 +93,17 @@ html {
     padding-top: 5px;
 }
 
-.kotak-ttd {
+.kotak-ttd,
+.kotak-ttd-manager {
     border: solid 1px black;
     width: 200px;
     height: 60px;
     text-align: center;
+}
+
+.kotak-ttd-manager {
+    margin-right: 10rem;
+    margin-bottom: 0.5rem;
 }
 
 .gambar_ttd {
@@ -153,11 +159,13 @@ html {
 
 /* untuk ttd admin dan request owner */
 
-.pembungkus {
-    /* margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px; */
+.pembungkus,
+.pembungkus-manager {
     margin: 10px;
+}
+
+.pembungkus-manager {
+    display: contents;
 }
 
 .tabel_ttd_request_owner,
@@ -209,10 +217,30 @@ html {
 
 .table_otorisasi {
     padding-right: 1rem;
+    display: grid;
+    padding-left: 15rem;
 }
 
 .kotak_otorisasi {
     border: solid 1px black;
+}
+
+.tanggal-otorisasi {
+    display: inline-flex;
+}
+
+.tgl-otorisasi {
+    width: 2rem;
+    text-align: center;
+}
+
+.tahun-otorisasi {
+    width: 5rem;
+    text-align: center;
+}
+
+.jarak-table-otorisasi {
+    width: 7rem;
 }
 
 

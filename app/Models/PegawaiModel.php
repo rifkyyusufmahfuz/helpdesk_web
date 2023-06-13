@@ -36,8 +36,30 @@ class PegawaiModel extends Model
 
     public function get_permintaan_software_by_id($id)
     {
-        return DB::table('permintaan')->where('id', $id)
-            ->get();
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
+            ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->select(
+                'permintaan.*',
+                'permintaan.created_at as permintaan_created_at',
+                'otorisasi.*',
+                'kategori_software.*',
+                'users.*',
+                'roles.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+            )
+            ->where('permintaan.id', $id)
+            ->orderBy('permintaan.updated_at', 'asc')
+            ->get()
+            ->toArray();
     }
 
 
@@ -103,16 +125,11 @@ class PegawaiModel extends Model
         ]);
 
         //Tanda tangan
-        $folderPath = public_path('tandatangan/requestor/');
+        $folderPath = public_path('tandatangan/instalasi_software/requestor/');
         if (!is_dir($folderPath)) {
             //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
             mkdir($folderPath, 0777, true);
         }
-
-        $filename = "requestor_" . uniqid() . ".png";
-        $nama_file = $folderPath . $filename;
-        file_put_contents($nama_file, file_get_contents($request->input('signature')));
-
 
         //fungsi untuk simpan ke table barang
         $kode_barang = $request->input('kode_barang');
@@ -147,7 +164,7 @@ class PegawaiModel extends Model
             ]);
         }
 
-
+        // generate ID Permintaan 
         $latestPermintaan = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
 
         if ($latestPermintaan) {
@@ -174,6 +191,10 @@ class PegawaiModel extends Model
 
         $newIdPermintaan = sprintf('%04d', $urutanBaru) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . $tahunSekarang;
 
+        //simpan tanda tangan
+        $filename = "requestor_" . $newIdPermintaan . ".png";
+        $nama_file = $folderPath . $filename;
+        file_put_contents($nama_file, file_get_contents($request->input('signature')));
 
 
         // simpan ke table permintaan

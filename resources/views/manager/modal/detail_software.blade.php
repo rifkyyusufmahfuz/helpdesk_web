@@ -13,7 +13,7 @@
                 <div class="modal-body" id="signature-pad">
                     <div id="detail_permintaan">
                         <h5>Detail Software</h5>
-                        <h6>List software yang akan diinstal</h6>
+                        <h6>List software yang akan diinstal:</h6>
                         {{-- <div class="form-group">
                             <label for="nip">ID Permintaan</label>
                             <input disabled type="text" class="form-control" value="{{ $data->id_permintaan }}">
@@ -82,7 +82,8 @@
 
                             <figcaption class="mb-2">Tanda Tangan</figcaption>
                             <div class="border rounded p-2">
-                                <img class="gambar_ttd" src="{{ asset('tandatangan/admin/' . $data->ttd_admin) }}"
+                                <img class="gambar_ttd"
+                                    src="{{ asset('tandatangan/instalasi_software/admin/' . $data->ttd_admin) }}"
                                     title="Tanda tangan {{ $data->nama_admin }}">
                                 <figcaption>{{ $data->nama_admin }}</figcaption>
                             </div>

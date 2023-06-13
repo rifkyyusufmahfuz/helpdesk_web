@@ -1,6 +1,7 @@
 /* CSS */
 
-.overlay {
+.overlay,
+.view_cetak_bast_barang_keluar {
     position: fixed;
     z-index: 9999;
     top: 0;
@@ -25,12 +26,14 @@
 }
 
 #tutup_bast_masuk,
+#tutup_bast_keluar,
 #tombol-print {
     position: absolute;
     top: 10px;
 }
 
-#tutup_bast_masuk {
+#tutup_bast_masuk,
+#tutup_bast_keluar {
     right: 30px;
 }
 

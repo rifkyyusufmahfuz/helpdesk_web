@@ -129,8 +129,12 @@
                                         <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
                                             method="GET" style="display: inline-block;">
                                             @csrf
+                                            {{-- <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
+                                                {{ $data->status_permintaan == '3' || $data->status_permintaan == '5' || $data->status_permintaan == '6' ? '' : 'disabled' }}>
+                                                <i class="fas fa-receipt"></i>
+                                            </button> --}}
                                             <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
-                                                {{ $data->status_permintaan == '3' || $data->status_permintaan == '5' ? '' : 'disabled' }}>
+                                                {{ $data->status_permintaan != '1' && $data->status_permintaan != '2' && $data->status_permintaan != '0' ? '' : 'disabled' }}>
                                                 <i class="fas fa-receipt"></i>
                                             </button>
                                         </form>

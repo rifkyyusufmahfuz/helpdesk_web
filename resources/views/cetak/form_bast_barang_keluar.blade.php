@@ -103,7 +103,7 @@
             </div>
 
             <div>
-                <p class="text-indent">Dengan ini menyatakan bahwa PIHAK PERTAMA telah menyerahkan barang kepada PIHAK
+                <p class="text-indent">Dengan ini menyatakan bahwa PIHAK PERTAMA telah mengembalikan barang kepada PIHAK
                     KEDUA dengan detail berikut:
                 </p>
             </div>
@@ -115,7 +115,7 @@
                         <th id="kode_barang">Kode Barang</th>
                         <th id="nama_barang">Nama Barang</th>
                         <th id="jumlah_barang">Jumlah Barang</th>
-                        <th id="keperluan">Keperluan</th>
+                        <th id="keperluan">Keterangan</th>
                     </tr>
                     <tr>
                         <td>1</td>
@@ -126,8 +126,8 @@
                             $nomorpermintaan = str_replace('-', '/', $data->id_permintaan);
                         @endphp
                         <td>
-                            Instalasi software sesuai permintaan pada Formulir Permintaan Instalasi Software dengan
-                            nomor:
+                            Telah dilakukan instalasi software sesuai permintaan pada Formulir Permintaan Instalasi
+                            Software dengan nomor:
                             <b>{{ $nomorpermintaan }}</b>
                             {{-- @foreach ($data_software as $data2)
                                 <p>- {{ $data2->nama_software }}</p>
@@ -142,14 +142,11 @@
 
             <div>
                 <p class="text-indent">
-                    Pihak kedua telah menerima barang tersebut dalam kondisi baik, lengkap, dan sesuai dengan deskripsi
-                    yang
-                    tertera pada tabel di atas dan kedua belah pihak setuju bahwa barang yang diserahkan oleh pihak
-                    pertama
-                    telah diterima dengan baik oleh pihak kedua untuk keperluan Layanan IT <i>Helpdesk</i> instalasi
-                    <i>software</i>. Selanjutnya, pihak kedua bertanggung jawab atas penggunaan barang tersebut sesuai
-                    dengan keperluan yang telah disepakati dan akan dikembalikan segera setelah proses instalasi
-                    <i>software</i> selesai.
+                    Pihak kedua telah menerima pengembalian barang tersebut dalam kondisi yang sesuai pada saat barang
+                    diserahkan serta telah memenuhi persyaratan yang berlaku untuk pengambilan barang. Kedua belah pihak
+                    setuju bahwa barang yang dikembalikan oleh Pihak Pertama telah diterima dengan baik oleh Pihak
+                    Kedua. Selanjutnya, barang yang telah dikembalikan menjadi tanggung jawab penuh Pihak Kedua dan
+                    diluar tanggung jawab pihak IT Support.
                 </p>
                 <p>Demikian Berita Acara Serah Terima Barang ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
             </div>
@@ -161,17 +158,17 @@
                 <div class="yang_menyerahkan">
                     @if (
                         !empty($data->ttd_menerima) &&
-                            file_exists(public_path('/tandatangan/bast/barang_masuk/yang_menerima/' . $data->ttd_menerima)))
+                            file_exists(public_path('/tandatangan/bast/barang_keluar/yang_menerima/' . $data->ttd_menerima)))
                         <div>
                             <div class="kotak-ttd">
                                 <div class="isi-ttd">
                                     <figcaption>Pihak Pertama,</figcaption>
                                     <img class="gambar_ttd"
-                                        src="{{ asset('tandatangan/bast/barang_masuk/yang_menyerahkan/' . $data->ttd_menyerahkan) }}"
+                                        src="{{ asset('tandatangan/bast/barang_keluar/yang_menyerahkan/' . $data->ttd_menyerahkan) }}"
                                         title="Tanda tangan {{ $data->nama_p1 }}">
                                     <figcaption>{{ $data->nama_p1 }}</figcaption>
                                 </div>
-                                <figcaption>Requestor</figcaption>
+                                <figcaption>Admin Layanan IT Helpdesk</figcaption>
                             </div>
                         </div>
                     @else
@@ -186,17 +183,17 @@
                 <div class="yang_menerima">
                     @if (
                         !empty($data->ttd_menerima) &&
-                            file_exists(public_path('/tandatangan/bast/barang_masuk/yang_menerima/' . $data->ttd_menerima)))
+                            file_exists(public_path('/tandatangan/bast/barang_keluar/yang_menerima/' . $data->ttd_menerima)))
                         <div>
                             <div class="kotak-ttd">
                                 <div class="isi-ttd">
                                     <figcaption>Pihak Kedua,</figcaption>
                                     <img class="gambar_ttd"
-                                        src="{{ asset('tandatangan/bast/barang_masuk/yang_menerima/' . $data->ttd_menerima) }}"
+                                        src="{{ asset('tandatangan/bast/barang_keluar/yang_menerima/' . $data->ttd_menerima) }}"
                                         title="Tanda tangan {{ $data->nama_p2 }}">
                                     <figcaption>{{ $data->nama_p2 }}</figcaption>
                                 </div>
-                                <figcaption>Admin Layanan IT Helpdesk</figcaption>
+                                <figcaption>Requestor</figcaption>
                             </div>
                         </div>
                     @else

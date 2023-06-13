@@ -47,7 +47,7 @@
                         <p class="text-center">Nomor Permintaan: <b>{{ $data->id_permintaan }}</b></p>
                         <hr>
                         <div class="form-group text-center">
-                            <label for="catatan_manager_{{ $data->id_permintaan }}">Catatan Manager</label>
+                            <label for="catatan_manager_{{ $data->id_permintaan }}">Catatan</label>
                             <textarea class="form-control catatan-manager" name="catatan_manager_{{ $data->id_permintaan }}"
                                 id="catatan_manager_{{ $data->id_permintaan }}" cols="30" rows="5"></textarea>
                         </div>

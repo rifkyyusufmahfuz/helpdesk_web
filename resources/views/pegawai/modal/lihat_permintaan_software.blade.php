@@ -1,6 +1,6 @@
 @foreach ($permintaan as $data)
     <!-- Modal permintaan instalasi software -->
-    <div class="modal fade" id="detail_permintaan_pegawai_{{ $data->id_permintaan }}" tabindex="-1" role="dialog"
+    <div class="modal fade" id="detail_permintaan_software_{{ $data->id_permintaan }}" tabindex="-1" role="dialog"
         aria-labelledby="detail_permintaan_software_label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -15,29 +15,24 @@
                         <h6>Spesifikasi PC / Laptop</h6>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
-                            <input disabled type="text" class="form-control" id="kode_barang" name="kode_barang"
-                                value="{{ $data->kode_barang }}">
+                            <input disabled class="form-control" value="{{ $data->kode_barang }}">
                         </div>
                         <div class="form-group">
                             <label for="nama_barang">Nama Barang</label>
-                            <input disabled type="text" class="form-control" id="nama_barang" name="nama_barang"
-                                value="{{ $data->nama_barang }}">
+                            <input disabled class="form-control" value="{{ $data->nama_barang }}">
                         </div>
                         <div class="form-group">
                             <label for="prosesor">Prosesor</label>
-                            <input disabled type="text" class="form-control" id="prosesor" name="prosesor"
-                                value="{{ $data->prosesor }}">
+                            <input disabled class="form-control" value="{{ $data->prosesor }}">
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="ram">RAM</label>
-                                <input disabled type="text" class="form-control" id="ram" name="ram"
-                                    value="{{ $data->ram }}">
+                                <input disabled class="form-control" value="{{ $data->ram }}">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="penyimpanan">Penyimpanan</label>
-                                <input disabled type="text" class="form-control" id="penyimpanan" name="penyimpanan"
-                                    value="{{ $data->penyimpanan }}">
+                                <input disabled class="form-control" value="{{ $data->penyimpanan }}">
                             </div>
                         </div>
                     </div>
@@ -66,7 +61,7 @@
 
                         <div class="form-group">
                             <label for="uraian_kebutuhan">Uraian Kebutuhan</label>
-                            <textarea disabled class="form-control" id="uraian_kebutuhan" name="uraian_kebutuhan" rows="3">{{ $data->keluhan_kebutuhan }}</textarea>
+                            <textarea disabled class="form-control" rows="3">{{ $data->keluhan_kebutuhan }}</textarea>
                         </div>
                     </div>
 
@@ -75,29 +70,29 @@
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="nip">NIP</label>
-                                <input type="text" class="form-control" value="{{ $data->nip }}" disabled>
+                                <input disabled class="form-control" value="{{ $data->nip }}">
                             </div>
 
                             <div class="form-group col-sm-7">
                                 <label for="nama">Nama</label>
-                                <input type="text" class="form-control" value="{{ $data->nama }}" disabled>
+                                <input class="form-control" value="{{ $data->nama }}" disabled>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="bagian">Bagian</label>
-                                <input type="text" class="form-control" value="{{ $data->bagian }}" disabled>
+                                <input class="form-control" value="{{ $data->bagian }}" disabled>
                             </div>
 
                             <div class="form-group col-sm-7">
                                 <label for="jabatan">Jabatan</label>
-                                <input type="text" class="form-control" value="{{ $data->jabatan }}" disabled>
+                                <input class="form-control" value="{{ $data->jabatan }}" disabled>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi</label>
-                            <input type="text" class="form-control" value="{{ $data->nama_stasiun }}" disabled>
+                            <input class="form-control" value="{{ $data->nama_stasiun }}" disabled>
                         </div>
                         <hr>
 
@@ -107,10 +102,18 @@
                             <div class="border rounded p-2">
                                 <img class="gambar_ttd"
                                     src="{{ asset('tandatangan/instalasi_software/requestor/' . $data->ttd_requestor) }}"
-                                    title="Tanda tangan {{ $data->nama }}">
+                                    title="Tanda tangan {{ $data->nama }}" oncontextmenu="return false;"
+                                    ondragstart="return false;">
                                 <figcaption>{{ $data->nama }}</figcaption>
                             </div>
-
+                        </div>
+                        <div class="form-group text-center">
+                            <td class="text-center">
+                                <button class="btn btn-sm bg-primary text-white"
+                                    onclick="printTargetPage('{{ route('lihat_form', ['id' => $data->id_permintaan]) }}')">
+                                    <i class="fa fa-print"></i> Form Permintaan Instalasi Software
+                                </button>
+                            </td>
                         </div>
 
                         <div class="modal-footer">
@@ -122,4 +125,25 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function printTargetPage(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    var printWindow = window.open('', '_blank');
+                    printWindow.document.open();
+                    printWindow.document.write(html);
+                    printWindow.document.close();
+
+                    printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.close();
+                    };
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 @endforeach

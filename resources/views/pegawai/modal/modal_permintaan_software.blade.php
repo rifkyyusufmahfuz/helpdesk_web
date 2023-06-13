@@ -302,12 +302,26 @@
                 // aktifkan tombol lanjut jika semua input diisi
                 if (isFilled) {
                     $('#btn_lanjut_1').prop('disabled', false);
-                    $('#peringatan_barang').prop('hidden', true);
 
                 } else {
                     $('#btn_lanjut_1').prop('disabled', true);
+                }
+
+                var tidak_ada_barang = true;
+                $('#detail_barang input').each(function() {
+                    if (status_barang !== '' && status_barang !== 'dikembalikan') {
+                        tidak_ada_barang = false;
+                        return false; // keluar dari loop
+                    }
+                });
+
+                // aktifkan peringatan jika ada data barang di table barang
+                if (tidak_ada_barang) {
+                    $('#peringatan_barang').prop('hidden', true);
+                } else {
                     $('#peringatan_barang').prop('hidden', false);
                 }
+
             }, 500);
         });
 

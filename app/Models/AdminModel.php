@@ -50,6 +50,7 @@ class AdminModel extends Model
             ->select('permintaan.*', 'otorisasi.*', 'kategori_software.*', 'users.*', 'roles.*', 'pegawai.*', 'stasiun.*')
             ->where('permintaan.id_permintaan', '=', $id_permintaan)
             ->orderBy('permintaan.updated_at', 'desc')
+            ->limit(1)
             ->get();
     }
 
@@ -107,6 +108,7 @@ class AdminModel extends Model
                 'pegawai_menyerahkan.nama as nama_menyerahkan',
                 'pegawai_menerima.nama as nama_menerima'
             )
+            ->limit(1)
             ->get();
     }
 
@@ -137,13 +139,13 @@ class AdminModel extends Model
 
         if (!DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->exists()) {
             //Tanda tangan
-            $folderPath = public_path('tandatangan/admin/');
+            $folderPath = public_path('tandatangan/instalasi_software/admin/');
             if (!is_dir($folderPath)) {
                 //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
                 mkdir($folderPath, 0777, true);
             }
 
-            $filename = "admin_" . uniqid() . ".png";
+            $filename = "admin_proses_" . $id_permintaan . ".png";
             $nama_file = $folderPath . $filename;
             file_put_contents($nama_file, file_get_contents($request->input('signature')));
 
@@ -204,13 +206,13 @@ class AdminModel extends Model
             }
         } elseif (DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->exists()) {
             //Tanda tangan
-            $folderPath = public_path('tandatangan/admin/');
+            $folderPath = public_path('tandatangan/instalasi_software/admin/');
             if (!is_dir($folderPath)) {
                 //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
                 mkdir($folderPath, 0777, true);
             }
 
-            $filename = "admin_" . uniqid() . ".png";
+            $filename = "admin_revisi_" . $id_permintaan . ".png";
             $nama_file = $folderPath . $filename;
             file_put_contents($nama_file, file_get_contents($request->input('signature')));
 

@@ -1,3 +1,5 @@
+let pollingInterval = 30000; // Initial polling interval of 30 seconds
+
 function getNotifications() {
     fetch('/notifications')
         .then(response => response.json())
@@ -136,6 +138,12 @@ function getNotifications() {
 
                     notifList.appendChild(item);
                 });
+
+                if (data.notifikasi.length > 0) {
+                    pollingInterval = 10000; // Set shorter interval if there are new notifications
+                } else {
+                    pollingInterval = 30000; // Set longer interval if no new notifications
+                }
             }
             if (data.notifikasi.length == 0) {
                 // if there are no notifications, remove existing items
@@ -235,4 +243,4 @@ $(document).ready(function() {
 document.addEventListener('DOMContentLoaded', getNotifications);
 
 // call getNotifications function every 10 seconds
-setInterval(getNotifications, 10000);
+setInterval(getNotifications, pollingInterval);

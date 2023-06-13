@@ -191,45 +191,56 @@ class AdminController extends Controller
             }
         }
         //fungsi untuk BAST Barang Masuk
-        else if ($request->has('nip_p1')) {
+        else if ($request->input('jenis_bast') == 'barang_masuk') {
+            $id_permintaan = $request->id_permintaan;
+
             //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
-            $folderPath_p1 = public_path('tandatangan/bast/yang_menyerahkan/');
+            $folderPath_p1 = public_path('tandatangan/bast/barang_masuk/yang_menyerahkan/');
             if (!is_dir($folderPath_p1)) {
                 //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
                 mkdir($folderPath_p1, 0777, true);
             }
-            $filename_ttd_p1 = "bast_pihakpertama_" . uniqid() . ".png";
+            $filename_ttd_p1 = "bast_pihakpertama_" . $id_permintaan . ".png";
             $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
             file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
 
             //Tanda tangan yang menerima barang / Pihak kedua / P2
-            $folderPath_p2 = public_path('tandatangan/bast/yang_menerima/');
+            $folderPath_p2 = public_path('tandatangan/bast/barang_masuk/yang_menerima/');
             if (!is_dir($folderPath_p2)) {
                 //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
                 mkdir($folderPath_p2, 0777, true);
             }
 
-            $filename_ttd_p2 = "bast_pihakkedua_" . uniqid() . ".png";
+            $filename_ttd_p2 = "bast_pihakkedua_" . $id_permintaan . ".png";
             $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
             file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
 
-            // generate id_bast / nomor bast
-            //membuat id permintaan
-            $bast_terbaru = $this->modeladmin->cari_id_bast();
+            //generate id_bast 
+            $bast_terbaru =  $this->modeladmin->cari_id_bast();
 
-            $bulanSebelumnya = $bast_terbaru ? substr($bast_terbaru->id_bast, 14, 1) : '';
-            $tahunSebelumnya = $bast_terbaru ? substr($bast_terbaru->id_bast, 16, 4) : '';
+            if ($bast_terbaru) {
+                $latestId = $bast_terbaru->id_bast;
+                $lastIdParts = explode('-', $latestId);
+                $lastUrutan = intval($lastIdParts[0]);
+                $lastBulan = $lastIdParts[3];
+                $lastTahun = $lastIdParts[4];
 
-            $bulanSekarang = date('n');
-            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
-            // || $tahunSebelumnya !== date('Y')
+                $bulanSekarang = date('n');
+                $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+                $tahunSekarang = date('Y');
 
-            if ($bulanSebelumnya !== $kodeBulanSekarang || $tahunSebelumnya !== date('Y')) {
-                $id_bast_baru = '0001-KCI-BAST-' . $kodeBulanSekarang . '-' . date('Y');
+                if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
+                    $urutanBaru = 1;
+                } else {
+                    $urutanBaru = $lastUrutan + 1;
+                }
             } else {
-                $nomorUrut = substr($bast_terbaru->id_bast, 0, 4) + 1;
-                $id_bast_baru = sprintf('%04d', $nomorUrut) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . date('Y');
+                $urutanBaru = 1;
+                $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman(date('n'));
+                $tahunSekarang = date('Y');
             }
+            $id_bast_baru = sprintf('%04d', $urutanBaru) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
 
             $data_bast = [
                 'id_bast' => $id_bast_baru,
@@ -280,6 +291,106 @@ class AdminController extends Controller
             return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang)
                 ? back()->with('toast_success', 'Input BAST berhasil!')
                 : back()->with('toast_error', 'Input BAST gagal!');
+        } else if ($request->input('jenis_bast') == 'barang_keluar') {
+            $id_permintaan = $request->id_permintaan;
+
+            //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
+            $folderPath_p1 = public_path('tandatangan/bast/barang_keluar/yang_menyerahkan/');
+            if (!is_dir($folderPath_p1)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p1, 0777, true);
+            }
+            $filename_ttd_p1 = "bast_pihakpertama_" . $id_permintaan . ".png";
+            $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
+            file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
+
+            //Tanda tangan yang menerima barang / Pihak kedua / P2
+            $folderPath_p2 = public_path('tandatangan/bast/barang_keluar/yang_menerima/');
+            if (!is_dir($folderPath_p2)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p2, 0777, true);
+            }
+
+            $filename_ttd_p2 = "bast_pihakkedua_" . $id_permintaan . ".png";
+            $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
+            file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
+
+            //generate id_bast 
+            $bast_terbaru =  $this->modeladmin->cari_id_bast();
+
+            if ($bast_terbaru) {
+                $latestId = $bast_terbaru->id_bast;
+                $lastIdParts = explode('-', $latestId);
+                $lastUrutan = intval($lastIdParts[0]);
+                $lastBulan = $lastIdParts[3];
+                $lastTahun = $lastIdParts[4];
+
+                $bulanSekarang = date('n');
+                $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+                $tahunSekarang = date('Y');
+
+                if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
+                    $urutanBaru = 1;
+                } else {
+                    $urutanBaru = $lastUrutan + 1;
+                }
+            } else {
+                $urutanBaru = 1;
+                $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman(date('n'));
+                $tahunSekarang = date('Y');
+            }
+            $id_bast_baru = sprintf('%04d', $urutanBaru) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
+
+            $data_bast = [
+                'id_bast' => $id_bast_baru,
+                'tanggal_bast' => now(),
+                'jenis_bast' => $request->jenis_bast,
+                'perihal' => 'Instalasi software dengan software berikut ini: ',
+                'ttd_menyerahkan' => $filename_ttd_p1,
+                'yang_menyerahkan' => $request->nip_p1,
+                'ttd_menerima' => $filename_ttd_p2,
+                'yang_menerima' => $request->nip_pegawai,
+                'id_permintaan' => $request->id_permintaan,
+                'id_stasiun' => 'JUA',
+                'created_at' => now(),
+            ];
+
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $id_permintaan = $request->id_permintaan;
+
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+
+            $notifikasi = [
+                'pesan' => 'Anda baru saja melakukan Serah Terima Barang dengan Nomor BAST : ' . $id_bast_baru . '.',
+                'tautan' => '/pegawai/bast',
+                'created_at' => now(),
+                'user_id' => $pegawaiId,
+            ];
+
+            $data_permintaan = [
+                'status_permintaan' => 6,
+                'updated_at' => now(),
+            ];
+
+            $kode_barang = $request->kode_barang;
+
+            $data_barang = [
+                'status_barang' => 'dikembalikan',
+                'updated_at' => now(),
+            ];
+
+            $update_permintaan = $this->modeladmin->update_permintaan($data_permintaan, $id_permintaan);
+            $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
+            $input_bast_barang_masuk = $this->modeladmin->input_bast($data_bast);
+            $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
+
+            // menggunakan operator ternary (pengganti kondisi dengan if else)
+            //untuk mengembalikan pesan apakah berhasil atau tidak
+            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang)
+                ? back()->with('toast_success', 'BAST Pengembalian barang berhasil!')
+                : back()->with('toast_error', 'BAST pengembalian barang gagal!');
         }
     }
 
