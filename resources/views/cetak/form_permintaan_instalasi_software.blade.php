@@ -436,6 +436,20 @@
 
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mendapatkan semua elemen input dengan tipe checkbox
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            // Mengatur fungsi onclick untuk mencegah perubahan pada checkbox
+            checkboxes.forEach(function(checkbox) {
+                checkbox.onclick = function() {
+                    return false;
+                };
+            });
+        });
+    </script>
 </body>
 
 </html>

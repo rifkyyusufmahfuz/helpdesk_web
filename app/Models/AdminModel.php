@@ -278,4 +278,16 @@ class AdminModel extends Model
     {
         return DB::table('bast')->insert($data_bast) ? true : false;
     }
+
+
+    public function get_list_software()
+    {
+        return DB::table('permintaan')
+            ->join('software', 'permintaan.id_permintaan', '=', 'software.id_permintaan')
+            ->select(
+                'permintaan.*',
+                'software.*',
+            )
+            ->get();
+    }
 }

@@ -1,4 +1,15 @@
 @foreach ($permintaan as $data)
+    <script>
+        $(function() {
+            // disable berikut pada saat awal load
+            $('#detail_permintaan_{{ $data->id_permintaan }}').hide();
+            $('#detail_pegawai_{{ $data->id_permintaan }}').hide();
+
+            $('#tombol_detail_permintaan{{ $data->id_permintaan }}').hide();
+            $('#tombol_detail_pegawai_{{ $data->id_permintaan }}').hide();
+        });
+    </script>
+
     <!-- Modal permintaan instalasi software -->
     <div class="modal fade" id="detail_permintaan_software_{{ $data->id_permintaan }}" tabindex="-1" role="dialog"
         aria-labelledby="detail_permintaan_software_label" aria-hidden="true">
@@ -11,8 +22,8 @@
                     </button>
                 </div>
                 <div class="modal-body" id="signature-pad">
-                    <div id="detail_barang">
-                        <h6>Spesifikasi PC / Laptop</h6>
+                    <div id="detail_barang_{{ $data->id_permintaan }}">
+                        <h5>Spesifikasi PC / Laptop</h5>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
                             <input disabled class="form-control" value="{{ $data->kode_barang }}">
@@ -35,11 +46,16 @@
                                 <input disabled class="form-control" value="{{ $data->penyimpanan }}">
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end my-2"
+                            id="tombol_detail_barang_{{ $data->id_permintaan }}">
+                            <button type="button" class="btn btn-sm btn-primary"
+                                id="btn_lanjut_1{{ $data->id_permintaan }}">Lanjut <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
                     </div>
 
-                    <div id="detail_permintaan">
-                        <h6>Detail Permintaan</h6>
-
+                    <div id="detail_permintaan_{{ $data->id_permintaan }}">
+                        <h5>Detail Permintaan</h5>
                         <div class="form-group">
                             <label>Kategori Software</label>
                             <div class="form-control">
@@ -57,16 +73,46 @@
                                 @endif
                             </div>
                         </div>
+                        <?php $no = 1; ?>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nama Software</th>
+                                    <th>Versi</th>
+                                    <th>Catatan</th>
 
-
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($list_software->where('id_permintaan', $data->id_permintaan) as $data2)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $data2->nama_software }}</td>
+                                        <td>{{ $data2->versi_software }}</td>
+                                        <td class="text-center">{{ $data2->notes }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                         <div class="form-group">
                             <label for="uraian_kebutuhan">Uraian Kebutuhan</label>
                             <textarea disabled class="form-control" rows="3">{{ $data->keluhan_kebutuhan }}</textarea>
                         </div>
+
+                        <div class="d-flex justify-content-end my-2"
+                            id="tombol_detail_permintaan{{ $data->id_permintaan }}">
+                            <button type="button" class="btn btn-sm btn-danger mr-1"
+                                id="tombol_kembali{{ $data->id_permintaan }}"><i class="fas fa-arrow-left"></i>
+                                Kembali</button>
+                            <button type="button" class="btn btn-sm btn-primary"
+                                id="btn_lanjut_2_{{ $data->id_permintaan }}">Lanjut <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
                     </div>
 
-                    <div id="detail_pegawai">
-                        <h6>Pengajuan Permintaan</h6>
+                    <div id="detail_pegawai_{{ $data->id_permintaan }}">
+                        <h5>Pengajuan Permintaan Pegawai</h5>
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="nip">NIP</label>
@@ -107,43 +153,93 @@
                                 <figcaption>{{ $data->nama }}</figcaption>
                             </div>
                         </div>
-                        <div class="form-group text-center">
-                            <td class="text-center">
-                                <button class="btn btn-sm bg-primary text-white"
-                                    onclick="printTargetPage('{{ route('lihat_form', ['id' => $data->id_permintaan]) }}')">
-                                    <i class="fa fa-print"></i> Form Permintaan Instalasi Software
-                                </button>
-                            </td>
-                        </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <div class="d-flex justify-content-end my-2"
+                            id="tombol_detail_pegawai_{{ $data->id_permintaan }}">
+                            <button type="button" class="btn btn-sm btn-danger mr-1"
+                                id="tombol_kembali_2_{{ $data->id_permintaan }}"><i class="fas fa-arrow-left"></i>
+                                Kembali</button>
                         </div>
-
                     </div>
+
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-sm bg-secondary text-white rounded">
+                            Tutup
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function printTargetPage(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    var printWindow = window.open('', '_blank');
-                    printWindow.document.open();
-                    printWindow.document.write(html);
-                    printWindow.document.close();
+        $(function() {
 
-                    printWindow.onload = function() {
-                        printWindow.print();
-                        printWindow.close();
-                    };
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+            // handler untuk tombol lanjut 1
+            $('#btn_lanjut_1{{ $data->id_permintaan }}').click(function() {
+                $('#detail_barang_{{ $data->id_permintaan }}').hide();
+                $('#tombol_detail_barang_{{ $data->id_permintaan }}').hide();
+
+                $('#detail_permintaan_{{ $data->id_permintaan }}').show();
+                $('#tombol_detail_permintaan{{ $data->id_permintaan }}').show();
+            });
+
+            // handler untuk tombol kembali 1
+            $('#tombol_kembali{{ $data->id_permintaan }}').click(function() {
+                $('#detail_barang_{{ $data->id_permintaan }}').show();
+                $('#detail_permintaan_{{ $data->id_permintaan }}').hide();
+                $('#detail_pegawai_{{ $data->id_permintaan }}').hide();
+
+                $('#tombol_detail_barang_{{ $data->id_permintaan }}').show();
+                $('#tombol_detail_permintaan{{ $data->id_permintaan }}').hide();
+            });
+
+            // handler untuk tombol lanjut 2
+            $('#btn_lanjut_2_{{ $data->id_permintaan }}').click(function() {
+                $('#detail_barang_{{ $data->id_permintaan }}').hide();
+                $('#detail_permintaan_{{ $data->id_permintaan }}').hide();
+                $('#detail_pegawai_{{ $data->id_permintaan }}').show();
+
+
+                $('#tombol_detail_pegawai_{{ $data->id_permintaan }}').show();
+            });
+
+            // handler untuk tombol kembali 2
+            $('#tombol_kembali_2_{{ $data->id_permintaan }}').click(function() {
+                $('#detail_barang_{{ $data->id_permintaan }}').hide();
+                $('#detail_permintaan_{{ $data->id_permintaan }}').show();
+                $('#detail_pegawai_{{ $data->id_permintaan }}').hide();
+
+
+
+                $('#tombol_detail_permintaan{{ $data->id_permintaan }}').show();
+
+                $('#tombol_detail_pegawai_{{ $data->id_permintaan }}').hide();
+
+            });
+        });
+
+        $(document).ready(function() {
+            // Handler tombol Tutup
+            $('#detail_permintaan_software_{{ $data->id_permintaan }}').on('hidden.bs.modal', function() {
+                $(this).find('input[type=text]').not(
+                    '#detail_pegawai_{{ $data->id_permintaan }} input[type=text]').val('');
+                // $(this).find('button[type=submit]').prop('disabled', true);
+                $('#detail_barang_{{ $data->id_permintaan }}').show();
+                $('#detail_permintaan_{{ $data->id_permintaan }}').hide();
+                $('#detail_pegawai_{{ $data->id_permintaan }}').hide();
+
+                // hapus centang pada setiap checkbox
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = false;
                 });
-        }
+                // kosongkan textarea
+                uraianKebutuhanTextarea.value = '';
+
+                $('#btn_lanjut_1{{ $data->id_permintaan }}').prop('disabled', true);
+                $('#btn_lanjut_2_{{ $data->id_permintaan }}').prop('disabled', true);
+            });
+        });
     </script>
 @endforeach

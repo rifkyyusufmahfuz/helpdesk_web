@@ -36,9 +36,6 @@
                         </tbody>
                     </table>
                     <p class="text-center">Nomor Permintaan: <b>{{ $data->id_permintaan }}</b></p>
-                    {{-- 
-                    <span class="text-center">Ajukan revisi permintaan <b>{{ $data->id_permintaan }}</b> ke Admin dengan mengisi catatan
-                        revisi pada kolom berikut:</span> --}}
                     <hr>
                     <form action="/manager/crud/{{ $data->id_permintaan }}" method="POST" id="form-tambah-pegawai">
                         @csrf

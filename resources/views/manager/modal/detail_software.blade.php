@@ -14,10 +14,6 @@
                     <div id="detail_permintaan">
                         <h5>Detail Software</h5>
                         <h6>List software yang akan diinstal:</h6>
-                        {{-- <div class="form-group">
-                            <label for="nip">ID Permintaan</label>
-                            <input disabled type="text" class="form-control" value="{{ $data->id_permintaan }}">
-                        </div> --}}
                         <?php $no = 1; ?>
                         <table class="table">
                             <thead>
@@ -38,10 +34,7 @@
                                         <td class="text-center">{{ $data2->notes }}</td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
-
-                            <tfoot></tfoot>
                         </table>
                     </div>
 
@@ -79,12 +72,12 @@
                         <hr>
 
                         <div class="form-group text-center">
-
-                            <figcaption class="mb-2">Tanda Tangan</figcaption>
+                            <figcaption class="mb-2">Tanda Tangan Admin</figcaption>
                             <div class="border rounded p-2">
                                 <img class="gambar_ttd"
                                     src="{{ asset('tandatangan/instalasi_software/admin/' . $data->ttd_admin) }}"
-                                    title="Tanda tangan {{ $data->nama_admin }}">
+                                    title="Tanda tangan {{ $data->nama_admin }}" oncontextmenu="return false;"
+                                    ondragstart="return false;">
                                 <figcaption>{{ $data->nama_admin }}</figcaption>
                             </div>
 

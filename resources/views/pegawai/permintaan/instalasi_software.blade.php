@@ -120,16 +120,77 @@
                                 @endif
                                 {{-- kolom aksi --}}
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
-                                        data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
-                                        title="Lihat Permintaan"><i class="fas fa-eye"></i>
-                                    </button>
-                                    {{-- <a href="{{ route('lihat_form', ['id' => $data->id_permintaan]) }}" target="_blank"
-                                        class="btn btn-sm bg-warning text-white">
-                                        <i class="fa fa-eye"></i>
-                                    </a> --}}
+                                    {{-- UNTUK MENAMPILKAN VIEW CETAK FORM INSTALASI SOFTWARE --}}
+                                    <div class="overlay" id="overlay_{{ $data->id_permintaan }}">
+                                        <div class="iframe-container">
+                                            <a id="tombol_print_{{ $data->id_permintaan }}"
+                                                href="/form_instalasi_software/{{ $data->id_permintaan }}" target="_blank"
+                                                class="btn btn-sm bg-primary text-white tombol-print"
+                                                title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                                <i class="fas fa-file-pdf"></i> Cetak Dokumen
+                                            </a>
+                                            <button id="tutup_form_software_{{ $data->id_permintaan }}"
+                                                class="btn btn-sm bg-danger text-white tutup-form-software"
+                                                title="Tutup Iframe">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            <iframe id="myIframe"
+                                                src="/form_instalasi_software/{{ $data->id_permintaan }}"></iframe>
+                                        </div>
+                                    </div>
+                                    {{-- END OF OVERLAY --}}
+
+                                    <div class="btn-group" role="group" aria-label="Tombol Aksi">
+                                        <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
+                                            data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
+                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                        </button>
+                                        <button id="view_form_software_{{ $data->id_permintaan }}"
+                                            class="btn btn-sm bg-primary text-white rounded"
+                                            title="Cetak Form Permintaan Instalasi Software"><i class="fa fa-print"></i>
+                                        </button>
+                                    </div>
+                                    <iframe id="myIframe" src="/form_instalasi_software/{{ $data->id_permintaan }}"
+                                        style="display: none;"></iframe>
                                 </td>
                             </tr>
+                            <script>
+                                function cetakPDF(event, url) {
+                                    event.preventDefault(); // Mencegah tautan terbuka di tab baru
+
+                                    // Buat elemen <iframe> dengan URL tujuan cetak
+                                    const iframe = document.createElement('iframe');
+                                    iframe.style.display = 'none';
+                                    iframe.src = url;
+
+                                    // Tambahkan elemen <iframe> ke dalam dokumen
+                                    document.body.appendChild(iframe);
+
+                                    // Setelah elemen <iframe> selesai dimuat, lakukan aksi cetak
+                                    iframe.onload = function() {
+                                        iframe.contentWindow.print();
+                                    };
+
+                                    // Hapus elemen <iframe> setelah cetak selesai
+                                    iframe.onafterprint = function() {
+                                        document.body.removeChild(iframe);
+                                    };
+                                }
+                            </script>
+                            <script>
+                                // Tangani klik tombol Tampilkan Iframe
+                                document.getElementById('view_form_software_{{ $data->id_permintaan }}').addEventListener('click', function() {
+                                    // Tampilkan overlay
+                                    document.getElementById('overlay_{{ $data->id_permintaan }}').style.display = 'block';
+                                });
+
+                                // Tangani klik tombol Tutup Iframe
+                                document.getElementById('tutup_form_software_{{ $data->id_permintaan }}').addEventListener('click', function() {
+                                    // Sembunyikan overlay_{{ $data->id_permintaan }}
+                                    document.getElementById('overlay_{{ $data->id_permintaan }}').style.display = 'none';
+                                });
+                            </script>
+                            
                         @endforeach
                     </tbody>
                 </table>

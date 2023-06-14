@@ -27,17 +27,21 @@
 
 #tutup_bast_masuk,
 #tutup_bast_keluar,
-#tombol-print {
+#tombol-print,
+.tombol-print,
+.tutup-form-software {
     position: absolute;
     top: 10px;
 }
 
 #tutup_bast_masuk,
-#tutup_bast_keluar {
+#tutup_bast_keluar,
+.tutup-form-software {
     right: 30px;
 }
 
-#tombol-print {
+#tombol-print,
+.tombol-print {
     right: 2rem;
     margin-right: 2rem;
 }
@@ -64,4 +68,9 @@ iframe {
 #peringatan_barang {
     padding-right: 0 !important;
     margin-bottom: 0 !important;
+}
+
+.tombol-cetak-software {
+    left: 1rem;
+    position: absolute;
 }

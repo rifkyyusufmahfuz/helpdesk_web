@@ -12,6 +12,7 @@
                 </div>
                 <div class="modal-body" id="signature-pad">
                     <div id="detail_barang">
+                        <h5>Detail Permintaan</h5>
                         <h6>Spesifikasi PC / Laptop</h6>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
@@ -41,10 +42,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <hr>
                     <div id="detail_permintaan">
-                        <h6>Detail Permintaan</h6>
-
+                        <h6>Kebutuhan Permintaan</h6>
                         <div class="form-group">
                             <label>Kategori Software</label>
                             <div class="form-control">
@@ -62,16 +62,14 @@
                                 @endif
                             </div>
                         </div>
-
-
                         <div class="form-group">
                             <label for="uraian_kebutuhan">Uraian Kebutuhan</label>
                             <textarea disabled class="form-control" id="uraian_kebutuhan" name="uraian_kebutuhan" rows="3">{{ $data->keluhan_kebutuhan }}</textarea>
                         </div>
                     </div>
-
+                    <hr>
                     <div id="detail_pegawai">
-                        <h6>Pengajuan Permintaan</h6>
+                        <h6>Pengajuan Permintaan Oleh:</h6>
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="nip">NIP</label>
@@ -103,11 +101,12 @@
 
                         <div class="form-group text-center">
 
-                            <figcaption class="mb-2">Tanda Tangan</figcaption>
+                            <figcaption class="mb-2">Tanda Tangan Requestor</figcaption>
                             <div class="border rounded p-2">
                                 <img class="gambar_ttd"
                                     src="{{ asset('tandatangan/instalasi_software/requestor/' . $data->ttd_requestor) }}"
-                                    title="Tanda tangan {{ $data->nama }}">
+                                    title="Tanda tangan {{ $data->nama }}" oncontextmenu="return false;"
+                                    ondragstart="return false;">
                                 <figcaption>{{ $data->nama }}</figcaption>
                             </div>
 

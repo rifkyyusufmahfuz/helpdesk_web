@@ -89,8 +89,11 @@ class PegawaiController extends Controller
     {
         $id = auth()->user()->id;
         $permintaan = $this->modelpegawai->get_permintaan_software_by_id($id);
-
-        return view('pegawai.permintaan.instalasi_software', ['permintaan' => $permintaan]);
+        $list_software = $this->modelpegawai->get_list_software();
+        return view('pegawai.permintaan.instalasi_software', [
+            'permintaan' => $permintaan,
+            'list_software' => $list_software
+        ]);
     }
 
     public function simpan_software(Request $request)

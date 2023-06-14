@@ -57,10 +57,13 @@ class AdminController extends Controller
     public function permintaan_software()
     {
         $permintaan = $this->modeladmin->get_permintaan_software();
+        $list_software = $this->modeladmin->get_list_software();
+
         return view(
             'admin.software.permintaan_software',
             [
-                'permintaan' => $permintaan
+                'permintaan' => $permintaan,
+                'list_software' => $list_software
             ]
         );
     }

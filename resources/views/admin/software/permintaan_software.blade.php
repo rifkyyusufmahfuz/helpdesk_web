@@ -18,7 +18,6 @@
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
                             <th>Kategori Software</th>
-                            {{-- <th>Uraian Kebutuhan</th> --}}
                             <th>Nama Pegawai</th>
                             <th>Status Otorisasi</th>
                             <th class="text-center">Status Permintaan</th>
@@ -89,11 +88,7 @@
                                 <td class="text-center">
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
-                                        {{-- <button class="btn btn-sm btn-primary text-white" data-toggle="modal"
-                                            data-target="#modalProses{{ $data->id_permintaan }}" title="Proses">
-                                            <i class="fas fa-edit"></i>
-                                        </button> --}}
-
+                    
                                         <form id="instalasi_selesai-{{ $data->id_permintaan }}"
                                             action="/admin/crud/{{ $data->id_permintaan }}" method="POST"
                                             style="display: inline-block;">
@@ -108,7 +103,6 @@
                                                 <i class="fas fa-check"></i>
                                             </button>
                                         </form>
-
 
                                         <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
@@ -129,10 +123,6 @@
                                         <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
                                             method="GET" style="display: inline-block;">
                                             @csrf
-                                            {{-- <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
-                                                {{ $data->status_permintaan == '3' || $data->status_permintaan == '5' || $data->status_permintaan == '6' ? '' : 'disabled' }}>
-                                                <i class="fas fa-receipt"></i>
-                                            </button> --}}
                                             <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
                                                 {{ $data->status_permintaan != '1' && $data->status_permintaan != '2' && $data->status_permintaan != '0' ? '' : 'disabled' }}>
                                                 <i class="fas fa-receipt"></i>
