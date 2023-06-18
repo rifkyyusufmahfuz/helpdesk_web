@@ -17,8 +17,8 @@
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            <th>Kategori Software</th>
-                            <th>Nama Pegawai</th>
+                            <th>Kebutuhan</th>
+                            {{-- <th>Nama Pegawai</th> --}}
                             <th>Status Otorisasi</th>
                             <th class="text-center">Status Permintaan</th>
                             <th class="text-center">Aksi</th>
@@ -32,7 +32,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                <td>
+                                {{-- <td>
                                     @if ($data->operating_system)
                                         <span>Sistem Operasi</span>
                                     @elseif($data->microsoft_office)
@@ -42,9 +42,11 @@
                                     @elseif ($data->software_lainnya)
                                         <span>Software Lainnya</span>
                                     @endif
-                                </td>
-                                {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
-                                <td>{{ $data->nama }}</td>
+                                </td> --}}
+                                <td>{{ $data->keluhan_kebutuhan }}</td>
+
+                                {{-- <td>{{ $data->nama }}</td> --}}
+
                                 <td>{{ ucwords($data->status_approval) }}</td>
 
 
@@ -88,13 +90,13 @@
                                 <td class="text-center">
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
-                    
+
                                         <form id="instalasi_selesai-{{ $data->id_permintaan }}"
                                             action="/admin/crud/{{ $data->id_permintaan }}" method="POST"
                                             style="display: inline-block;">
                                             @csrf
                                             @method('PUT')
-                                            <input hidden name="status_permintaan" value="5">
+                                            <input hidden name="selesaikan_permintaan" value="permintaan_software">
                                             <input hidden name="id_permintaan" value="{{ $data->id_permintaan }}">
                                             <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
                                             <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}

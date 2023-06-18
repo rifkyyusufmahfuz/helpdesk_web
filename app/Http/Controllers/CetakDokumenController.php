@@ -185,7 +185,72 @@ class CetakDokumenController extends Controller
             'table_software' => $table_software,
             'otorisasi' => $otorisasi,
             'selectedSoftware' => $selectedSoftware, // Untuk Tambahkan data software yang telah dipilih
-            'ttd_admin' => $tindaklanjut ? $tindaklanjut->ttd_admin : null,
+            'ttd_tindak_lanjut' => $tindaklanjut ? $tindaklanjut->ttd_tindak_lanjut : null,
+            'nama_admin' => $data_admin ? $data_admin->nama : null,
+        ]);
+    }
+
+
+    // fungsi untuk form permintaan instalasi software
+    public function cetak_form_pengecekan_hardware($id_permintaan)
+    {
+        $list_hardware = array(
+            "Hardisk",
+            "Memory",
+            "Monitor",
+            "Keyboard",
+            "Mouse",
+            "Software",
+            "Adaptor/Power Supply",
+            "Processor",
+            "Fan/Heatsink",
+            "Lainnya..."
+        );
+
+        //BARU
+        // Ambil data permintaan
+        $permintaan = $this->modelcetak->get_table_permintaan_by_id($id_permintaan);
+
+        // Ambil data pegawai berdasarkan nip pada tabel users
+        $get_nip = $permintaan->nip;
+        $pegawai = $this->modelcetak->get_pegawai_by_nip($get_nip);
+
+
+        $table_hardware = $this->modelcetak->get_hardware_by_id_permintaan($id_permintaan);
+
+        $get_id_otorisasi = $permintaan->id_otorisasi;
+        $otorisasi = $this->modelcetak->get_otorisasi_by_id_otorisasi($get_id_otorisasi);
+
+        // Ambil data software yang telah dipilih
+        $selectedHardware = $table_hardware->pluck('komponen')->toArray();
+
+        // Ambil data dari table tindak lanjut admin
+        $tindaklanjut = $this->modelcetak->get_tindak_lanjut_by_id_permintaan($id_permintaan);
+
+        // Ambil data admin berdasarkan id pada tabel users
+        $data_admin = null;
+        if ($tindaklanjut) {
+            $get_nip_tindak_lanjut = $tindaklanjut->nip;
+            $data_admin = $this->modelcetak->get_data_admin($get_nip_tindak_lanjut);
+        }
+
+
+        return view('cetak.form_pengecekan_hardware', [
+            'id_permintaan' => $id_permintaan,
+            'tanggal_permintaan' => $permintaan->tanggal_permintaan,
+            'nama' => $pegawai->nama,
+            'nip' => $pegawai->nip,
+            'bagian' => $pegawai->bagian,
+            'jabatan' => $pegawai->jabatan,
+            'keluhan' => $permintaan->keluhan_kebutuhan,
+            'kode_barang' => $permintaan->kode_barang,
+            'ttd_requestor' => $permintaan->ttd_requestor,
+            'list_hardware' => $list_hardware,
+            'table_hardware' => $table_hardware,
+            'otorisasi' => $otorisasi,
+
+            'ttd_tindak_lanjut' => $tindaklanjut ? $tindaklanjut->ttd_tindak_lanjut : null,
+            'rekomendasi' => $tindaklanjut ? $tindaklanjut->rekomendasi : null,
             'nama_admin' => $data_admin ? $data_admin->nama : null,
         ]);
     }

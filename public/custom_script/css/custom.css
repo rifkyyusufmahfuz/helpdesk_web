@@ -74,3 +74,14 @@ iframe {
     left: 1rem;
     position: absolute;
 }
+
+#kode_barang,
+#ram,
+#penyimpanan {
+    text-transform: uppercase;
+}
+
+#nama_barang,
+#prosesor {
+    text-transform: capitalize;
+}

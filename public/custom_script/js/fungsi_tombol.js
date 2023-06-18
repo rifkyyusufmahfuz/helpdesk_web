@@ -48,21 +48,6 @@ function aktivasi_user(id) {
     });
 }
 
-function instalasi_selesai(id) {
-    Swal.fire({
-        title: 'Instalasi selesai',
-        text: 'Proses instalasi software selesai, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk mengambil PC / Laptop.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Batal',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Submit form jika user menekan tombol "Ya, hapus"
-            document.querySelector('#instalasi_selesai-' + id).submit();
-        }
-    });
-}
 
 // tombol aktivasi semua user
 function aktivasi_semua_user() {
@@ -139,13 +124,28 @@ function confirm_delete_software(id) {
     });
 }
 
-
-
-// UNTUK MANAGER 
-function setujui_permintaan(id) {
+//untuk admin
+function instalasi_selesai(id) {
     Swal.fire({
-        title: 'Setujui Permintaan',
-        text: 'Proses instalasi software akan disetujui dan status permintaan akan diubah. Requestor akan mendapatkan notifikasi untuk menyerahkan PC / Laptop yang akan diinstalasi ke NOC.',
+        title: 'Instalasi selesai',
+        text: 'Proses instalasi software selesai, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk mengambil PC / Laptop.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Submit form jika user menekan tombol "Ya, hapus"
+            document.querySelector('#instalasi_selesai-' + id).submit();
+        }
+    });
+}
+
+function terima_permintaan(id) {
+    Swal.fire({
+        title: 'Terima Permintaan',
+        // text: 'Terima permintaan pengecekan hardware, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk menyerahkan unit yang akan dicek ke NOC.',
+        html: '<div style="text-align: center;">Terima permintaan pengecekan hardware. <br> Status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk menyerahkan unit yang akan dicek ke NOC.</div>',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Ya',
@@ -153,7 +153,24 @@ function setujui_permintaan(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"
-            document.querySelector('#setujui_permintaan-' + id).submit();
+            document.querySelector('#terima_permintaan-' + id).submit();
+        }
+    });
+}
+
+// tombol aksi hapus software
+function confirm_delete_hardware(id) {
+    Swal.fire({
+        title: 'Hapus komponen hardware ini?',
+        text: 'Hapus komponen hardware yang dicek pada permintaan ini.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Submit form jika user menekan tombol "Ya, hapus"
+            document.querySelector('#form-delete-' + id).submit();
         }
     });
 }

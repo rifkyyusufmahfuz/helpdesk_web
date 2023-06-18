@@ -120,6 +120,12 @@
                                                 class="fa fa-undo"></i>
                                         </button>
 
+                                        <button class="btn btn-sm btn-danger rounded mr-1" data-bs-toggle="modal"
+                                            data-bs-target="#tolak_permintaan_{{ $data->id_permintaan }}"
+                                            title="Setujui Permintaan">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+
                                         {{-- tombol view detail --}}
                                         <div class="btn-group">
                                             <button class="btn btn-sm btn-warning rounded text-white dropdown-toggle"
@@ -150,9 +156,10 @@
     </div>
 
     @if (isset($data))
-        @include('manager.modal.detail_permintaan')
+        @include('manager.modal.detail_permintaan_software')
         @include('manager.modal.detail_software')
         @include('manager.modal.revisi_permintaan')
         @include('manager.modal.setujui_permintaan')
+        @include('manager.modal.tolak_permintaan')
     @endif
 @endsection

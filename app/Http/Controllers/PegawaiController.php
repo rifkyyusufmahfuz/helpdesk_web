@@ -99,10 +99,29 @@ class PegawaiController extends Controller
     public function simpan_software(Request $request)
     {
         if ($this->modelpegawai->simpan_permintaan_software($request)) {
-            return redirect('/pegawai/permintaan_software')->with('toast_success', 'Permintaan berhasil ditambahkan!');
+            return redirect('/pegawai/permintaan_software')->with('toast_success', 'Permintaan instalasi software berhasil diajukan!');
         } else {
-            return redirect('/pegawai/permintaan_software')->with('toast_error', 'Permintaan gagal ditambahkan!');
+            return redirect('/pegawai/permintaan_software')->with('toast_error', 'Permintaan gagal diajukan, silakan coba lagi!');
         }
+    }
+
+
+    public function permintaan_hardware()
+    {
+        $id = auth()->user()->id;
+        $permintaan = $this->modelpegawai->get_permintaan_hardware_by_id($id);
+        $list_hardware = $this->modelpegawai->get_list_hardware();
+        return view('pegawai.permintaan.pengecekan_hardware', [
+            'permintaan' => $permintaan,
+            'list_hardware' => $list_hardware
+        ]);
+    }
+
+    public function simpan_hardware(Request $request)
+    {
+        return $this->modelpegawai->simpan_permintaan_hardware($request)
+            ? redirect('/pegawai/permintaan_hardware')->with('toast_success', 'Permintaan pengecekan hardware berhasil diajukan!')
+            : redirect('/pegawai/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan, silakan coba lagi!');
     }
 
     /**

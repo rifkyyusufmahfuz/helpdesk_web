@@ -17,8 +17,8 @@
                         <h6>Pihak Pertama - Yang Menyerahkan Barang</h6>
                         <div class="row">
                             @foreach ($permintaan as $data2)
-                                <input type="hidden" value="{{ $data2->id_permintaan }}" name="id_permintaan">
-                                <input type="hidden" value="{{ $data2->kode_barang }}" name="kode_barang">
+                                <input hidden value="{{ $data2->id_permintaan }}" name="id_permintaan">
+                                <input hidden value="{{ $data2->kode_barang }}" name="kode_barang">
                                 <div class="form-group col-sm-5">
                                     <label for="nip_p1">NIP</label>
                                     <input readonly type="text" class="form-control" id="nip_pegawai_p1"
@@ -26,6 +26,10 @@
                                         value="{{ $data2->nip }}">
                                 </div>
                             @endforeach
+                            @foreach ($tindak_lanjut as $data3)
+                                <input hidden name="id_tindak_lanjut" value="{{ $data3->id_tindak_lanjut }}">
+                            @endforeach
+
                             <div class="form-group col-sm-7">
                                 <label for="nama_p1">Nama</label>
                                 <input type="text" class="form-control" id="nama_pegawai_p1" name="nama_p1"

@@ -57,6 +57,7 @@ class PegawaiModel extends Model
                 'barang.*',
             )
             ->where('permintaan.id', $id)
+            ->where('tipe_permintaan', 'software')
             ->orderBy('permintaan.updated_at', 'asc')
             ->get()
             ->toArray();
@@ -158,7 +159,7 @@ class PegawaiModel extends Model
                 'prosesor' => $request->input('prosesor'),
                 'ram' => $request->input('ram'),
                 'penyimpanan' => $request->input('penyimpanan'),
-                'status_barang' => 1,
+                'status_barang' => 'belum diterima',
                 'jumlah_barang' => 1,
                 'created_at' => now()
             ]);
@@ -276,5 +277,178 @@ class PegawaiModel extends Model
             )
             ->get();
     }
-    
+
+
+    // UNTUK PERMINTAAN HARDWARE
+
+    public function get_permintaan_hardware_by_id($id)
+    {
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->select(
+                'permintaan.*',
+                'otorisasi.*',
+                'permintaan.created_at as permintaan_created_at',
+                'users.*',
+                'roles.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+            )
+            ->where('permintaan.id', $id)
+            ->where('tipe_permintaan', 'hardware')
+            ->orderBy('permintaan.updated_at', 'asc')
+            ->get()
+            ->toArray();
+    }
+
+
+    public function simpan_permintaan_hardware(Request $request)
+    {
+        //fungsi untuk simpan ke table barang
+        $kode_barang = $request->input('kode_barang');
+
+        // cek apakah kode_barang sudah ada di dalam tabel
+        $count = DB::table('barang')->where('kode_barang', $kode_barang)->count();
+
+        if ($count > 0) {
+            // jika sudah ada, update data barang yang sudah ada
+            $simpan_barang = DB::table('barang')
+                ->where('kode_barang', $kode_barang)
+                ->update([
+                    'nama_barang' => $request->input('nama_barang'),
+                    'prosesor' => '-',
+                    'ram' => '-',
+                    'penyimpanan' => '-',
+                    'status_barang' => 'belum diterima',
+                    'jumlah_barang' => 1,
+                    'updated_at' => now()
+                ]);
+        } else {
+            // jika belum ada, simpan data
+            $simpan_barang = DB::table('barang')->insert([
+                'kode_barang' => $kode_barang,
+                'nama_barang' => $request->input('nama_barang'),
+                'prosesor' => '-',
+                'ram' => '-',
+                'penyimpanan' => '-',
+                'status_barang' => 'belum diterima',
+                'jumlah_barang' => 1,
+                'created_at' => now()
+            ]);
+        }
+
+
+        //fungsi untuk simpan ke table otorisasi
+        // mengambil record terbaru dan nilai id_otorisasi tertinggi
+        $latestOtorisasi = DB::table('otorisasi')->orderByDesc('id_otorisasi')->first();
+
+        // mengambil nilai id_otorisasi dari record terbaru jika tersedia, jika tidak ada set nilai id_otorisasi menjadi 1
+        $newIdOtorisasi = $latestOtorisasi ? $latestOtorisasi->id_otorisasi + 1 : 1;
+
+        // simpan data baru ke tabel otorisasi dengan nilai id_otorisasi yang baru
+        $simpan_otorisasi = DB::table('otorisasi')->insert([
+            'id_otorisasi' => $newIdOtorisasi,
+            'tanggal_approval' => null,
+            'status_approval' => 'pending',
+            'catatan' => '',
+            'id' => null,
+            'created_at' => now()
+        ]);
+
+
+        // generate ID Permintaan 
+        $latestPermintaan = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
+
+        if ($latestPermintaan) {
+            $latestId = $latestPermintaan->id_permintaan;
+            $lastIdParts = explode('-', $latestId);
+            $lastUrutan = intval($lastIdParts[0]);
+            $lastBulan = $lastIdParts[3];
+            $lastTahun = $lastIdParts[4];
+
+            $bulanSekarang = date('n');
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+            $tahunSekarang = date('Y');
+
+            if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
+                $urutanBaru = 1;
+            } else {
+                $urutanBaru = $lastUrutan + 1;
+            }
+        } else {
+            $urutanBaru = 1;
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman(date('n'));
+            $tahunSekarang = date('Y');
+        }
+
+        $newIdPermintaan = sprintf('%04d', $urutanBaru) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
+
+        //Tanda tangan
+        $folderPath = public_path('tandatangan/pengecekan_hardware/requestor/');
+        if (!is_dir($folderPath)) {
+            //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+            mkdir($folderPath, 0777, true);
+        }
+
+        //simpan tanda tangan
+        $filename = "requestor_" . $newIdPermintaan . ".png";
+        $nama_file = $folderPath . $filename;
+        file_put_contents($nama_file, file_get_contents($request->input('signature')));
+
+
+        // simpan ke table permintaan
+        $now = now();
+        $id = auth()->user()->id;
+
+        //simpan permintaan
+        $simpan_permintaan = DB::table('permintaan')->insert([
+            'id_permintaan' => $newIdPermintaan,
+            'keluhan_kebutuhan' => ucwords($request->input('uraian_keluhan')),
+            'tipe_permintaan' => "hardware",
+            'status_permintaan' => 1,
+            'tanggal_permintaan' => $now,
+            'ttd_requestor' => $filename,
+            'id' => $id,
+            'id_kategori' => null,
+            'id_otorisasi' => $newIdOtorisasi,
+            'kode_barang' => $kode_barang,
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+
+        //kirim notifikasi ke admin
+        $nama = ucwords(auth()->user()->pegawai->nama);
+        $simpan_notifikasi = DB::table('notifikasi')->insert([
+            'role_id' => 2,
+            'pesan' => 'Requestor ' . $nama . ' baru saja mengajukan permintaan pengecekan hardware dengan ID Permintaan "' . $newIdPermintaan . '"',
+            'tautan' => '/admin/permintaan_hardware',
+            'created_at' => now()
+        ]);
+
+        if ($simpan_otorisasi && $simpan_barang && $simpan_permintaan && $simpan_notifikasi) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_list_hardware()
+    {
+        return DB::table('permintaan')
+            ->join('software', 'permintaan.id_permintaan', '=', 'software.id_permintaan')
+            ->select(
+                'permintaan.*',
+                'software.*',
+            )
+            ->get();
+    }
 }

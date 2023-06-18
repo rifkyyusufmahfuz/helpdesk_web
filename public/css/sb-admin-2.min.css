@@ -1927,7 +1927,9 @@ pre code {
     display: block;
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
+    /* edited */
+    font-size: 12px;
 }
 
 .table-responsive>.table-bordered {

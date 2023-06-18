@@ -139,4 +139,9 @@ class CetakDokumenModel extends Model
     {
         return DB::table('pegawai')->where('nip', $get_nip_tindak_lanjut)->first();
     }
+
+    public function get_hardware_by_id_permintaan($id_permintaan)
+    {
+        return DB::table('hardware')->where('id_permintaan', $id_permintaan)->get();
+    }
 }

@@ -102,7 +102,7 @@
             <thead>
                 <tr>
                     <td class="jarak-kiri" colspan="3">HARAP DITULIS DENGAN HURUF CETAK </td>
-                    <td colspan="4">*DIISI SETELAH INSTALASI SELESAI DILAKUKAN</td>
+                    <td colspan="4">*DIINSTALASI SETELAH APPROVALS SELESAI DILAKUKAN</td>
                 </tr>
                 <tr>
                     <td colspan="7" class="header">REQUESTOR</td>
@@ -298,12 +298,14 @@
             <div class="tabel_ttd_admin">
                 {{-- ttd admin --}}
                 <div class="kolom_ttd_admin">
-                    @if (!empty($ttd_admin) && file_exists(public_path('/tandatangan/instalasi_software/admin/' . $ttd_admin)))
+                    @if (
+                        !empty($ttd_tindak_lanjut) &&
+                            file_exists(public_path('/tandatangan/instalasi_software/admin/' . $ttd_tindak_lanjut)))
                         <div class="nama_tanda_tangan">Nama/Tanda Tangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
                         <div>
                             <div class="kotak-ttd">
                                 <img class="gambar_ttd"
-                                    src="{{ asset('tandatangan/instalasi_software/admin/' . $ttd_admin) }}"
+                                    src="{{ asset('tandatangan/instalasi_software/admin/' . $ttd_tindak_lanjut) }}"
                                     title="Tanda tangan {{ $nama_admin }}">
                                 <figcaption>{{ $nama_admin }}</figcaption>
                             </div>

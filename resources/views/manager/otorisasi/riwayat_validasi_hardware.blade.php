@@ -5,8 +5,8 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row">
-                <h4 class="card-title mx-2">Revisi Permintaan Instalasi Software</h4>
-                <p class="small text-gray-800">Diajukan revisi ke Admin</p>
+                <h4 class="card-title mx-2">Riwayat Validasi</h4>
+                <p class="small text-gray-800">Hasil Pengecekan Hardware</p>
             </div>
         </div>
         <div class="card-body">
@@ -17,7 +17,7 @@
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            <th>Status Otorisasi</th>
+                            <th class="text-center">Status Validasi</th>
                             <th class="text-center">Status Permintaan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -30,8 +30,35 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                <td>{{ ucwords($data->status_approval) }}</td>
+                                <td class="text-center">
+                                    <span
+                                        class="badge badge-{{ $data->status_approval == 'pending'
+                                            ? 'danger'
+                                            : ($data->status_approval == 'waiting'
+                                                ? 'warning'
+                                                : ($data->status_approval == 'approved'
+                                                    ? 'success'
+                                                    : ($data->status_approval == 'revision'
+                                                        ? 'primary'
+                                                        : ($data->status_approval == 'rejected'
+                                                            ? 'info'
+                                                            : ($data->status_approval == 'rejected'
+                                                                ? 'secondary'
+                                                                : 'secondary'))))) }} p-2">
 
+                                        {{ $data->status_approval == 'pending'
+                                            ? 'Belum divalidasi'
+                                            : ($data->status_approval == 'waiting'
+                                                ? 'Proses validasi'
+                                                : ($data->status_approval == 'approved'
+                                                    ? 'Telah divalidasi'
+                                                    : ($data->status_approval == 'revision'
+                                                        ? 'Revisi'
+                                                        : ($data->status_approval == 'rejected'
+                                                            ? 'Ditolak'
+                                                            : 'Ditolak')))) }}
+                                    </span>
+                                </td>
 
                                 <td class="text-center">
                                     <span
@@ -54,7 +81,7 @@
                                         {{ $data->status_permintaan == '1'
                                             ? 'Pending'
                                             : ($data->status_permintaan == '2'
-                                                ? 'Menunggu persetujuan'
+                                                ? 'Menunggu validasi'
                                                 : ($data->status_permintaan == '3'
                                                     ? 'Diterima'
                                                     : ($data->status_permintaan == '4'
@@ -74,10 +101,10 @@
                                     {{-- UNTUK MENAMPILKAN VIEW CETAK FORM INSTALASI SOFTWARE --}}
                                     <div class="overlay" id="overlay_{{ $data->id_permintaan }}">
                                         <div class="iframe-container">
-                                            <a id="tombol_print_{{ $data->id_permintaan }}"
-                                                href="/form_instalasi_software/{{ $data->id_permintaan }}" target="_blank"
+                                            <a id="tombol_print_{{ $data->id_permintaan }}" href="#" target="_blank"
                                                 class="btn btn-sm bg-primary text-white tombol-print"
-                                                title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                                title="Cetak Form Permintaan Instalasi Software"
+                                                onclick="cetakPDF(event, '/form_pengecekan_hardware/{{ $data->id_permintaan }}')">
                                                 <i class="fas fa-file-pdf"></i> Cetak Dokumen
                                             </a>
                                             <button id="tutup_form_software_{{ $data->id_permintaan }}"
@@ -85,8 +112,8 @@
                                                 title="Tutup Iframe">
                                                 <i class="fas fa-times"></i>
                                             </button>
-                                            <iframe id="myIframe"
-                                                src="/form_instalasi_software/{{ $data->id_permintaan }}"></iframe>
+                                            <iframe id="myIframe_{{ $data->id_permintaan }}" src=""
+                                                style="display: none;"></iframe>
                                         </div>
                                     </div>
                                     {{-- END OF OVERLAY --}}
@@ -104,20 +131,46 @@
                                                 </a>
                                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                                     data-target="#detail_permintaan_admin_{{ $data->id_permintaan }}">
-                                                    Detail Software
+                                                    Detail Hardware
                                                 </a>
                                             </div>
                                         </div>
                                         <button id="view_form_software_{{ $data->id_permintaan }}"
                                             class="btn btn-sm bg-primary text-white rounded ml-2"
-                                            title="Cetak Form Permintaan Instalasi Software"><i class="fa fa-print"></i>
+                                            title="Cetak Form Permintaan Instalasi Software"
+                                            onclick="loadIframe('{{ $data->id_permintaan }}')">
+                                            <i class="fa fa-print"></i>
                                         </button>
                                     </div>
-                                    <iframe id="myIframe" src="/form_instalasi_software/{{ $data->id_permintaan }}"
-                                        style="display: none;"></iframe>
                                 </td>
                             </tr>
+                            {{-- script untuk fungsi iframe diload hanya saat tombol print diklik --}}
+                            <script>
+                                function loadIframe(id_permintaan) {
+                                    var iframe = document.getElementById("myIframe_" + id_permintaan);
+                                    var overlay = document.getElementById("overlay_" + id_permintaan);
 
+                                    iframe.src = "/form_pengecekan_hardware/" + id_permintaan;
+                                    iframe.style.display = "block";
+                                    overlay.style.display = "block";
+                                }
+
+                                // Event listener untuk tombol "Cetak Form Permintaan Instalasi Software"
+                                document.getElementById("view_form_software_{{ $data->id_permintaan }}").addEventListener("click", function() {
+                                    loadIframe('{{ $data->id_permintaan }}');
+                                });
+
+                                // Event listener untuk tombol "Tutup Iframe"
+                                document.getElementById("tutup_form_software_{{ $data->id_permintaan }}").addEventListener("click", function() {
+                                    var iframe = document.getElementById("myIframe_{{ $data->id_permintaan }}");
+                                    var overlay = document.getElementById("overlay_{{ $data->id_permintaan }}");
+
+                                    iframe.style.display = "none";
+                                    overlay.style.display = "none";
+                                });
+                            </script>
+
+                            {{-- script untuk cetak --}}
                             <script>
                                 function cetakPDF(event, url) {
                                     event.preventDefault(); // Mencegah tautan terbuka di tab baru
@@ -162,7 +215,7 @@
     </div>
 
     @if (isset($data))
-        @include('manager.modal.detail_permintaan')
-        @include('manager.modal.detail_software')
+        @include('manager.modal.detail_permintaan_hardware')
+        @include('manager.modal.detail_hardware')
     @endif
 @endsection

@@ -7,7 +7,8 @@ html {
     font-size: 13px;
 }
 
-.container {
+.container,
+.kotak-comment {
     border: solid 1px black;
 }
 
@@ -118,9 +119,9 @@ html {
 
 .kolom_check_software {
     text-align: center;
-    display: block;
     margin-left: -15px;
     margin-right: -5px;
+    display: block;
 }
 
 .kolom_software {
@@ -131,11 +132,21 @@ html {
     width: 10%;
 }
 
-.kolom_notes {
+.kolom_notes,
+.kolom_problem {
     display: table;
+}
+
+.kolom_notes {
     margin-left: 2rem;
-    margin-right: 2rem;
     width: 85%;
+    margin-right: 2rem;
+}
+
+.kolom_problem {
+    display: block !important;
+    margin-right: 1rem;
+    margin-left: 1rem;
 }
 
 .jarak-kiri {
@@ -241,6 +252,107 @@ html {
 
 .jarak-table-otorisasi {
     width: 7rem;
+}
+
+
+/* UNTUK MENGATUR FORM PERMINTAAN HARDWARE */
+
+#status_hardware {
+    width: 5rem;
+    text-align: center;
+}
+
+.checkbox_hardware {
+    padding-right: 2rem;
+}
+
+.kolom_check_hardware {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.kolom_komponen {
+    padding-left: 1rem;
+}
+
+.kolom_hardware {
+    width: 20%;
+    padding-left: 0.5rem;
+}
+
+.header_kolom_problem {
+    padding: 1rem;
+}
+
+.kotak-comment {
+    height: 5rem;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: block;
+}
+
+.judul-comment {
+    font-size: 10px;
+}
+
+.status-dual_control {
+    padding-left: 0.6rem;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.checkbox-dual_control {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 1rem;
+}
+
+.checkbox-status {
+    padding-right: 1rem;
+}
+
+.control-signature {
+    margin: 0;
+    font-size: 8px;
+}
+
+.control-name {
+    border-top: 1px solid;
+    width: 14rem;
+}
+
+.control-executor {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.label-titikdua {
+    padding-right: 10px;
+}
+
+.kolom-dual_control,
+.kolom-date {
+    display: flex;
+    justify-content: space-between;
+}
+
+.kolom-date {
+    align-items: center;
+    font-weight: bold;
+}
+
+.lebar-kotak-comment {
+    height: 6rem;
+}
+
+.isi-comment {
+    display: flex;
+    height: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
 }
 
 

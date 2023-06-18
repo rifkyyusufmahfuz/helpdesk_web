@@ -54,33 +54,33 @@
                         @foreach ($barang as $data_barang)
                             <div class="overlay" id="overlay">
                                 <div class="iframe-container">
-                                    <a id="tombol-print" href="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
-                                        target="_blank" class="btn btn-sm bg-primary text-white"
-                                        title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                    <a id="tombol-print_masuk" href="#" target="_blank"
+                                        class="btn btn-sm bg-primary text-white tombol-print"
+                                        title="Cetak BAST Barang Masuk"
+                                        onclick="cetakPDF(event, '/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}')">
                                         <i class="fas fa-file-pdf"></i> Cetak Dokumen
                                     </a>
                                     <button id="tutup_bast_masuk" class="btn btn-sm bg-danger text-white"
                                         title="Tutup Iframe">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <iframe id="myIframe"
-                                        src="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"></iframe>
+                                    <iframe id="myIframe_masuk" src="" style="display: none;"></iframe>
                                 </div>
                             </div>
 
                             <div class="view_cetak_bast_barang_keluar" id="view_cetak_bast_barang_keluar">
                                 <div class="iframe-container">
-                                    <a id="tombol-print" href="/cetak_bast/barang_keluar/{{ $data_barang->id_permintaan }}"
-                                        target="_blank" class="btn btn-sm bg-primary text-white"
-                                        title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                    <a id="tombol-print_keluar" href="#" target="_blank"
+                                        class="btn btn-sm bg-primary text-white tombol-print"
+                                        title="Cetak BAST Barang Keluar"
+                                        onclick="cetakPDF(event, '/cetak_bast/barang_keluar/{{ $data_barang->id_permintaan }}')">
                                         <i class="fas fa-file-pdf"></i> Cetak Dokumen
                                     </a>
                                     <button id="tutup_bast_keluar" class="btn btn-sm bg-danger text-white"
                                         title="Tutup Iframe">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <iframe id="myIframe"
-                                        src="/cetak_bast/barang_keluar/{{ $data_barang->id_permintaan }}"></iframe>
+                                    <iframe id="myIframe_keluar" src="" style="display: none;"></iframe>
                                 </div>
                             </div>
 
@@ -115,9 +115,9 @@
                                     </button>
 
                                     @if ($data_barang->status_barang != 'belum diterima')
-                                        <button id="view_bast_masuk" class="btn btn-sm bg-primary text-white"
-                                            title="Cetak BAST Barang Masuk"><i class="fa fa-print">&nbsp;</i><i
-                                                class="fas fa-arrow-down"></i>
+                                        <button id="view_bast_masuk" class="btn btn-sm bg-primary text-white rounded mx-1"
+                                            title="Cetak BAST Barang Masuk" onclick="loadIframe('masuk')">
+                                            <i class="fa fa-print"></i>&nbsp;<i class="fas fa-arrow-down"></i>
                                         </button>
                                     @else
                                         <button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
@@ -134,22 +134,63 @@
                                             title="Serahkan barang"><i class="fas fa-arrow-up"></i>
                                         </button>
                                     @else
-                                        <button id="view_bast_keluar" class="btn btn-sm bg-primary text-white"
-                                            title="Cetak BAST Barang Keluar"><i class="fa fa-print"></i>&nbsp;<i
-                                                class="fas fa-arrow-up"></i>
+                                        <button id="view_bast_keluar" class="btn btn-sm bg-primary text-white rounded"
+                                            title="Cetak BAST Barang Keluar" onclick="loadIframe('keluar')">
+                                            <i class="fa fa-print"></i>&nbsp;<i class="fas fa-arrow-up"></i>
                                         </button>
                                     @endif
 
                                 </td>
                             </tr>
-                            <iframe id="myIframe" src="/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}"
-                                style="display: none;"></iframe>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <script>
+        function loadIframe(type) {
+            var iframe;
+
+            if (type === 'masuk') {
+                iframe = document.getElementById("myIframe_masuk");
+                iframe.src = "/cetak_bast/barang_masuk/{{ $data_barang->id_permintaan }}";
+                document.getElementById("overlay").style.display = "block";
+            } else if (type === 'keluar') {
+                iframe = document.getElementById("myIframe_keluar");
+                iframe.src = "/cetak_bast/barang_keluar/{{ $data_barang->id_permintaan }}";
+                document.getElementById("view_cetak_bast_barang_keluar").style.display = "block";
+            }
+
+            iframe.style.display = "block";
+        }
+
+        // Event listener untuk tombol "Cetak BAST Barang Masuk"
+        document.getElementById("tombol-print_masuk").addEventListener("click", function(event) {
+            event.preventDefault();
+            loadIframe('masuk');
+        });
+
+        // Event listener untuk tombol "Cetak BAST Barang Keluar"
+        document.getElementById("tombol-print_keluar").addEventListener("click", function(event) {
+            event.preventDefault();
+            loadIframe('keluar');
+        });
+
+        // Event listener untuk tombol "Tutup Iframe" pada BAST Barang Masuk
+        document.getElementById("tutup_bast_masuk").addEventListener("click", function() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("myIframe_masuk").style.display = "none";
+        });
+
+        // Event listener untuk tombol "Tutup Iframe" pada BAST Barang Keluar
+        document.getElementById("tutup_bast_keluar").addEventListener("click", function() {
+            document.getElementById("view_cetak_bast_barang_keluar").style.display = "none";
+            document.getElementById("myIframe_keluar").style.display = "none";
+        });
+    </script>
+
 
     <script>
         function cetakPDF(event, url) {

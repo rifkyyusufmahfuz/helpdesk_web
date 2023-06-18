@@ -123,10 +123,10 @@
                                     {{-- UNTUK MENAMPILKAN VIEW CETAK FORM INSTALASI SOFTWARE --}}
                                     <div class="overlay" id="overlay_{{ $data->id_permintaan }}">
                                         <div class="iframe-container">
-                                            <a id="tombol_print_{{ $data->id_permintaan }}"
-                                                href="/form_instalasi_software/{{ $data->id_permintaan }}" target="_blank"
+                                            <a id="tombol_print_{{ $data->id_permintaan }}" href="#" target="_blank"
                                                 class="btn btn-sm bg-primary text-white tombol-print"
-                                                title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                                title="Cetak Form Pengecekan Hardware"
+                                                onclick="cetakPDF(event, '/form_instalasi_software/{{ $data->id_permintaan }}')">
                                                 <i class="fas fa-file-pdf"></i> Cetak Dokumen
                                             </a>
                                             <button id="tutup_form_software_{{ $data->id_permintaan }}"
@@ -134,8 +134,8 @@
                                                 title="Tutup Iframe">
                                                 <i class="fas fa-times"></i>
                                             </button>
-                                            <iframe id="myIframe"
-                                                src="/form_instalasi_software/{{ $data->id_permintaan }}"></iframe>
+                                            <iframe id="myIframe_{{ $data->id_permintaan }}" src=""
+                                                style="display: none;"></iframe>
                                         </div>
                                     </div>
                                     {{-- END OF OVERLAY --}}
@@ -143,17 +143,37 @@
                                     <div class="btn-group" role="group" aria-label="Tombol Aksi">
                                         <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
                                         <button id="view_form_software_{{ $data->id_permintaan }}"
-                                            class="btn btn-sm bg-primary text-white rounded"
-                                            title="Cetak Form Permintaan Instalasi Software"><i class="fa fa-print"></i>
+                                            class="btn btn-sm bg-primary text-white rounded print-software"
+                                            title="Cetak Form Permintaan Instalasi Software"
+                                            onclick="loadIframe({{ $data->id_permintaan }})"><i class="fa fa-print"></i>
                                         </button>
                                     </div>
-                                    <iframe id="myIframe" src="/form_instalasi_software/{{ $data->id_permintaan }}"
-                                        style="display: none;"></iframe>
                                 </td>
                             </tr>
+                            {{-- script untuk mencegah iframe diload untuk meringankan halaman pada saat load --}}
+                            <script>
+                                function loadIframe(id_permintaan) {
+                                    var iframe = document.getElementById("myIframe_" + id_permintaan);
+                                    var iframeSrc = "/form_instalasi_software/" + id_permintaan;
+                                    iframe.src = iframeSrc;
+                                    iframe.style.display = "block";
+                                }
+
+                                // Event listener untuk tombol "Form Pengecekan Hardware"
+                                var viewFormSoftwareButtons = document.getElementsByClassName("print-software");
+                                for (var i = 0; i < viewFormSoftwareButtons.length; i++) {
+                                    viewFormSoftwareButtons[i].addEventListener("click", function() {
+                                        var id_permintaan = this.id.split("_")[3];
+                                        loadIframe(id_permintaan);
+                                    });
+                                }
+                            </script>
+
+
+
                             <script>
                                 function cetakPDF(event, url) {
                                     event.preventDefault(); // Mencegah tautan terbuka di tab baru
@@ -190,13 +210,27 @@
                                     document.getElementById('overlay_{{ $data->id_permintaan }}').style.display = 'none';
                                 });
                             </script>
-                            
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    {{-- untuk animasi expand --}}
+    <script>
+        $(document).ready(function() {
+            $('#collapseThree').on('show.bs.collapse', function() {
+                $(this).prev('#informasi_software_header').addClass('active');
+                $(this).slideDown();
+            });
+            $('#collapseThree').on('hide.bs.collapse', function() {
+                $(this).prev('#informasi_software_header').removeClass('active');
+                $(this).slideUp();
+            });
+        });
+    </script>
+
     @include('pegawai.modal.modal_permintaan_software')
 
     @if (isset($data))

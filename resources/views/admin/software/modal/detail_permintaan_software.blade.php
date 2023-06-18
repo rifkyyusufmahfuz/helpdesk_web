@@ -15,24 +15,24 @@
                         <h6>Spesifikasi PC / Laptop</h6>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
-                            <input disabled class="form-control" value="{{ $data->kode_barang }}">
+                            <input id="kode_barang" disabled class="form-control" value="{{ $data->kode_barang }}">
                         </div>
                         <div class="form-group">
                             <label for="nama_barang">Nama Barang</label>
-                            <input disabled class="form-control" value="{{ $data->nama_barang }}">
+                            <input id="nama_barang" disabled class="form-control" value="{{ $data->nama_barang }}">
                         </div>
                         <div class="form-group">
                             <label for="prosesor">Prosesor</label>
-                            <input disabled class="form-control" value="{{ $data->prosesor }}">
+                            <input id="prosesor" disabled class="form-control" value="{{ $data->prosesor }}">
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="ram">RAM</label>
-                                <input disabled class="form-control" value="{{ $data->ram }}">
+                                <input id="ram" disabled class="form-control" value="{{ $data->ram }}">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="penyimpanan">Penyimpanan</label>
-                                <input disabled class="form-control" value="{{ $data->penyimpanan }}">
+                                <input id="penyimpanan" disabled class="form-control" value="{{ $data->penyimpanan }}">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end my-2"
@@ -157,30 +157,29 @@
                         {{-- UNTUK MENAMPILKAN VIEW CETAK FORM INSTALASI SOFTWARE --}}
                         <div class="overlay" id="overlay_{{ $data->id_permintaan }}">
                             <div class="iframe-container">
-                                <a id="tombol_print_{{ $data->id_permintaan }}"
-                                    href="/form_instalasi_software/{{ $data->id_permintaan }}" target="_blank"
+                                <a id="tombol_print_{{ $data->id_permintaan }}" href="#" target="_blank"
                                     class="btn btn-sm bg-primary text-white tombol-print"
-                                    title="Cetak BAST Barang Masuk" onclick="cetakPDF(event, this.href)">
+                                    title="Cetak Form Permintaan Instalasi Software"
+                                    onclick="cetakPDF(event, '/form_instalasi_software/{{ $data->id_permintaan }}')">
                                     <i class="fas fa-file-pdf"></i> Cetak Dokumen
                                 </a>
                                 <button id="tutup_form_software_{{ $data->id_permintaan }}"
                                     class="btn btn-sm bg-danger text-white tutup-form-software" title="Tutup Iframe">
                                     <i class="fas fa-times"></i>
                                 </button>
-                                <iframe id="myIframe"
-                                    src="/form_instalasi_software/{{ $data->id_permintaan }}"></iframe>
+                                <iframe id="myIframe_{{ $data->id_permintaan }}" src=""
+                                    style="display: none;"></iframe>
                             </div>
                         </div>
                         {{-- END OF OVERLAY --}}
 
-                        <iframe id="myIframe" src="/form_instalasi_software/{{ $data->id_permintaan }}"
-                            style="display: none;"></iframe>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer d-flex justify-content-between">
                         <button id="view_form_software_{{ $data->id_permintaan }}"
-                            class="btn btn-sm bg-primary text-white rounded tombol-cetak-software"
-                            title="Cetak Form Permintaan Instalasi Software"><i class="fa fa-print"></i> Form
+                            class="btn btn-sm bg-primary text-white rounded print-form-software"
+                            title="Cetak Form Permintaan Instalasi Software"
+                            onclick="loadIframe({{ $data->id_permintaan }})"><i class="fa fa-print"></i> Form
                             Permintaan Instalasi Software
                         </button>
                         <button data-dismiss="modal" class="btn btn-sm bg-secondary text-white rounded">
@@ -192,6 +191,26 @@
             </div>
         </div>
     </div>
+
+    {{-- script untuk fungsi iframe agar diload hanya pada saat tombol print diklik --}}
+    <script>
+        function loadIframe(id_permintaan) {
+            var iframe = document.getElementById("myIframe_" + id_permintaan);
+            var iframeSrc = "/form_instalasi_software/" + id_permintaan;
+            iframe.src = iframeSrc;
+            iframe.style.display = "block";
+        }
+
+        // Event listener untuk tombol "Form Pengecekan Hardware"
+        var viewFormSoftwareButtons = document.getElementsByClassName("print-form-software");
+        for (var i = 0; i < viewFormSoftwareButtons.length; i++) {
+            viewFormSoftwareButtons[i].addEventListener("click", function() {
+                var id_permintaan = this.id.split("_")[3];
+                loadIframe(id_permintaan);
+            });
+        }
+    </script>
+
 
     <script>
         function cetakPDF(event, url) {

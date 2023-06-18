@@ -125,9 +125,19 @@
                         @php
                             $nomorpermintaan = str_replace('-', '/', $data->id_permintaan);
                         @endphp
+
+                        @if ($data->tipe_permintaan === 'hardware')
+                            @php
+                                $keperluan = 'pengecekan hardware sesuai permintaan pada Formulir Pengecekan Hardware';
+                            @endphp
+                        @elseif ($data->tipe_permintaan === 'software')
+                            @php
+                                $keperluan = 'instalasi software sesuai permintaan pada Formulir Permintaan Instalasi Software';
+                            @endphp
+                        @endif
+
                         <td>
-                            Telah dilakukan instalasi software sesuai permintaan pada Formulir Permintaan Instalasi
-                            Software dengan nomor:
+                            Telah dilakukan {{ $keperluan }} dengan nomor:
                             <b>{{ $nomorpermintaan }}</b>
                             {{-- @foreach ($data_software as $data2)
                                 <p>- {{ $data2->nama_software }}</p>

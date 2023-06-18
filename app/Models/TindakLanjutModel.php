@@ -13,7 +13,7 @@ class TindakLanjutModel extends Model
 
     protected $fillable = [
         'tanggal_penanganan',
-        'ttd_admin',
+        'ttd_tindak_lanjut',
     ];
 
     //relasi ke table user

@@ -125,10 +125,21 @@
                         @php
                             $nomorpermintaan = str_replace('-', '/', $data->id_permintaan);
                         @endphp
+
+                        @if ($data->tipe_permintaan === 'hardware')
+                            @php
+                                $keperluan = 'Pengecekan hardware sesuai permintaan pada Formulir Pengecekan Hardware';
+                            @endphp
+                        @elseif ($data->tipe_permintaan === 'software')
+                            @php
+                                $keperluan = 'Instalasi software sesuai permintaan pada Formulir Permintaan Instalasi Software';
+                            @endphp
+                        @endif
+
+
+
                         <td>
-                            Instalasi software sesuai permintaan pada Formulir Permintaan Instalasi Software dengan
-                            nomor:
-                            <b>{{ $nomorpermintaan }}</b>
+                            {{ $keperluan }} dengan nomor: <b>{{ $nomorpermintaan }}</b>
                             {{-- @foreach ($data_software as $data2)
                                 <p>- {{ $data2->nama_software }}</p>
                                 <p>- {{ $data2->nama_software }}</p>
@@ -140,16 +151,29 @@
                 </table>
             </div>
 
+            @if ($data->tipe_permintaan === 'hardware')
+                @php
+                    $keterangan = 'Layanan IT <i>Helpdesk</i> pengecekan <i>hardware</i>';
+                    $keterangan_2 = 'pengecekan <i>hardware</i>';
+                @endphp
+            @elseif ($data->tipe_permintaan === 'software')
+                @php
+                    $keterangan = 'Layanan IT <i>Helpdesk</i> instalasi <i>software</i>';
+                    $keterangan_2 = 'instalasi <i>software</i>';
+                @endphp
+            @endif
+
             <div>
                 <p class="text-indent">
                     Pihak kedua telah menerima barang tersebut dalam kondisi baik, lengkap, dan sesuai dengan deskripsi
                     yang
                     tertera pada tabel di atas dan kedua belah pihak setuju bahwa barang yang diserahkan oleh pihak
                     pertama
-                    telah diterima dengan baik oleh pihak kedua untuk keperluan Layanan IT <i>Helpdesk</i> instalasi
-                    <i>software</i>. Selanjutnya, pihak kedua bertanggung jawab atas penggunaan barang tersebut sesuai
-                    dengan keperluan yang telah disepakati dan akan dikembalikan segera setelah proses instalasi
-                    <i>software</i> selesai.
+                    telah diterima dengan baik oleh pihak kedua untuk keperluan {!! $keterangan !!}. Selanjutnya,
+                    pihak
+                    kedua bertanggung jawab atas penggunaan barang tersebut sesuai
+                    dengan keperluan yang telah disepakati dan akan dikembalikan segera setelah proses
+                    {!! $keterangan_2 !!} selesai.
                 </p>
                 <p>Demikian Berita Acara Serah Terima Barang ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
             </div>

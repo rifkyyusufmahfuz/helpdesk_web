@@ -73,6 +73,11 @@ Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], fun
     Route::get('/admin/permintaan_software/tambah_software/{id_permintaan}', [AdminController::class, 'tambah_software']);
     Route::get('/admin/permintaan_software/bast_software/{id_permintaan}', [AdminController::class, 'bast_software']);
     Route::post('/admin/tindak_lanjut_software/{id_permintaan}', [AdminController::class, 'tindak_lanjut_software']);
+
+    Route::get('/admin/permintaan_hardware', [AdminController::class, 'permintaan_hardware']);
+    Route::get('/admin/permintaan_hardware/cek_hardware/{id_permintaan}', [AdminController::class, 'cek_hardware']);
+    Route::get('/admin/permintaan_hardware/bast_hardware/{id_permintaan}', [AdminController::class, 'bast_hardware']);
+    Route::post('/admin/tindak_lanjut_hardware/{id_permintaan}', [AdminController::class, 'tindak_lanjut_hardware']);
 });
 
 // untuk Manager
@@ -82,6 +87,9 @@ Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], fun
     Route::get('/manager/dashboard/data', [ManagerController::class, 'getData']);
     Route::get('/manager/permintaan_software', [ManagerController::class, 'permintaan_software']);
     Route::get('/manager/riwayat_otorisasi', [ManagerController::class, 'riwayat_otorisasi']);
+
+    Route::get('/manager/permintaan_hardware', [ManagerController::class, 'permintaan_hardware']);
+    Route::get('/manager/riwayat_validasi', [ManagerController::class, 'riwayat_validasi']);
 });
 
 // untuk pegawai
@@ -89,6 +97,9 @@ Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
     Route::get('/pegawai', [PegawaiController::class, 'index']);
     Route::get('/pegawai/permintaan_software', [PegawaiController::class, 'permintaan_software']);
     Route::post('/pegawai/simpan_software', [PegawaiController::class, 'simpan_software']);
+
+    Route::get('/pegawai/permintaan_hardware', [PegawaiController::class, 'permintaan_hardware']);
+    Route::post('/pegawai/simpan_hardware', [PegawaiController::class, 'simpan_hardware']);
 });
 
 //untuk notifikasi
@@ -103,3 +114,4 @@ Route::put('/notifikasi/admin/read_all/{id_role}', [NotifikasiController::class,
 Route::get('/cetak_bast/barang_masuk/{kode_barang}', [CetakDokumenController::class, 'cetak_bast_barang_masuk']);
 Route::get('/cetak_bast/barang_keluar/{kode_barang}', [CetakDokumenController::class, 'cetak_bast_barang_keluar']);
 Route::get('/form_instalasi_software/{id}', [CetakDokumenController::class, 'cetak_form_instalasi_software']);
+Route::get('/form_pengecekan_hardware/{id}', [CetakDokumenController::class, 'cetak_form_pengecekan_hardware']);

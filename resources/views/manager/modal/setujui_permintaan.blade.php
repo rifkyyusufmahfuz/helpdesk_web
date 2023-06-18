@@ -15,7 +15,7 @@
                         id="setujui_{{ $data->id_permintaan }}" data-id-permintaan="{{ $data->id_permintaan }}">
                         @csrf
                         @method('PUT')
-                        <input hidden id="disetujui" name="disetujui">
+                        <input hidden name="otorisasi_manager" value="disetujui">
                         <input hidden id="id_permintaan" name="id_permintaan" value="{{ $data->id_permintaan }}">
                         <input hidden id="id_otorisasi" name="id_otorisasi" value="{{ $data->id_otorisasi }}">
 

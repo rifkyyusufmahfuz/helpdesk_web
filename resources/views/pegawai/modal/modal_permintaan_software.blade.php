@@ -21,8 +21,7 @@
                         <h5>Spesifikasi PC / Laptop</h5>
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
-                            <input type="text" class="form-control" id="kode_barang" name="kode_barang"
-                                placeholder="Nomor aset / inventaris / serial number">
+                            <input type="text" class="form-control" id="kode_barang" name="kode_barang">
                         </div>
                         <div class="form-group">
                             <label for="nama_barang">Nama Barang</label>
@@ -435,20 +434,6 @@
             $('#btn_lanjut_1').prop('disabled', true);
             $('#btn_lanjut_2').prop('disabled', true);
             $('#btn-simpan').hide();
-        });
-    });
-</script>
-
-{{-- untuk animasi expand --}}
-<script>
-    $(document).ready(function() {
-        $('#collapseThree').on('show.bs.collapse', function() {
-            $(this).prev('#informasi_software_header').addClass('active');
-            $(this).slideDown();
-        });
-        $('#collapseThree').on('hide.bs.collapse', function() {
-            $(this).prev('#informasi_software_header').removeClass('active');
-            $(this).slideUp();
         });
     });
 </script>

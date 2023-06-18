@@ -33,6 +33,7 @@ class AdminModel extends Model
                 'stasiun.*',
                 'barang.*',
             )
+            ->where('tipe_permintaan', 'software')
             ->orderBy('permintaan.updated_at', 'asc')
             ->get()
             ->toArray();
@@ -172,8 +173,9 @@ class AdminModel extends Model
             ]);
 
             $tindak_lanjut_software = DB::table('tindak_lanjut')->insert([
-                'tanggal_penanganan' => null,
-                'ttd_admin' => $filename,
+                // 'tanggal_penanganan' => null,
+                'rekomendasi' => '-',
+                'ttd_tindak_lanjut' => $filename,
                 'id' => $id,
                 'id_permintaan' => $id_permintaan,
                 'created_at' => now(),
@@ -236,7 +238,7 @@ class AdminModel extends Model
             $tindak_lanjut_software = DB::table('tindak_lanjut')
                 ->where('id_tindak_lanjut', $id_tindak_lanjut)
                 ->update([
-                    'ttd_admin' => $filename,
+                    'ttd_tindak_lanjut' => $filename,
                     'id' => $id,
                     'updated_at' => now(),
                 ]);
@@ -289,5 +291,230 @@ class AdminModel extends Model
                 'software.*',
             )
             ->get();
+    }
+
+    public function get_permintaan_hardware()
+    {
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->select(
+                'permintaan.*',
+                'permintaan.created_at as permintaan_created_at',
+                'otorisasi.*',
+                'users.*',
+                'roles.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+            )
+            ->where('tipe_permintaan', 'hardware')
+            ->orderBy('permintaan.updated_at', 'desc')
+            ->get()
+            ->toArray();
+    }
+
+    public function get_list_hardware()
+    {
+        return DB::table('permintaan')
+            ->join('hardware', 'permintaan.id_permintaan', '=', 'hardware.id_permintaan')
+            ->select(
+                'permintaan.*',
+                'hardware.*',
+            )
+            ->get();
+    }
+
+
+    public function get_permintaan_hardware_by_id($id_permintaan)
+    {
+        return DB::table('permintaan')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->select('permintaan.*', 'otorisasi.*', 'users.*', 'roles.*', 'pegawai.*', 'stasiun.*')
+            ->where('permintaan.id_permintaan', '=', $id_permintaan)
+            ->orderBy('permintaan.updated_at', 'desc')
+            ->limit(1)
+            ->get();
+    }
+
+    public function get_hardware_by_id($id_permintaan)
+    {
+        return DB::table('hardware')
+            ->where('id_permintaan', '=', $id_permintaan)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    }
+
+    public function input_hardware($data)
+    {
+        if (DB::table('hardware')->insert($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update_hardware($data, $id)
+    {
+        return DB::table('hardware')->where('id_hardware', $id)->update($data) ? true : false;
+    }
+
+    public function hapus_hardware($id)
+    {
+        if (DB::table('hardware')->where('id_hardware', $id)->delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function tindak_lanjut_permintaan_hardware(Request $request)
+    {
+        $id_permintaan = $request->input('id_permintaan');
+
+        if (!DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->exists()) {
+
+            $request->validate(
+                [
+                    'rekomendasi' => 'required'
+                ],
+                [
+                    'rekomendasi.required' => 'Rekomendasi wajib diisi!'
+                ]
+            );
+
+            //Tanda tangan
+            $folderPath = public_path('tandatangan/pengecekan_hardware/executor/');
+            if (!is_dir($folderPath)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath, 0777, true);
+            }
+
+            $filename = "executor_proses_" . $id_permintaan . ".png";
+            $nama_file = $folderPath . $filename;
+            file_put_contents($nama_file, file_get_contents($request->input('signature')));
+
+
+            //Mendefinisikan beberapa data utama
+            $id_permintaan = $request->input('id_permintaan');
+            $id_otorisasi = $request->input('id_otorisasi');
+            $id = auth()->user()->id;
+
+
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+
+            $tindak_lanjut_hardware = DB::table('tindak_lanjut')->insert([
+                // 'tanggal_penanganan' => now(),
+                'rekomendasi' => $request->rekomendasi,
+                'ttd_tindak_lanjut' => $filename,
+                'id' => $id,
+                'id_permintaan' => $id_permintaan,
+                'created_at' => now(),
+            ]);
+
+            $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
+                'status_approval' => 'waiting',
+                'updated_at' => now()
+            ]);
+
+            $update_permintaan = DB::table('permintaan')->where('id_permintaan', $id_permintaan)->update([
+                'status_permintaan' => 2,
+                'updated_at' => now(),
+            ]);
+
+            //kirim notifikasi ke manager
+            $nama = ucwords(auth()->user()->pegawai->nama);
+            $simpan_notifikasi = DB::table('notifikasi')->insert([
+                'role_id' => 3,
+                'pesan' => 'Pengecekan hardware dengan ID Permintaan "' . $id_permintaan . '" telah diselesaikan oleh ' . $nama . ' dan menunggu validasi dari Manager.',
+                'tautan' => '/manager/permintaan_hardware',
+                'created_at' => now()
+            ]);
+
+
+            if ($ajukan_ke_manager && $tindak_lanjut_hardware && $update_permintaan && $simpan_notifikasi) {
+                return true;
+            } else {
+                return false;
+            }
+        } elseif (DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->exists()) {
+            //Tanda tangan
+            $folderPath = public_path('tandatangan/instalasi_software/admin/');
+            if (!is_dir($folderPath)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath, 0777, true);
+            }
+
+            $filename = "admin_revisi_" . $id_permintaan . ".png";
+            $nama_file = $folderPath . $filename;
+            file_put_contents($nama_file, file_get_contents($request->input('signature')));
+
+
+            //Mendefinisikan beberapa data utama
+            $id_permintaan = $request->input('id_permintaan');
+            $id_otorisasi = $request->input('id_otorisasi');
+            $id = auth()->user()->id;
+
+
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+            // Mendapatkan ID tindak_lanjut
+            $id_tindak_lanjut = DB::table('tindak_lanjut')
+                ->where('id_permintaan', $id_permintaan)
+                ->select('tindak_lanjut.id_tindak_lanjut')
+                ->first()
+                ->id_tindak_lanjut;
+
+            $tindak_lanjut_software = DB::table('tindak_lanjut')
+                ->where('id_tindak_lanjut', $id_tindak_lanjut)
+                ->update([
+                    'ttd_tindak_lanjut' => $filename,
+                    'id' => $id,
+                    'updated_at' => now(),
+                ]);
+
+            $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
+                'status_approval' => 'waiting',
+                'updated_at' => now()
+            ]);
+
+            //kirim notifikasi ke manager
+            $nama = ucwords(auth()->user()->pegawai->nama);
+            $simpan_notifikasi = DB::table('notifikasi')->insert([
+                'role_id' => 3,
+                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'tautan' => '/manager/permintaan_software',
+                'created_at' => now()
+            ]);
+
+
+            if ($ajukan_ke_manager && $tindak_lanjut_software && $simpan_notifikasi) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function get_tindak_lanjut_by_id_permintaan($id_permintaan)
+    {
+        return DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->get();
+    }
+
+    public function update_tindak_lanjut($data_tindak_lanjut, $id_tindak_lanjut)
+    {
+        return DB::table('tindak_lanjut')->where('id_tindak_lanjut', $id_tindak_lanjut)->update($data_tindak_lanjut) ? true : false;
     }
 }

@@ -62,14 +62,15 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->is('pegawai/permintaan_software') | request()->is('') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('pegawai/permintaan_software') || request()->is('') ? '' : 'collapsed' }}"
+        <li
+            class="nav-item {{ request()->is('pegawai/permintaan_software') || request()->is('pegawai/permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('pegawai/permintaan_software') || request()->is('pegawai/permintaan_hardware') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Layanan</span>
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('pegawai/permintaan_software') || request()->is('') ? 'show' : '' }}"
+                class="collapse {{ request()->is('pegawai/permintaan_software') || request()->is('pegawai/permintaan_hardware') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {{ request()->is('pegawai/permintaan_software') ? 'active' : '' }}"
@@ -77,7 +78,8 @@
                         <i class="fas fa-fw fa-laptop-code"></i>
                         <span>Instalasi Software</span>
                     </a>
-                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}" href="">
+                    <a class="collapse-item {{ request()->is('pegawai/permintaan_hardware') ? 'active' : '' }}"
+                        href="/pegawai/permintaan_hardware">
                         <i class="fas fa-fw fa-tools"></i>
                         <span>Pengecekan Hardware</span>
                     </a>
@@ -99,8 +101,8 @@
 
         {{-- MENU PERMINTAAN LAYANAN --}}
         <li
-            class="nav-item {{ request()->is('admin/permintaan_software*') | request()->is('admin/permintaan_hardware') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware') ? '' : 'collapsed' }}"
+            class="nav-item {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware*') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Layanan</span>
@@ -114,7 +116,7 @@
                 @endif
             </a>
             <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('admin/permintaan_software*') || request()->is('/admin/permintaan_hardware') ? 'show' : '' }}"
+                class="collapse {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware*') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     {{-- PERMINTAAN INSTALASI SOFTWARE --}}
@@ -134,7 +136,7 @@
                         @endif
                     </a>
                     {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
-                    <a class="collapse-item {{ request()->is('admin/permintaan_hardware') ? 'active' : '' }}"
+                    <a class="collapse-item {{ request()->is('admin/permintaan_hardware*') ? 'active' : '' }}"
                         href="/admin/permintaan_hardware">
                         <i class="fas fa-fw fa-tools"></i>
                         <span>Pengecekan Hardware</span>
@@ -165,25 +167,26 @@
             </a>
         </li>
 
-        {{-- MENU PERMINTAAN LAYANAN --}}
+        {{-- MENU PERMINTAAN Software --}}
         <li
-            class="nav-item {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('manager/permintaan_hardware') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('manager/permintaan_hardware') ? '' : 'collapsed' }}"
-                href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
+            class="nav-item {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseSoftware" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Permintaan Software</span>
                 @php
                     $permintaan_count = DB::table('permintaan')
                         ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
                         ->where('status_approval', 'waiting')
+                        ->where('tipe_permintaan', 'software')
                         ->count();
                 @endphp
                 @if ($permintaan_count > 0)
                     <span class="badge badge-danger badge-pill badge-counter">{{ $permintaan_count }}</span>
                 @endif
             </a>
-            <div id="collapseSuperadmin"
-                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
+            <div id="collapseSoftware"
+                class="collapse {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     {{-- PERMINTAAN INSTALASI SOFTWARE --}}
@@ -195,6 +198,7 @@
                             $permintaan_software_count = DB::table('permintaan')
                                 ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
                                 ->where('status_approval', 'waiting')
+                                ->where('tipe_permintaan', 'software')
                                 ->count();
                         @endphp
                         @if ($permintaan_software_count > 0)
@@ -208,16 +212,56 @@
                         href="/manager/riwayat_otorisasi">
                         <i class="fas fa-fw fa-history"></i>
                         <span class="custom-span">Riwayat Otorisasi</span>
-                        {{-- @php
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        {{-- Permintaan hardware --}}
+        <li
+            class="nav-item {{ request()->is('manager/permintaan_hardware*') || request()->is('manager/riwayat_validasi*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('manager/permintaan_hardware*') || request()->is('manager/riwayat_validasi*') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseHardware" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Pengecekan Hardware</span>
+                @php
+                    $permintaan_count = DB::table('permintaan')
+                        ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
+                        ->where('status_approval', 'waiting')
+                        ->where('tipe_permintaan', 'hardware')
+                        ->count();
+                @endphp
+                @if ($permintaan_count > 0)
+                    <span class="badge badge-danger badge-pill badge-counter">{{ $permintaan_count }}</span>
+                @endif
+            </a>
+            <div id="collapseHardware"
+                class="collapse {{ request()->is('manager/permintaan_hardware*') || request()->is('manager/riwayat_validasi*') || request()->is('/manager/permintaan_hardware') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
+                    <a class="collapse-item {{ request()->is('manager/permintaan_hardware*') ? 'active' : '' }}"
+                        href="/manager/permintaan_hardware">
+                        <i class="fas fa-fw fa-check"></i>
+                        <span class="custom-span">Validasi Rekomendasi</span>
+                        @php
                             $permintaan_software_count = DB::table('permintaan')
                                 ->join('otorisasi', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
                                 ->where('status_approval', 'waiting')
+                                ->where('tipe_permintaan', 'hardware')
                                 ->count();
                         @endphp
                         @if ($permintaan_software_count > 0)
                             <span
                                 class="badge badge-danger badge-pill badge-counter">{{ $permintaan_software_count }}</span>
-                        @endif --}}
+                        @endif
+                    </a>
+
+                    {{-- PERMINTAAN REVISI --}}
+                    <a class="collapse-item {{ request()->is('manager/riwayat_validasi*') ? 'active' : '' }}"
+                        href="/manager/riwayat_validasi">
+                        <i class="fas fa-fw fa-history"></i>
+                        <span class="custom-span">Riwayat Validasi</span>
                     </a>
                 </div>
             </div>

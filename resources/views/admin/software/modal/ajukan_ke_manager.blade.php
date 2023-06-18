@@ -54,7 +54,7 @@
                         <hr>
 
                         <div class="form-group text-center">
-                            <label for="">Signature</label>
+                            <label for="">Tanda tangan</label>
                             <div>
                                 <div id="note">Silakan tanda tangan di area kolom ini</div>
                                 <canvas onmouseover="my_function();" id="the_canvas" class="form-ttd isi-ttd"

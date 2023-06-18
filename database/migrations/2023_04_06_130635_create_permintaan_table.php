@@ -22,7 +22,7 @@ return new class extends Migration
             // 4 = barang diterima (status Diproses warna biru) ,
             // 5 = barang siap diambil (status selesai warna kuning)
             // 6 = barang sudah dikembalikan (status selesai warna hijau)
-            // 7 = permintaan ditolak manager (status selesai warna merah)
+            // 0 = permintaan ditolak manager (status selesai warna merah)
 
             $table->date('tanggal_permintaan');
             $table->string('ttd_requestor', 100);
@@ -36,11 +36,11 @@ return new class extends Migration
             $table->foreign('id')->references('id')->on('users');
 
             //FK Kolom id_otorisasi dari table otorisasi
-            $table->unsignedInteger('id_otorisasi');
+            $table->unsignedInteger('id_otorisasi')->nullable();
             $table->foreign('id_otorisasi')->references('id_otorisasi')->on('otorisasi')->onDelete('cascade');
 
             //FK Kolom id_kategori dari table kategori_software
-            $table->unsignedInteger('id_kategori');
+            $table->unsignedInteger('id_kategori')->nullable();
             $table->foreign('id_kategori')->references('id_kategori')->on('kategori_software')->onDelete('cascade');
 
             //timestamp

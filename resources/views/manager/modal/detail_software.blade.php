@@ -75,7 +75,7 @@
                             <figcaption class="mb-2">Tanda Tangan Admin</figcaption>
                             <div class="border rounded p-2">
                                 <img class="gambar_ttd"
-                                    src="{{ asset('tandatangan/instalasi_software/admin/' . $data->ttd_admin) }}"
+                                    src="{{ asset('tandatangan/instalasi_software/admin/' . $data->ttd_tindak_lanjut) }}"
                                     title="Tanda tangan {{ $data->nama_admin }}" oncontextmenu="return false;"
                                     ondragstart="return false;">
                                 <figcaption>{{ $data->nama_admin }}</figcaption>

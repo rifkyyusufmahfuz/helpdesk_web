@@ -123,13 +123,14 @@ class AdminController extends Controller
         $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
         $barang = $this->modeladmin->get_barang_by_id_permintaan($id_permintaan);
         // $bast = $this->modeladmin->get_bast_by_id_permintaan($id_permintaan);
-
+        $tindak_lanjut = $this->modeladmin->get_tindak_lanjut_by_id_permintaan($id_permintaan);
         return view(
             'admin.software.bast_software',
             [
                 'permintaan' => $permintaan,
                 'barang' => $barang,
                 // 'bast' => $bast,
+                'tindak_lanjut' => $tindak_lanjut
             ]
         );
     }
@@ -142,6 +143,84 @@ class AdminController extends Controller
             return redirect('/admin/permintaan_software')->with('toast_error', 'Permintaan gagal ditambahkan!');
         }
     }
+
+    public function permintaan_hardware()
+    {
+        $permintaan = $this->modeladmin->get_permintaan_hardware();
+        $list_hardware = $this->modeladmin->get_list_hardware();
+
+        return view(
+            'admin.hardware.permintaan_hardware',
+            [
+                'permintaan' => $permintaan,
+                'list_hardware' => $list_hardware
+            ]
+        );
+    }
+
+    public function cek_hardware($id_permintaan)
+    {
+        $list_hardware = array(
+            "Hardisk",
+            "Memory",
+            "Monitor",
+            "Keyboard",
+            "Mouse",
+            "Software",
+            "Adaptor/Power Supply",
+            "Processor",
+            "Fan/Heatsink",
+            "Lainnya..."
+        );
+
+        $permintaan = $this->modeladmin->get_permintaan_hardware_by_id($id_permintaan);
+        $hardware = $this->modeladmin->get_hardware_by_id($id_permintaan);
+
+        $isHardwareFilled = false;
+        if ($hardware) {
+            foreach ($hardware as $hw) {
+                if (!empty($hw->status_hardware) && !empty($hw->problem)) {
+                    $isHardwareFilled = true;
+                    break;
+                }
+            }
+        }
+        return view(
+            'admin.hardware.tindak_lanjut_hardware',
+            [
+                'permintaan' => $permintaan,
+                'hardware' => $hardware,
+                'list_hardware' => $list_hardware,
+                'isHardwareFilled' => $isHardwareFilled,
+            ]
+        );
+    }
+
+    public function bast_hardware($id_permintaan)
+    {
+        $permintaan = $this->modeladmin->get_permintaan_hardware_by_id($id_permintaan);
+        $barang = $this->modeladmin->get_barang_by_id_permintaan($id_permintaan);
+        // $bast = $this->modeladmin->get_bast_by_id_permintaan($id_permintaan);
+
+        return view(
+            'admin.hardware.bast_hardware',
+            [
+                'permintaan' => $permintaan,
+                'barang' => $barang,
+                // 'bast' => $bast,
+            ]
+        );
+    }
+
+    public function tindak_lanjut_hardware(Request $request)
+    {
+        if ($this->modeladmin->tindak_lanjut_permintaan_hardware($request)) {
+            return redirect('/admin/permintaan_hardware')->with('toast_success', 'Permintaan berhasil diajukan ke manager!');
+        } else {
+            return redirect('/admin/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan!');
+        }
+    }
+
 
 
     /**
@@ -284,14 +363,23 @@ class AdminController extends Controller
                 'updated_at' => now(),
             ];
 
+            $id_tindak_lanjut = $request->id_tindak_lanjut;
+            $data_tindak_lanjut = [
+                'tanggal_penanganan' => now(),
+                'updated_at' => now()
+            ];
+
             $update_permintaan = $this->modeladmin->update_permintaan($data_permintaan, $id_permintaan);
             $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
+            $update_tindak_lanjut = $this->modeladmin->update_tindak_lanjut($data_tindak_lanjut, $id_tindak_lanjut);
             $input_bast_barang_masuk = $this->modeladmin->input_bast($data_bast);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
+
+
             // menggunakan operator ternary (pengganti kondisi dengan if else)
             //untuk mengembalikan pesan apakah berhasil atau tidak
-            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang)
+            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang && $update_tindak_lanjut)
                 ? back()->with('toast_success', 'Input BAST berhasil!')
                 : back()->with('toast_error', 'Input BAST gagal!');
         } else if ($request->input('jenis_bast') == 'barang_keluar') {
@@ -395,6 +483,37 @@ class AdminController extends Controller
                 ? back()->with('toast_success', 'BAST Pengembalian barang berhasil!')
                 : back()->with('toast_error', 'BAST pengembalian barang gagal!');
         }
+        //fungsi untuk input cek hardware
+        else if ($request->has('komponen')) {
+
+            $request->validate([
+                'id_permintaan' => 'required',
+                'komponen' => 'required|unique:hardware,komponen,NULL, permintaan,id_permintaan,' . $request->id_permintaan,
+                'status_hardware' => 'required',
+            ], [
+                'komponen.required' => 'Nama software wajib diisi!',
+                'komponen.unique' => 'Komponen ini sudah diinput!',
+                'status_hardware.required' => 'Versi software wajib diisi!',
+            ]);
+
+
+            $problem = $request->problem ?: '-';
+
+            $data = [
+                'id_permintaan' => $request->id_permintaan,
+                'komponen' => $request->komponen,
+                'status_hardware' => $request->status_hardware,
+                'problem' => $problem,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ];
+
+            if ($this->modeladmin->input_hardware($data)) {
+                return back()->with('toast_success', 'Komponen hardware berhasil diinput!');
+            } else {
+                return back()->with('toast_error', 'Komponen hardware gagal diinput, silakan coba lagi!');
+            }
+        }
     }
 
     /**
@@ -418,10 +537,10 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if ($request->has('status_permintaan')) {
+        if ($request->has('selesaikan_permintaan')) {
             //update table permintaan
             $data = [
-                'status_permintaan' => $request->status_permintaan,
+                'status_permintaan' => 5,
                 'updated_at' => now()
             ];
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
@@ -437,20 +556,83 @@ class AdminController extends Controller
             $permintaan = PermintaanModel::find($id_permintaan);
             $pegawaiId = $permintaan->id;
 
-            $notifikasi = [
-                'pesan' => 'Permintaan instalasi software Anda dengan ID Permintaan = ' . $id_permintaan . ' telah selesai. Silakan ambil PC / Laptop Anda di NOC. Terima kasih!',
-                'tautan' => '/pegawai/permintaan_software',
-                'created_at' => now(),
-                'user_id' => $pegawaiId,
-            ];
+            if ($request->selesaikan_permintaan == 'permintaan_software') {
+                $notifikasi = [
+                    'pesan' => 'Permintaan instalasi software Anda dengan ID Permintaan = ' . $id_permintaan . ' telah selesai. Silakan ambil PC / Laptop Anda di NOC. Terima kasih!',
+                    'tautan' => '/pegawai/permintaan_software',
+                    'created_at' => now(),
+                    'user_id' => $pegawaiId,
+                ];
+            } elseif ($request->selesaikan_permintaan == 'permintaan_hardware') {
+                $notifikasi = [
+                    'pesan' => 'Permintaan pengecekan hardware Anda dengan ID Permintaan = ' . $id_permintaan . ' telah selesai. Silakan ambil unit di NOC. Terima kasih!',
+                    'tautan' => '/pegawai/permintaan_software',
+                    'created_at' => now(),
+                    'user_id' => $pegawaiId,
+                ];
+            }
+
 
             $update_permintaan = $this->modeladmin->update_permintaan($data, $id);
             $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
+            return $update_permintaan && $update_barang && $kirim_notifikasi ? back()->with('toast_success', 'Proses permintaan telah diselesaikan, requestor telah diberitahukan untuk mengambil unit!') : back()->with('toast_success', 'Status permintaan gagal diubah!');
+        } else if ($request->has('acc_permintaan')) {
+            //update table permintaan
+            $data = [
+                'status_permintaan' => $request->status_permintaan,
+                'updated_at' => now()
+            ];
+            // Mendapatkan ID pegawai dan role_id dari tabel permintaan
+            $id_permintaan = $request->id_permintaan;
 
-            return $update_permintaan && $update_barang && $kirim_notifikasi ? back()->with('toast_success', 'Status permintaan telah diubah!') : back()->with('toast_success', 'Status permintaan gagal diubah!');
-        } else {
+            //update table barang
+            // $kode_barang = $request->kode_barang;
+            // $data_barang = [
+            //     'status_barang' => 'siap diambil',
+            //     'updated_at' => now()
+            // ];
+
+            $permintaan = PermintaanModel::find($id_permintaan);
+            $pegawaiId = $permintaan->id;
+
+            $notifikasi = [
+                'pesan' => 'Permintaan pengecekan hardware Anda dengan ID Permintaan = ' . $id_permintaan . ' telah diterima. Silakan bawa unit yang akan dicek ke NOC. Terima kasih!',
+                'tautan' => '/pegawai/permintaan_hardware',
+                'created_at' => now(),
+                'user_id' => $pegawaiId,
+            ];
+
+            $update_permintaan = $this->modeladmin->update_permintaan($data, $id);
+            // $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
+            $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
+
+
+            return $update_permintaan && $kirim_notifikasi ? back()->with('toast_success', 'Permintaan pengecekan hardware diterima, requestor telah diberikan notifikasi untuk menyerahkan barang.') : back()->with('toast_success', 'Permintaan gagal diupdate, silakan coba lagi!');
+        }
+        // untuk update hardware 
+        else if ($request->has('status_hardware')) {
+            $request->validate(
+                [
+                    'status_hardware' => 'required',
+
+                ],
+                [
+                    'status_hardware.required' => 'Pilih status hardware!',
+                ]
+            );
+
+            $problem = $request->problem ?: '-';
+            $data = [
+                'status_hardware' => $request->status_hardware,
+                'problem' => $problem,
+                'updated_at' => now(),
+            ];
+            return $this->modeladmin->update_hardware($data, $id) ? back()->with('toast_success', 'Status hardware dan problem berhasil diubah!') : back()->with('toast_success', 'Status hardware dan problem gagal diubah!');
+        }
+        // untuk update software 
+        else {
             $request->validate([
                 'versi_software' => 'required',
 
@@ -471,12 +653,16 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        if ($this->modeladmin->hapus_software($id)) {
-            return back()->with('toast_success', 'Software berhasil dihapus!');
-        } else {
-            return back()->with('toast_error', 'Software gagal dihapus!');
+        if ($request->has('hapus_hardware')) {
+            return $this->modeladmin->hapus_hardware($id)
+                ? back()->with('toast_success', 'Komponen hardware berhasil dihapus!')
+                : back()->with('toast_error', 'Komponen hardware gagal dihapus!');
+        } elseif ($request->has('hapus_software')) {
+            return $this->modeladmin->hapus_software($id)
+                ? back()->with('toast_success', 'Software berhasil dihapus!')
+                : back()->with('toast_error', 'Software gagal dihapus!');
         }
     }
 }
