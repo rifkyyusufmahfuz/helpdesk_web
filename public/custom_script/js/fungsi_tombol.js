@@ -126,9 +126,24 @@ function confirm_delete_software(id) {
 
 //untuk admin
 function instalasi_selesai(id) {
+
+    var form = document.querySelector('#instalasi_selesai-' + id);
+    var selesaikanPermintaan = form.querySelector('input[name="selesaikan_permintaan"]').value;
+
+    var title = '';
+    var text = '';
+
+    if (selesaikanPermintaan === 'permintaan_hardware') {
+        title = 'Pengecekan Selesai';
+        text = 'Proses pengecekan hardware selesai, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk mengambil unit.';
+    } else if (selesaikanPermintaan === 'permintaan_software') {
+        title = 'Instalasi Selesai';
+        text = 'Proses instalasi software selesai, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk mengambil PC / Laptop.';
+    }
+
     Swal.fire({
-        title: 'Instalasi selesai',
-        text: 'Proses instalasi software selesai, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk mengambil PC / Laptop.',
+        title: title,
+        text: text,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Ya',
@@ -136,7 +151,7 @@ function instalasi_selesai(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"
-            document.querySelector('#instalasi_selesai-' + id).submit();
+            form.submit();
         }
     });
 }

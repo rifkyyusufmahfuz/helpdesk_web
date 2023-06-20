@@ -21,4 +21,9 @@ class TindakLanjutModel extends Model
     {
         return $this->belongsTo(User::class, 'id', 'id');
     }
+
+    public function permintaan()
+    {
+        return $this->hasMany(PermintaanModel::class, 'id_otorisasi');
+    }
 }

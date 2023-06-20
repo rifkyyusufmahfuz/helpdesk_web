@@ -13,6 +13,8 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="jenis_bast" id="jenis_bast" value="barang_keluar">
+                    <input hidden name="keperluan" value="instalasi_software">
+
                     <div id="yang_menyerahkan-2">
                         <h6>Pihak Pertama - Yang Mengembalikan Barang</h6>
                         <div class="row">

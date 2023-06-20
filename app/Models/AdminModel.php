@@ -173,7 +173,7 @@ class AdminModel extends Model
             ]);
 
             $tindak_lanjut_software = DB::table('tindak_lanjut')->insert([
-                // 'tanggal_penanganan' => null,
+                'tanggal_penanganan' => now(),
                 'rekomendasi' => '-',
                 'ttd_tindak_lanjut' => $filename,
                 'id' => $id,
@@ -238,6 +238,7 @@ class AdminModel extends Model
             $tindak_lanjut_software = DB::table('tindak_lanjut')
                 ->where('id_tindak_lanjut', $id_tindak_lanjut)
                 ->update([
+                    'tanggal_penanganan' => now(),
                     'ttd_tindak_lanjut' => $filename,
                     'id' => $id,
                     'updated_at' => now(),
@@ -415,7 +416,7 @@ class AdminModel extends Model
             $pegawaiId = $permintaan->id;
 
             $tindak_lanjut_hardware = DB::table('tindak_lanjut')->insert([
-                // 'tanggal_penanganan' => now(),
+                'tanggal_penanganan' => now(),
                 'rekomendasi' => $request->rekomendasi,
                 'ttd_tindak_lanjut' => $filename,
                 'id' => $id,
@@ -480,6 +481,7 @@ class AdminModel extends Model
             $tindak_lanjut_software = DB::table('tindak_lanjut')
                 ->where('id_tindak_lanjut', $id_tindak_lanjut)
                 ->update([
+                    'tanggal_penanganan' => now(),
                     'ttd_tindak_lanjut' => $filename,
                     'id' => $id,
                     'updated_at' => now(),
@@ -513,8 +515,33 @@ class AdminModel extends Model
         return DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->get();
     }
 
+
     public function update_tindak_lanjut($data_tindak_lanjut, $id_tindak_lanjut)
     {
         return DB::table('tindak_lanjut')->where('id_tindak_lanjut', $id_tindak_lanjut)->update($data_tindak_lanjut) ? true : false;
+    }
+
+    public function get_bast_by_nip($nip)
+    {
+        return DB::table('bast')
+            ->where('yang_menerima', $nip)
+            ->orWhere('yang_menyerahkan', $nip)
+            ->get();
+    }
+
+    public function get_bast_barang_masuk()
+    {
+        return DB::table('bast')
+            ->where('jenis_bast', 'barang_masuk')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function get_bast_barang_keluar()
+    {
+        return DB::table('bast')
+            ->where('jenis_bast', 'barang_keluar')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

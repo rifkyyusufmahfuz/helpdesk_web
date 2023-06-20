@@ -86,6 +86,37 @@
                 </div>
             </div>
         </li>
+
+
+        {{-- MENU BAST --}}
+        <li
+            class="nav-item {{ request()->is('pegawai/halaman_bast_barang_diterima') || request()->is('pegawai/halaman_bast_barang_diserahkan') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('pegawai/halaman_bast_barang_diterima') || request()->is('pegawai/halaman_bast_barang_diserahkan') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseBAST_Admin" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-handshake"></i>
+                <span>BAST</span>
+            </a>
+            <div id="collapseBAST_Admin"
+                class="collapse {{ request()->is('pegawai/halaman_bast_barang_diterima') || request()->is('pegawai/halaman_bast_barang_diserahkan') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- BARANG KELUAR --}}
+                    <a class="collapse-item {{ request()->is('pegawai/halaman_bast_barang_diserahkan') ? 'active' : '' }}"
+                        href="/pegawai/halaman_bast_barang_diserahkan">
+                        <i class="fas fa-fw fa-box"></i>
+                        <i class="fas fa-fw fa-arrow-up"></i>
+                        <span>Barang Diserahkan</span>
+                    </a>
+                    {{-- BARANG MASUK --}}
+                    <a class="collapse-item {{ request()->is('pegawai/halaman_bast_barang_diterima') ? 'active' : '' }}"
+                        href="/pegawai/halaman_bast_barang_diterima">
+                        <i class="fas fa-fw fa-box"></i>
+                        <i class="fas fa-fw fa-arrow-down"></i>
+                        <span>Barang Diterima</span>
+                    </a>
+                </div>
+            </div>
+        </li>
     @endif
 
 
@@ -104,7 +135,7 @@
             class="nav-item {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware*') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('admin/permintaan_software*') || request()->is('admin/permintaan_hardware*') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-cogs"></i>
                 <span>Permintaan Layanan</span>
                 @php
                     $permintaan_count = DB::table('permintaan')
@@ -172,7 +203,7 @@
             class="nav-item {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('manager/permintaan_software*') || request()->is('manager/riwayat_otorisasi*') || request()->is('') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSoftware" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-laptop-code"></i>
                 <span>Permintaan Software</span>
                 @php
                     $permintaan_count = DB::table('permintaan')
@@ -222,7 +253,7 @@
             class="nav-item {{ request()->is('manager/permintaan_hardware*') || request()->is('manager/riwayat_validasi*') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('manager/permintaan_hardware*') || request()->is('manager/riwayat_validasi*') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseHardware" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-tools"></i>
                 <span>Pengecekan Hardware</span>
                 @php
                     $permintaan_count = DB::table('permintaan')
@@ -242,7 +273,7 @@
                     {{-- PERMINTAAN INSTALASI SOFTWARE --}}
                     <a class="collapse-item {{ request()->is('manager/permintaan_hardware*') ? 'active' : '' }}"
                         href="/manager/permintaan_hardware">
-                        <i class="fas fa-fw fa-check"></i>
+                        <i class="fas fa-fw fa-stamp"></i>
                         <span class="custom-span">Validasi Rekomendasi</span>
                         @php
                             $permintaan_software_count = DB::table('permintaan')
@@ -269,6 +300,37 @@
     @endif
 
 
+    @if (auth()->user()->id_role == '2' || auth()->user()->id_role == '3')
+        {{-- MENU BAST --}}
+        <li
+            class="nav-item {{ request()->is('halaman_bast') || request()->is('halaman_bast_barang_masuk') || request()->is('halaman_bast_barang_keluar') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('halaman_bast') || request()->is('halaman_bast_barang_masuk') || request()->is('halaman_bast_barang_keluar') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseBAST_Admin" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-handshake"></i>
+                <span>BAST</span>
+            </a>
+            <div id="collapseBAST_Admin"
+                class="collapse {{ request()->is('halaman_bast_barang_masuk') || request()->is('halaman_bast_barang_keluar') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- BARANG KELUAR --}}
+                    <a class="collapse-item {{ request()->is('halaman_bast_barang_keluar') ? 'active' : '' }}"
+                        href="/halaman_bast_barang_keluar">
+                        <i class="fas fa-fw fa-box"></i>
+                        <i class="fas fa-fw fa-arrow-up"></i>
+                        <span>Barang Keluar</span>
+                    </a>
+                    {{-- BARANG MASUK --}}
+                    <a class="collapse-item {{ request()->is('halaman_bast_barang_masuk') ? 'active' : '' }}"
+                        href="/halaman_bast_barang_masuk">
+                        <i class="fas fa-fw fa-box"></i>
+                        <i class="fas fa-fw fa-arrow-down"></i>
+                        <span>Barang Masuk</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+    @endif
 
 
 

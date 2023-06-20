@@ -253,7 +253,7 @@
     @include('admin.software.modal.detail_barang')
 
     @if ($data_barang->status_barang != 'belum diterima')
-        @include('admin.software.modal.input_barang_keluar')
+        @include('admin.hardware.modal.input_barang_keluar_hardware')
     @else
         @include('admin.hardware.modal.input_barang_masuk_hardware')
     @endif

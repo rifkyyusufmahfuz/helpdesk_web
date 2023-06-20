@@ -124,6 +124,36 @@ class PegawaiController extends Controller
             : redirect('/pegawai/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan, silakan coba lagi!');
     }
 
+
+
+    public function halaman_barang_diterima_pegawai()
+    {
+        $nip = auth()->user()->pegawai->nip;
+
+        $bast_barang_diterima = $this->modelpegawai->get_bast_barang_diterima_by_nip($nip);
+
+        return view(
+            'pegawai.halaman_bast.barang_diterima',
+            [
+                'bast_barang_diterima' => $bast_barang_diterima,
+            ]
+        );
+    }
+
+    public function halaman_barang_diserahkan_pegawai()
+    {
+        $nip = auth()->user()->pegawai->nip;
+
+        $bast_barang_diserahkan = $this->modelpegawai->get_bast_barang_diserahkan_by_nip($nip);
+
+        return view(
+            'pegawai.halaman_bast.barang_diserahkan',
+            [
+                'bast_barang_diserahkan' => $bast_barang_diserahkan,
+            ]
+        );
+    }
+
     /**
      * Show the form for creating a new resource.
      */

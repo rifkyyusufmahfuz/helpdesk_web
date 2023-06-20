@@ -34,6 +34,11 @@ class PermintaanModel extends Model
         return $this->belongsTo(OtorisasiModel::class, 'id_otorisasi', 'id_otorisasi');
     }
 
+    public function tindak_lanjut()
+    {
+        return $this->belongsTo(TindakLanjutModel::class, 'id_tindak_lanjut');
+    }
+
     public function kategoriSoftware()
     {
         return $this->hasOne(KategoriSoftwareModel::class, 'id_kategori', 'id_kategori');

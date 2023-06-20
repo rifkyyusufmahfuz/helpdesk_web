@@ -26,13 +26,15 @@ class ResetPasswordController extends Controller
 
     public function permintaan_reset_password(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:users',
-        ],
-    [
-        'email.required' => 'Email wajid diisi!',
-        'email.exists' => 'Email tidak ditemukan!',
-    ]);
+        $request->validate(
+            [
+                'email' => 'required|email|exists:users',
+            ],
+            [
+                'email.required' => 'Email wajid diisi!',
+                'email.exists' => 'Email tidak ditemukan!',
+            ]
+        );
         $token = Str::random(64);
 
         $expires_at = now()->addMinutes(5); // waktu kadaluwarsa token 5 menit sejak disubmit
@@ -74,11 +76,19 @@ class ResetPasswordController extends Controller
 
     public function submit_reset_password(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:users',
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
-        ]);
+        $request->validate(
+            [
+                'email' => 'required|email|exists:users',
+                'password' => 'required|string|min:6|confirmed',
+                'password_confirmation' => 'required'
+            ],
+            [
+                'password.confirmed' => 'Konfirmasi password tidak cocok!',
+                'password.required' => 'Password wajib diisi!',
+                'password.min' => 'Password minimal 6 karakter!',
+                'password_confirmation.required' => 'Password wajib diisi!',
+            ]
+        );
         $resetToken = DB::table('password_reset_tokens')
             ->where([
                 'email' => $request->email,
@@ -88,12 +98,37 @@ class ResetPasswordController extends Controller
             ->first();
         if (!$resetToken) {
             return back()->withInput()->with('toast_error', 'Invalid or expired token!');
+        } else {
+
+            $email = $request->email;
+
+            $pegawai = DB::table('pegawai')
+                ->join('users', 'pegawai.nip', '=', 'users.nip')
+                ->join('roles', 'users.id_role', '=', 'roles.id_role')
+                ->where('users.email', $email)
+                ->select('pegawai.nama', 'roles.nama_role')
+                ->first();
+
+            $namaPegawai = $pegawai->nama;
+            $role = $pegawai->nama_role;
+            // Lanjutkan dengan menambahkan notifikasi ke tabel notifikasi
+            $pesan = "" . $email . " (" . $namaPegawai  . " - " . ucwords($role) .  ") telah melakukan reset password.";
+
+            DB::table('notifikasi')->insert([
+                'user_id' => null,
+                'role_id' => 1,
+                'pesan' => $pesan,
+                'tautan' => '/superadmin/datauseraktif',
+                'read_at' => null,
+                'created_at' => now(),
+                // 'updated_at' => now()
+            ]);
+
+            $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+
+            DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
+
+            return redirect('/')->with('toast_info', 'Password Anda berhasil di-Reset!');
         }
-
-        $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
-
-        DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
-
-        return redirect('/')->with('toast_info', 'Password Anda berhasil di-Reset!');
     }
 }

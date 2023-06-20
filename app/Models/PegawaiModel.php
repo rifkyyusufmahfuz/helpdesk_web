@@ -234,7 +234,7 @@ class PegawaiModel extends Model
         $nama = ucwords(auth()->user()->pegawai->nama);
         $simpan_notifikasi = DB::table('notifikasi')->insert([
             'role_id' => 2,
-            'pesan' => 'Permintaan instalasi software baru dari pegawai ' . $nama,
+            'pesan' => 'Permintaan instalasi software baru dari requestor ' . $nama,
             'tautan' => '/admin/permintaan_software',
             'created_at' => now()
         ]);
@@ -449,6 +449,25 @@ class PegawaiModel extends Model
                 'permintaan.*',
                 'software.*',
             )
+            ->get();
+    }
+
+
+    public function get_bast_barang_diterima_by_nip($nip)
+    {
+        return DB::table('bast')
+            ->where('jenis_bast', 'barang_keluar')
+            ->where('yang_menerima', $nip)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function get_bast_barang_diserahkan_by_nip($nip)
+    {
+        return DB::table('bast')
+            ->where('jenis_bast', 'barang_masuk')
+            ->where('yang_menyerahkan', $nip)
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 }

@@ -219,7 +219,7 @@ class ManagerController extends Controller
                 $permintaan = $this->modelmanager->get_admin_by_id_tindaklanjut($id_permintaan);
                 $notifikasi_admin = [
                     'pesan' => 'Permintaan Instalasi Software dengan ID Permintaan "' . $id_permintaan . '" telah disetujui oleh Manager. Requestor telah diberitahukan untuk menyerahkan unit ke NOC.',
-                    'tautan' => '/admin/permintaan_hardware',
+                    'tautan' => '/admin/permintaan_software',
                     'created_at' => now(),
                     'role_id' => 2,
                 ];

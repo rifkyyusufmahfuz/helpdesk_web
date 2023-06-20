@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminModel;
 use App\Models\OtorisasiModel;
 use App\Models\PermintaanModel;
+use App\Models\TindakLanjutModel;
 use Illuminate\Http\Request;
 use App\Utils\RomanNumberConverter;
 
@@ -123,14 +124,12 @@ class AdminController extends Controller
         $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
         $barang = $this->modeladmin->get_barang_by_id_permintaan($id_permintaan);
         // $bast = $this->modeladmin->get_bast_by_id_permintaan($id_permintaan);
-        $tindak_lanjut = $this->modeladmin->get_tindak_lanjut_by_id_permintaan($id_permintaan);
         return view(
             'admin.software.bast_software',
             [
                 'permintaan' => $permintaan,
                 'barang' => $barang,
                 // 'bast' => $bast,
-                'tindak_lanjut' => $tindak_lanjut
             ]
         );
     }
@@ -220,6 +219,36 @@ class AdminController extends Controller
             return redirect('/admin/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan!');
         }
     }
+
+    public function halaman_barang_masuk_admin()
+    {
+        $nip = auth()->user()->pegawai->nip;
+
+        // $bast = $this->modeladmin->get_bast_by_nip($nip);
+        $bast_barang_masuk = $this->modeladmin->get_bast_barang_masuk();
+        // $barang = $this->modeladmin->get_barang_by_id_permintaan();
+        // $bast = $this->modeladmin->get_bast_by_id_permintaan($id_permintaan);
+
+        return view(
+            'halaman_bast.barang_masuk',
+            [
+                'bast_barang_masuk' => $bast_barang_masuk,
+            ]
+        );
+    }
+
+    public function halaman_barang_keluar_admin()
+    {
+        $bast_barang_keluar = $this->modeladmin->get_bast_barang_keluar();
+
+        return view(
+            'halaman_bast.barang_keluar',
+            [
+                'bast_barang_keluar' => $bast_barang_keluar,
+            ]
+        );
+    }
+
 
 
 
@@ -324,19 +353,36 @@ class AdminController extends Controller
             $id_bast_baru = sprintf('%04d', $urutanBaru) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . $tahunSekarang;
 
 
-            $data_bast = [
-                'id_bast' => $id_bast_baru,
-                'tanggal_bast' => now(),
-                'jenis_bast' => $request->jenis_bast,
-                'perihal' => 'Instalasi software dengan software berikut ini: ',
-                'ttd_menyerahkan' => $filename_ttd_p1,
-                'yang_menyerahkan' => $request->nip_p1,
-                'ttd_menerima' => $filename_ttd_p2,
-                'yang_menerima' => $request->nip_pegawai,
-                'id_permintaan' => $request->id_permintaan,
-                'id_stasiun' => 'JUA',
-                'created_at' => now(),
-            ];
+            if ($request->input('keperluan') == 'pengecekan_hardware') {
+                $data_bast = [
+                    'id_bast' => $id_bast_baru,
+                    'tanggal_bast' => now(),
+                    'jenis_bast' => $request->jenis_bast,
+                    'perihal' => 'Pengecekan hardware',
+                    'ttd_menyerahkan' => $filename_ttd_p1,
+                    'yang_menyerahkan' => $request->nip_p1,
+                    'ttd_menerima' => $filename_ttd_p2,
+                    'yang_menerima' => $request->nip_pegawai,
+                    'id_permintaan' => $request->id_permintaan,
+                    'id_stasiun' => 'JUA',
+                    'created_at' => now(),
+                ];
+            } elseif ($request->input('keperluan') == 'instalasi_software') {
+                $data_bast = [
+                    'id_bast' => $id_bast_baru,
+                    'tanggal_bast' => now(),
+                    'jenis_bast' => $request->jenis_bast,
+                    'perihal' => 'Instalasi software',
+                    'ttd_menyerahkan' => $filename_ttd_p1,
+                    'yang_menyerahkan' => $request->nip_p1,
+                    'ttd_menerima' => $filename_ttd_p2,
+                    'yang_menerima' => $request->nip_pegawai,
+                    'id_permintaan' => $request->id_permintaan,
+                    'id_stasiun' => 'JUA',
+                    'created_at' => now(),
+                ];
+            }
+
 
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
             $id_permintaan = $request->id_permintaan;
@@ -346,7 +392,7 @@ class AdminController extends Controller
 
             $notifikasi = [
                 'pesan' => 'Anda baru saja melakukan Serah Terima Barang dengan Nomor BAST : ' . $id_bast_baru . '.',
-                'tautan' => '/pegawai/bast',
+                'tautan' => '/pegawai/halaman_bast_barang_diserahkan',
                 'created_at' => now(),
                 'user_id' => $pegawaiId,
             ];
@@ -363,15 +409,16 @@ class AdminController extends Controller
                 'updated_at' => now(),
             ];
 
-            $id_tindak_lanjut = $request->id_tindak_lanjut;
-            $data_tindak_lanjut = [
-                'tanggal_penanganan' => now(),
-                'updated_at' => now()
-            ];
+            // $tindak_lanjut = TindakLanjutModel::find($id_permintaan);
+            // $id_tindak_lanjut = $tindak_lanjut->id_tindak_lanjut;
+            // $data_tindak_lanjut = [
+            //     'tanggal_penanganan' => now(),
+            //     'updated_at' => now()
+            // ];
 
             $update_permintaan = $this->modeladmin->update_permintaan($data_permintaan, $id_permintaan);
             $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
-            $update_tindak_lanjut = $this->modeladmin->update_tindak_lanjut($data_tindak_lanjut, $id_tindak_lanjut);
+            // $update_tindak_lanjut = $this->modeladmin->update_tindak_lanjut($data_tindak_lanjut, $id_tindak_lanjut);
             $input_bast_barang_masuk = $this->modeladmin->input_bast($data_bast);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
@@ -379,7 +426,7 @@ class AdminController extends Controller
 
             // menggunakan operator ternary (pengganti kondisi dengan if else)
             //untuk mengembalikan pesan apakah berhasil atau tidak
-            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang && $update_tindak_lanjut)
+            return ($input_bast_barang_masuk && $kirim_notifikasi && $update_permintaan && $update_barang)
                 ? back()->with('toast_success', 'Input BAST berhasil!')
                 : back()->with('toast_error', 'Input BAST gagal!');
         } else if ($request->input('jenis_bast') == 'barang_keluar') {
@@ -433,19 +480,35 @@ class AdminController extends Controller
             $id_bast_baru = sprintf('%04d', $urutanBaru) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . $tahunSekarang;
 
 
-            $data_bast = [
-                'id_bast' => $id_bast_baru,
-                'tanggal_bast' => now(),
-                'jenis_bast' => $request->jenis_bast,
-                'perihal' => 'Instalasi software dengan software berikut ini: ',
-                'ttd_menyerahkan' => $filename_ttd_p1,
-                'yang_menyerahkan' => $request->nip_p1,
-                'ttd_menerima' => $filename_ttd_p2,
-                'yang_menerima' => $request->nip_pegawai,
-                'id_permintaan' => $request->id_permintaan,
-                'id_stasiun' => 'JUA',
-                'created_at' => now(),
-            ];
+            if ($request->input('keperluan') == 'pengecekan_hardware') {
+                $data_bast = [
+                    'id_bast' => $id_bast_baru,
+                    'tanggal_bast' => now(),
+                    'jenis_bast' => $request->jenis_bast,
+                    'perihal' => 'Pengembalian unit yang telah dilakukan pengecekan hardware',
+                    'ttd_menyerahkan' => $filename_ttd_p1,
+                    'yang_menyerahkan' => $request->nip_p1,
+                    'ttd_menerima' => $filename_ttd_p2,
+                    'yang_menerima' => $request->nip_pegawai,
+                    'id_permintaan' => $request->id_permintaan,
+                    'id_stasiun' => 'JUA',
+                    'created_at' => now(),
+                ];
+            } elseif ($request->input('keperluan') == 'instalasi_software') {
+                $data_bast = [
+                    'id_bast' => $id_bast_baru,
+                    'tanggal_bast' => now(),
+                    'jenis_bast' => $request->jenis_bast,
+                    'perihal' => 'Pengembalian unit yang telah dilakukan instalasi software',
+                    'ttd_menyerahkan' => $filename_ttd_p1,
+                    'yang_menyerahkan' => $request->nip_p1,
+                    'ttd_menerima' => $filename_ttd_p2,
+                    'yang_menerima' => $request->nip_pegawai,
+                    'id_permintaan' => $request->id_permintaan,
+                    'id_stasiun' => 'JUA',
+                    'created_at' => now(),
+                ];
+            }
 
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
             $id_permintaan = $request->id_permintaan;
@@ -455,7 +518,7 @@ class AdminController extends Controller
 
             $notifikasi = [
                 'pesan' => 'Anda baru saja melakukan Serah Terima Barang dengan Nomor BAST : ' . $id_bast_baru . '.',
-                'tautan' => '/pegawai/bast',
+                'tautan' => '/pegawai/halaman_bast_barang_diterima',
                 'created_at' => now(),
                 'user_id' => $pegawaiId,
             ];
@@ -566,7 +629,7 @@ class AdminController extends Controller
             } elseif ($request->selesaikan_permintaan == 'permintaan_hardware') {
                 $notifikasi = [
                     'pesan' => 'Permintaan pengecekan hardware Anda dengan ID Permintaan = ' . $id_permintaan . ' telah selesai. Silakan ambil unit di NOC. Terima kasih!',
-                    'tautan' => '/pegawai/permintaan_software',
+                    'tautan' => '/pegawai/permintaan_hardware',
                     'created_at' => now(),
                     'user_id' => $pegawaiId,
                 ];

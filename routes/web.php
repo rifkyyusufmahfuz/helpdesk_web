@@ -92,6 +92,13 @@ Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], fun
     Route::get('/manager/riwayat_validasi', [ManagerController::class, 'riwayat_validasi']);
 });
 
+// untuk manager dan admin
+Route::group(['middleware' => ['auth', 'checkrole:2,3', 'checkstatus:aktif']], function () {
+    Route::get('/halaman_bast_barang_masuk', [AdminController::class, 'halaman_barang_masuk_admin']);
+    Route::get('/halaman_bast_barang_keluar', [AdminController::class, 'halaman_barang_keluar_admin']);
+});
+
+
 // untuk pegawai
 Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
     Route::get('/pegawai', [PegawaiController::class, 'index']);
@@ -100,6 +107,9 @@ Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
 
     Route::get('/pegawai/permintaan_hardware', [PegawaiController::class, 'permintaan_hardware']);
     Route::post('/pegawai/simpan_hardware', [PegawaiController::class, 'simpan_hardware']);
+
+    Route::get('/pegawai/halaman_bast_barang_diterima', [PegawaiController::class, 'halaman_barang_diterima_pegawai']);
+    Route::get('/pegawai/halaman_bast_barang_diserahkan', [PegawaiController::class, 'halaman_barang_diserahkan_pegawai']);
 });
 
 //untuk notifikasi

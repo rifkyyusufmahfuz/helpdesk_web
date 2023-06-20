@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('pegawai', function (Blueprint $table) {
             $table->string('nip', 5)->primary();
             $table->string('nama', 50);
-            $table->string('bagian', 15);
-            $table->string('jabatan', 30);
+            $table->string('bagian', 100);
+            $table->string('jabatan', 50);
             $table->string('id_stasiun', 3);
             $table->foreign('id_stasiun')->references('id_stasiun')->on('stasiun');
             $table->timestamps();

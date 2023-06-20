@@ -12,7 +12,9 @@
             <form action="/admin/crud" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" name="jenis_bast" id="jenis_bast" value="barang_masuk">
+                    <input hidden name="jenis_bast" id="jenis_bast" value="barang_masuk">
+                    <input hidden name="keperluan" value="instalasi_software">
+
                     <div id="yang_menyerahkan">
                         <h6>Pihak Pertama - Yang Menyerahkan Barang</h6>
                         <div class="row">
@@ -26,10 +28,7 @@
                                         value="{{ $data2->nip }}">
                                 </div>
                             @endforeach
-                            @foreach ($tindak_lanjut as $data3)
-                                <input hidden name="id_tindak_lanjut" value="{{ $data3->id_tindak_lanjut }}">
-                            @endforeach
-
+                            
                             <div class="form-group col-sm-7">
                                 <label for="nama_p1">Nama</label>
                                 <input type="text" class="form-control" id="nama_pegawai_p1" name="nama_p1"
