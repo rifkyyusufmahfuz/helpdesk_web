@@ -29,9 +29,14 @@ class RegisterModel extends Model
     {
         return DB::table('pegawai')->insert($data);
     }
-    
+
     public function registrasi_user($data2)
     {
         return DB::table('users')->insert($data2);
+    }
+
+    public function kirim_notifikasi($data_notifikasi)
+    {
+        return DB::table('notifikasi')->insert($data_notifikasi);
     }
 }

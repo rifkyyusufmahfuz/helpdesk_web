@@ -57,11 +57,12 @@ class RegisterController extends Controller
         // ubah value nama stasiun menjadi id_stasiun
         $nama_stasiun = $request->input('lokasi');
         $id_stasiun = $this->modelregister->getIdStasiun($nama_stasiun);
+        $nama_pegawai =  ucwords(strtolower($request->nama));
 
         // tambah ke tabel pegawai
         $data = [
             'nip' => $request->nip,
-            'nama' => $request->nama,
+            'nama' => $nama_pegawai,
             'bagian' => $request->bagian,
             'jabatan' => $request->jabatan,
             'id_stasiun' => $id_stasiun,
@@ -78,9 +79,33 @@ class RegisterController extends Controller
             'id_role' => 4,
             'created_at' => \Carbon\Carbon::now(),
         ];
-        $this->modelregister->registrasi_user($data2);
 
-        return redirect('/')->with('toast_success', 'Registrasi berhasil! Akun Anda akan segera diaktifkan!');
+
+        $email = $request->email;
+
+        // Lanjutkan dengan menambahkan notifikasi ke tabel notifikasi
+        $pesan = "" . $email . " (" . $nama_pegawai  .    ") telah melakukan registrasi akun baru.";
+
+
+        $data_notifikasi = [
+            'user_id' => null,
+            'role_id' => 1,
+            'pesan' => $pesan,
+            'tautan' => '/superadmin/datausernonaktif',
+            'read_at' => null,
+            'created_at' => now(),
+        ];
+
+
+        $registrasi_user =  $this->modelregister->registrasi_user($data2);
+        $kirim_notifikasi = $this->modelregister->kirim_notifikasi($data_notifikasi);
+
+
+        return $registrasi_user && $kirim_notifikasi
+            ? redirect('/')->with('toast_success', 'Registrasi berhasil! Akun Anda akan segera diaktifkan!')
+            : back()->with('toast_error', 'Registrasi gagal! Silakan coba lagi!');
+
+        // return redirect('/')->with('toast_success', 'Registrasi berhasil! Akun Anda akan segera diaktifkan!');
     }
 
 
