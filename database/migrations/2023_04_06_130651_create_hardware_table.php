@@ -17,7 +17,9 @@ return new class extends Migration
             $table->enum('status_hardware', ['OK', 'NOK']);
             $table->string('problem', 100);
             $table->string('id_permintaan', 30);
-            $table->foreign('id_permintaan')->references('id_permintaan')->on('permintaan');
+            $table->foreign('id_permintaan')
+                ->references('id_permintaan')->on('permintaan')
+                ->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

@@ -52,13 +52,25 @@ Route::resource('/registrasi/registrasi_akun', RegisterController::class);
 Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
     Route::resource('/superadmin/crud', SuperadminController::class);
+
+    // data master user
     Route::get('/superadmin/datauseraktif', [SuperadminController::class, 'halaman_datauser']);
     Route::get('/superadmin/datausernonaktif', [SuperadminController::class, 'halaman_datauser_nonaktif']);
     Route::get('/superadmin/datapegawai', [SuperadminController::class, 'halaman_datapegawai']);
-
     Route::get('/superadmin/lihatdatauser/{id}', [SuperadminController::class, 'show'])->name('lihat_data_pegawai');
-
     Route::post('/superadmin/aktivasi_semua_user', [SuperadminController::class, 'aktivasi_semua_user']);
+
+    // data master notifikasi
+    Route::get('/superadmin/master_notifikasi', [SuperadminController::class, 'master_notifikasi']);
+    Route::get('/superadmin/master_stasiun', [SuperadminController::class, 'master_stasiun']);
+    Route::get('/superadmin/master_barang', [SuperadminController::class, 'master_barang']);
+
+
+    Route::get('/superadmin/transaksi_permintaan_software', [SuperadminController::class, 'transaksi_permintaan_software']);
+    Route::get('/superadmin/transaksi_permintaan_hardware', [SuperadminController::class, 'transaksi_permintaan_hardware']);
+    Route::get('/superadmin/transaksi_otorisasi', [SuperadminController::class, 'transaksi_otorisasi']);
+    Route::get('/superadmin/transaksi_tindaklanjut', [SuperadminController::class, 'transaksi_tindaklanjut']);
+    Route::get('/superadmin/transaksi_bast', [SuperadminController::class, 'transaksi_bast']);
 });
 
 Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');

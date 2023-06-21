@@ -1,7 +1,8 @@
-// tombol aksi hapus user
-function confirmDelete(id) {
+// Tombol aksi hapus
+function confirmDelete(id, title, text) {
     Swal.fire({
-        title: 'Anda yakin ingin menghapus user ini?',
+        title: title,
+        text: text,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Ya',
@@ -74,8 +75,8 @@ function disable_user(id) {
         text: 'User tidak bisa melakukan login apabila dinonaktifkan!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, nonaktifkan',
-        cancelButtonText: 'Tidak, batalkan',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak',
     }).then((result) => {
         if (result.isConfirmed) {
             // Submit form jika user menekan tombol "Ya, hapus"

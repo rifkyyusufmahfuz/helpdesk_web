@@ -106,13 +106,17 @@ class ResetPasswordController extends Controller
                 ->join('users', 'pegawai.nip', '=', 'users.nip')
                 ->join('roles', 'users.id_role', '=', 'roles.id_role')
                 ->where('users.email', $email)
-                ->select('pegawai.nama', 'roles.nama_role')
+                ->select('pegawai.nama', 'roles.nama_role', 'users.id AS user_id')
                 ->first();
+
+            $user_id = $pegawai->user_id;
 
             $namaPegawai = $pegawai->nama;
             $role = $pegawai->nama_role;
             // Lanjutkan dengan menambahkan notifikasi ke tabel notifikasi
             $pesan = "" . $email . " (" . $namaPegawai  . " - " . ucwords($role) .  ") telah melakukan reset password.";
+
+            $pesan_2 = 'Anda telah melakukan reset password.';
 
             DB::table('notifikasi')->insert([
                 'user_id' => null,
@@ -123,6 +127,17 @@ class ResetPasswordController extends Controller
                 'created_at' => now(),
                 // 'updated_at' => now()
             ]);
+
+            DB::table('notifikasi')->insert([
+                'user_id' => $user_id,
+                'role_id' => null,
+                'pesan' => $pesan_2,
+                'tautan' => '/pegawai',
+                'read_at' => null,
+                'created_at' => now(),
+                // 'updated_at' => now()
+            ]);
+
 
             $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
 

@@ -38,12 +38,12 @@ class PermintaanSeeder extends Seeder
         //B
         for ($i = 1; $i <= 200; $i++) {
             DB::table('barang')->insert([
-                'kode_barang' => 'ABC' . $i,
+                'kode_barang' => 'KCI-213' . $i,
                 'nama_barang' => 'Nama Barang ' . $i,
                 'prosesor' => 'Prosesor ' . $i,
-                'ram' => 'RAM ' . $i,
+                'ram' =>  $i . 'GB',
                 'penyimpanan' => $i . 'GB',
-                'status_barang' => 1,
+                'status_barang' => 'belum diterima',
                 'jumlah_barang' => 1,
                 'created_at' => now(),
             ]);
@@ -91,7 +91,7 @@ class PermintaanSeeder extends Seeder
                 'id' => 1,
                 'id_kategori' => 1,
                 'id_otorisasi' => 1,
-                'kode_barang' => 'ABC' . $i,
+                'kode_barang' => 'KCI-213' . $i,
                 'created_at' => $randomDate,
                 'updated_at' => $randomDate,
             ]);

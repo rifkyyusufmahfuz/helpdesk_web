@@ -29,7 +29,10 @@ return new class extends Migration
 
             //FK Kolom kode_barang dari table barang
             $table->string('kode_barang', 20);
-            $table->foreign('kode_barang')->references('kode_barang')->on('barang')->onDelete('cascade');
+            $table->foreign('kode_barang')
+                ->references('kode_barang')->on('barang')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             //FK Kolom id dari table users
             $table->unsignedInteger('id');
@@ -37,11 +40,18 @@ return new class extends Migration
 
             //FK Kolom id_otorisasi dari table otorisasi
             $table->unsignedInteger('id_otorisasi')->nullable();
-            $table->foreign('id_otorisasi')->references('id_otorisasi')->on('otorisasi')->onDelete('cascade');
+            $table->foreign('id_otorisasi')
+                ->references('id_otorisasi')->on('otorisasi')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             //FK Kolom id_kategori dari table kategori_software
             $table->unsignedInteger('id_kategori')->nullable();
-            $table->foreign('id_kategori')->references('id_kategori')->on('kategori_software')->onDelete('cascade');
+            $table->foreign('id_kategori')
+                ->references('id_kategori')
+                ->on('kategori_software')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             //timestamp
             $table->timestamps();

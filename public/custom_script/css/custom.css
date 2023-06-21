@@ -77,12 +77,12 @@ iframe {
 
 #kode_barang,
 #ram,
-#penyimpanan {
+#penyimpanan,
+#prosesor {
     text-transform: uppercase;
 }
 
-#nama_barang,
-#prosesor {
+#nama_barang {
     text-transform: capitalize;
 }
 

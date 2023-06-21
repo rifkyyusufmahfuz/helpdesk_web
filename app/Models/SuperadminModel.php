@@ -132,6 +132,7 @@ class SuperadminModel extends Model
     public function getIdStasiun($nama_stasiun)
     {
         $stasiun = DB::table('stasiun')->where('nama_stasiun', $nama_stasiun)->first();
+
         if ($stasiun) {
             return $stasiun->id_stasiun;
         } else {
@@ -180,59 +181,97 @@ class SuperadminModel extends Model
     }
 
 
-    //Tambah Data User baru
+    // Tambah Data User baru
     public function insert_datauser($data_user)
     {
-        if (DB::table('users')->insert($data_user)) {
-            return true;
-        } else {
-            return false;
-        }
+        return DB::table('users')->insert($data_user) ? true : false;
     }
 
-    //Tambah data pegawai baru
+    // Tambah data pegawai baru
     public function insert_datapegawai($data)
     {
-        if (DB::table('pegawai')->insert($data)) {
-            return true;
-        } else {
-            return false;
-        }
+        return DB::table('pegawai')->insert($data) ? true : false;
     }
-
 
     // Update data user
     public function update_user($data, $id)
     {
-        if (DB::table('users')->where('id', $id)->update($data)) {
-            return true;
-        } else {
-            return false;
-        }
+        return DB::table('users')->where('id', $id)->update($data) ? true : false;
     }
 
-    // update data pegawai
+    // Update data pegawai
     public function update_pegawai($data, $id)
     {
-        if (DB::table('pegawai')->where('nip', $id)->update($data)) {
-            return true;
-        } else {
-            return false;
-        }
+        return DB::table('pegawai')->where('nip', $id)->update($data) ? true : false;
     }
 
-    // hapus data pegawai
+    // Hapus data pegawai
     public function delete_datapegawai($id)
     {
-        if (DB::table('pegawai')->where('nip', $id)->delete()) {
-            return true;
-        } else {
-            return false;
-        }
+        return DB::table('pegawai')->where('nip', $id)->delete() ? true : false;
     }
 
     public function input_notifikasi($notifikasi)
     {
         return DB::table('notifikasi')->insert($notifikasi) ? true : false;
+    }
+
+
+    public function get_data_notifikasi()
+    {
+        return DB::table('notifikasi')
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function get_data_stasiun()
+    {
+        return DB::table('stasiun')
+            // ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function get_data_barang()
+    {
+        return DB::table('barang')
+            ->orderBy('created_at', 'ASC')
+            ->get();
+    }
+
+
+    public function input_stasiun($data_stasiun)
+    {
+        return DB::table('stasiun')->insert($data_stasiun) ? true : false;
+    }
+
+
+    public function update_stasiun($data_stasiun, $id)
+    {
+        return DB::table('stasiun')->where('id_stasiun', $id)->update($data_stasiun) ? true : false;
+    }
+
+    public function delete_stasiun($id)
+    {
+        return DB::table('stasiun')->where('id_stasiun', $id)->delete() ? true : false;
+    }
+
+    public function update_barang($data_barang, $id)
+    {
+        return DB::table('barang')->where('kode_barang', $id)->update($data_barang) ? true : false;
+    }
+
+    public function input_barang($data_barang)
+    {
+        return DB::table('barang')->insert($data_barang) ? true : false;
+    }
+
+    public function delete_barang($id)
+    {
+        return DB::table('barang')->where('kode_barang', $id)->delete() ? true : false;
+    }
+
+    public function delete_permintaan($id)
+    {
+        return DB::table('permintaan')->where('id_permintaan', $id)->delete() ? true : false;
     }
 }

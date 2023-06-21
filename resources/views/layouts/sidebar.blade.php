@@ -14,7 +14,7 @@
 
     <!-- Nav Item - Beranda -->
 
-    <!-- Nav Item - Pengguna -->
+    <!-- Nav Item - Superadmin -->
     @if (auth()->user()->id_role == '1')
         <li class="nav-item {{ request()->is('superadmin') ? 'active' : '' }}">
             <a class="nav-link" href="/superadmin">
@@ -22,36 +22,180 @@
                 <span>Dashboard</span></a>
         </li>
 
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">
+            DATA MASTER
+        </div>
+
         <li
             class="nav-item {{ request()->is('superadmin/datauseraktif') | request()->is('superadmin/datausernonaktif') | request()->is('superadmin/datapegawai') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('superadmin/datauseraktif') || request()->is('superadmin/datausernonaktif') || request()->is('superadmin/datapegawai') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseSuperadmin" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-users"></i>
-                <span>Informasi User</span>
+                <i class="fas fa-fw fa-user-gear"></i>
+                <span>User & Pegawai</span>
             </a>
             <div id="collapseSuperadmin"
                 class="collapse {{ request()->is('superadmin/datauseraktif') || request()->is('superadmin/datausernonaktif') || request()->is('superadmin/datapegawai') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Data User & Pegawai:</h6>
+
                     <a class="collapse-item {{ request()->is('superadmin/datauseraktif') ? 'active' : '' }}"
                         href="/superadmin/datauseraktif">
                         <i class="fas fa-fw fa-user-check"></i>
-                        <span>Data User Aktif</span>
+                        <span>User Aktif</span>
                     </a>
                     <a class="collapse-item {{ request()->is('superadmin/datausernonaktif') ? 'active' : '' }}"
                         href="/superadmin/datausernonaktif">
                         <i class="fas fa-fw fa-user-times"></i>
-                        <span>Data User Nonaktif</span>
+                        <span>User Nonaktif</span>
                     </a>
                     <a class="collapse-item {{ request()->is('superadmin/datapegawai') ? 'active' : '' }}"
-                        href="/superadmin/datapegawai">
-                        <i class="fas fa-fw fa-briefcase"></i>
-                        <span>Data Pegawai</span>
+                        href="/superadmin/datapegawai"><i class="fas fa-fw fa-user-group"></i>
+                        <span>Pegawai</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        {{-- master notifikasi --}}
+        {{-- <li class="nav-item {{ request()->is('superadmin/master_notifikasi') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/master_notifikasi') ? '' : 'collapsed' }}" href="#"
+                data-toggle="collapse" data-target="#collapseMasterNotifikasi" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-mail-bulk"></i>
+                <span>Notifikasi</span>
+            </a>
+            <div id="collapseMasterNotifikasi"
+                class="collapse {{ request()->is('superadmin/master_notifikasi') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Data Notifikasi:</h6>
+
+                    <a class="collapse-item {{ request()->is('superadmin/master_notifikasi') ? 'active' : '' }}"
+                        href="/superadmin/master_notifikasi">
+                        <i class="fas fa-fw fa-history"></i>
+                        <span>Riwayat Notifikasi</span>
+                    </a>
+                </div>
+            </div>
+        </li> --}}
+
+        {{-- master stasiun --}}
+        <li class="nav-item {{ request()->is('superadmin/master_stasiun') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/master_stasiun') ? '' : 'collapsed' }}" href="#"
+                data-toggle="collapse" data-target="#collapseMasterStasiun" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-subway"></i>
+                <span>Stasiun</span>
+            </a>
+            <div id="collapseMasterStasiun"
+                class="collapse {{ request()->is('superadmin/master_stasiun') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Data Stasiun:</h6>
+                    <a class="collapse-item {{ request()->is('superadmin/master_stasiun') ? 'active' : '' }}"
+                        href="/superadmin/master_stasiun">
+                        <i class="fas fa-fw fa-tower-observation"></i>
+                        <span>Data Stasiun</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        {{-- master barang --}}
+        <li class="nav-item {{ request()->is('superadmin/master_barang') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/master_barang') ? '' : 'collapsed' }}" href="#"
+                data-toggle="collapse" data-target="#collapseMasterBarang" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-boxes"></i>
+                <span>Barang</span>
+            </a>
+            <div id="collapseMasterBarang"
+                class="collapse {{ request()->is('superadmin/master_barang') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Data Barang:</h6>
+                    <a class="collapse-item {{ request()->is('superadmin/master_barang') ? 'active' : '' }}"
+                        href="/superadmin/master_barang">
+                        <i class="fas fa-fw fa-boxes-packing"></i>
+                        <span>Data Barang</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">
+            DATA TRANSAKSI
+        </div>
+
+        {{-- transaksi permintaan --}}
+        <li
+            class="nav-item {{ request()->is('superadmin/transaksi_permintaan_software') || request()->is('superadmin/transaksi_permintaan_hardware') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/transaksi_permintaan_software') || request()->is('superadmin/transaksi_permintaan_hardware') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseTransaksiPermintaan"
+                aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-boxes"></i>
+                <span>Permintaan Layanan</span>
+            </a>
+            <div id="collapseTransaksiPermintaan"
+                class="collapse {{ request()->is('superadmin/transaksi_permintaan_software') || request()->is('superadmin/transaksi_permintaan_hardware') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Transaksi Permintaan:</h6>
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_permintaan_software') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_permintaan_software">
+                        <i class="fas fa-fw fa-laptop-code"></i>
+                        <span>Instalasi Software</span>
+                    </a>
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_permintaan_hardware') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_permintaan_hardware">
+                        <i class="fas fa-fw fa-user-check"></i>
+                        <span>Pengecekan Hardware</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li
+            class="nav-item {{ request()->is('') || request()->is('superadmin/transaksi_tindaklanjut') | request()->is('superadmin/transaksi_bast') ? 'active' : '' }}">
+
+            <a class="nav-link {{ request()->is('') || request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasivalidasi') || request()->is('superadmin/transaksi_bast') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-user-gear"></i>
+                <span>Data Transaksi</span>
+            </a>
+            <div id="collapseDataTransaksi"
+                class="collapse {{ request()->is('') || request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasivalidasi') || request()->is('superadmin/transaksi_bast') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Data Transaksi:</h6>
+
+
+                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_tindaklanjut">
+                        <i class="fas fa-fw fa-user-times"></i>
+                        <span>Tindak Lanjut</span>
+                    </a>
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_otorisasivalidasi') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_otorisasivalidasi">
+                        <i class="fas fa-fw fa-user-group"></i>
+                        <span>Otorisasi & Validasi</span>
+                    </a>
+
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_bast') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_bast">
+                        <i class="fas fa-fw fa-user-group"></i>
+                        <span>BAST</span>
                     </a>
                 </div>
             </div>
         </li>
     @endif
+
+
+
+
 
     {{-- MENU UNTUK USER PEGAWAI --}}
     @if (auth()->user()->id_role == '4')

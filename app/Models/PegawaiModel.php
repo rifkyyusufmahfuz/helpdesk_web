@@ -133,7 +133,11 @@ class PegawaiModel extends Model
         }
 
         //fungsi untuk simpan ke table barang
-        $kode_barang = $request->input('kode_barang');
+        $kode_barang = strtoupper($request->kode_barang);
+        $nama_barang =  ucwords(strtolower($request->nama_barang));
+        $prosesor = strtoupper($request->prosesor);
+        $ram = strtoupper($request->ram);
+        $penyimpanan = strtoupper($request->penyimpanan);
 
         // cek apakah kode_barang sudah ada di dalam tabel
         $count = DB::table('barang')->where('kode_barang', $kode_barang)->count();
@@ -143,10 +147,10 @@ class PegawaiModel extends Model
             $simpan_barang = DB::table('barang')
                 ->where('kode_barang', $kode_barang)
                 ->update([
-                    'nama_barang' => $request->input('nama_barang'),
-                    'prosesor' => $request->input('prosesor'),
-                    'ram' => $request->input('ram'),
-                    'penyimpanan' => $request->input('penyimpanan'),
+                    'nama_barang' => $nama_barang,
+                    'prosesor' => $prosesor,
+                    'ram' => $ram,
+                    'penyimpanan' => $penyimpanan,
                     'status_barang' => 'belum diterima',
                     'jumlah_barang' => 1,
                     'updated_at' => now()
@@ -155,10 +159,10 @@ class PegawaiModel extends Model
             // jika belum ada, simpan data
             $simpan_barang = DB::table('barang')->insert([
                 'kode_barang' => $kode_barang,
-                'nama_barang' => $request->input('nama_barang'),
-                'prosesor' => $request->input('prosesor'),
-                'ram' => $request->input('ram'),
-                'penyimpanan' => $request->input('penyimpanan'),
+                'nama_barang' => $nama_barang,
+                'prosesor' => $prosesor,
+                'ram' => $ram,
+                'penyimpanan' => $penyimpanan,
                 'status_barang' => 'belum diterima',
                 'jumlah_barang' => 1,
                 'created_at' => now()
@@ -312,7 +316,8 @@ class PegawaiModel extends Model
     public function simpan_permintaan_hardware(Request $request)
     {
         //fungsi untuk simpan ke table barang
-        $kode_barang = $request->input('kode_barang');
+        $kode_barang = strtoupper($request->kode_barang);
+        $nama_barang =  ucwords(strtolower($request->nama_barang));
 
         // cek apakah kode_barang sudah ada di dalam tabel
         $count = DB::table('barang')->where('kode_barang', $kode_barang)->count();
@@ -322,7 +327,7 @@ class PegawaiModel extends Model
             $simpan_barang = DB::table('barang')
                 ->where('kode_barang', $kode_barang)
                 ->update([
-                    'nama_barang' => $request->input('nama_barang'),
+                    'nama_barang' => $nama_barang,
                     'prosesor' => '-',
                     'ram' => '-',
                     'penyimpanan' => '-',
@@ -334,7 +339,7 @@ class PegawaiModel extends Model
             // jika belum ada, simpan data
             $simpan_barang = DB::table('barang')->insert([
                 'kode_barang' => $kode_barang,
-                'nama_barang' => $request->input('nama_barang'),
+                'nama_barang' => $nama_barang,
                 'prosesor' => '-',
                 'ram' => '-',
                 'penyimpanan' => '-',

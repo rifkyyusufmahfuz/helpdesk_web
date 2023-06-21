@@ -105,6 +105,11 @@ class StasiunSeeder extends Seeder
             ['id_stasiun' => 'PRS', 'nama_stasiun' => 'Poris']
         ];
 
-        DB::table('stasiun')->insert($stasiun);
+        foreach ($stasiun as $data) {
+            $createdAt = \Carbon\Carbon::now()->subDays(rand(1, 30));
+
+            $data['created_at'] = $createdAt;
+            DB::table('stasiun')->insert($data);
+        }
     }
 }

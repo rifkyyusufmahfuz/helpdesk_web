@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminModel;
+use App\Models\ManagerModel;
 use App\Models\PegawaiModel;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -19,11 +21,15 @@ class SuperadminController extends Controller
 
     protected $modeluser;
     protected $modelsuperadmin;
+    protected $modeladmin;
+    protected $modelmanager;
 
     public function __construct()
     {
         $this->modeluser = new User();
         $this->modelsuperadmin = new SuperadminModel();
+        $this->modeladmin = new AdminModel();
+        $this->modelmanager = new ManagerModel();
     }
 
     public function index()
@@ -49,7 +55,7 @@ class SuperadminController extends Controller
             'nip_pegawai' => $this->modelsuperadmin->get_nip_unregistered(),
         ];
 
-        return view('superadmin.datauser', $data);
+        return view('superadmin.master_user.datauser', $data);
     }
 
     public function halaman_datauser_nonaktif()
@@ -61,7 +67,7 @@ class SuperadminController extends Controller
             'nip_pegawai' => $this->modelsuperadmin->get_nip_unregistered(),
         ];
 
-        return view('superadmin.datauser_nonaktif', $data);
+        return view('superadmin.master_user.datauser_nonaktif', $data);
     }
 
     public function halaman_datapegawai()
@@ -71,8 +77,92 @@ class SuperadminController extends Controller
             'data_stasiun' => $this->modelsuperadmin->data_stasiun(),
         ];
 
-        return view('superadmin.datapegawai', $data);
+        return view('superadmin.master_user.datapegawai', $data);
     }
+
+    public function master_notifikasi()
+    {
+        $data_notifikasi = $this->modelsuperadmin->get_data_notifikasi();
+
+        return view(
+            'superadmin.master_notifikasi.data_notifikasi',
+            [
+                'data_notifikasi' => $data_notifikasi,
+            ]
+        );
+    }
+
+    public function master_stasiun()
+    {
+        $data_stasiun = $this->modelsuperadmin->get_data_stasiun();
+
+        return view(
+            'superadmin.master_stasiun.data_stasiun',
+            [
+                'data_stasiun' => $data_stasiun,
+            ]
+        );
+    }
+
+    public function master_barang()
+    {
+        $data_barang = $this->modelsuperadmin->get_data_barang();
+
+        return view(
+            'superadmin.master_barang.data_barang',
+            [
+                'data_barang' => $data_barang,
+            ]
+        );
+    }
+
+    public function transaksi_permintaan_software()
+    {
+        $data_permintaan = $this->modeladmin->get_permintaan_software();
+        $list_software = $this->modeladmin->get_list_software();
+
+        return view(
+            'superadmin.transaksi_permintaan.data_permintaan_software',
+            [
+                'permintaan' => $data_permintaan,
+                'list_software' => $list_software
+            ]
+        );
+    }
+
+    public function transaksi_permintaan_hardware()
+    {
+        $permintaan = $this->modeladmin->get_permintaan_hardware();
+        $list_hardware = $this->modeladmin->get_list_hardware();
+
+        return view(
+            'superadmin.transaksi_permintaan.data_permintaan_hardware',
+            [
+                'permintaan' => $permintaan,
+                'list_hardware' => $list_hardware
+            ]
+        );
+    }
+
+    public function transaksi_tindaklanjut()
+    {
+        // 
+    }
+
+    public function transaksi_otorisasi()
+    {
+        // 
+    }
+
+    public function transaksi_bast()
+    {
+        // 
+    }
+
+
+
+
+
 
     public function getPegawaiData($nip)
     {
@@ -174,6 +264,67 @@ class SuperadminController extends Controller
             } else {
                 return redirect('/superadmin/datauseraktif')->with('toast_error', 'Data user gagal ditambahkan!');
             }
+        } elseif ($request->input('jenis_input') == 'data_stasiun') {
+            $request->validate(
+                [
+                    'id_stasiun' => 'required|unique:stasiun,id_stasiun',
+                    'nama_stasiun' => 'required|unique:stasiun,nama_stasiun'
+                ],
+                [
+                    'id_stasiun.required' => 'ID stasiun wajib diisi!',
+                    'id_stasiun.unique' => 'ID stasiun sudah ada!',
+                    'nama_stasiun.required' => 'Nama stasiun wajib diisi!',
+                    'nama_stasiun.unique' => 'Nama stasiun sudah ada!',
+                ]
+            );
+
+            $nama_stasiun =  ucwords(strtolower($request->nama_stasiun));
+
+            $data_stasiun = [
+                'id_stasiun' => $request->id_stasiun,
+                'nama_stasiun' => $nama_stasiun
+            ];
+
+            $input_stasiun = $this->modelsuperadmin->input_stasiun($data_stasiun);
+
+            return $input_stasiun
+                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Stasiun berhasil diinput!')
+                : redirect('/superadmin/master_stasiun')->with('toast_error', 'Input stasiun gagal, silakan coba lagi!');
+        } elseif ($request->input('jenis_input') == 'data_barang') {
+            $request->validate(
+                [
+                    'kode_barang' => 'required|unique:barang,kode_barang',
+                    'nama_barang' => 'required'
+                ],
+                [
+                    'kode_barang.required' => 'Kode barang wajib diisi!',
+                    'kode_barang.unique' => 'Kode barang sudah ada!',
+                    'nama_barang.required' => 'Nama barang wajib diisi!',
+                ]
+            );
+
+            $nama_barang =  ucwords(strtolower($request->nama_barang));
+            $kode_barang = strtoupper($request->kode_barang);
+
+            $request->prosesor == null ? $prosesor = '-' : $prosesor = strtoupper($request->prosesor);
+            $request->ram == null ? $ram = '-' : $ram = strtoupper($request->ram);
+            $request->penyimpanan == null ? $penyimpanan = '-' : $penyimpanan = strtoupper($request->penyimpanan);
+
+            $data_barang = [
+                'kode_barang' => $kode_barang,
+                'nama_barang' => $nama_barang,
+                'prosesor' => $prosesor,
+                'ram' => $ram,
+                'penyimpanan' => $penyimpanan,
+                'status_barang' => $request->status_barang,
+                'jumlah_barang' => 1,
+            ];
+
+            $input_barang = $this->modelsuperadmin->input_barang($data_barang);
+
+            return $input_barang
+                ? redirect('/superadmin/master_barang')->with('toast_success', 'Barang berhasil diinput!')
+                : redirect('/superadmin/master_barang')->with('toast_error', 'Input barang gagal, silakan coba lagi!');
         } else {
             // jika jenis input tidak valid, lakukan sesuai kebutuhan
             // return redirect('/superadmin/datauseraktif')->with('toast_error', 'Data gagal ditambahkan!');
@@ -315,7 +466,7 @@ class SuperadminController extends Controller
                     'konfirmasi_password2.same' => 'Konfirmasi password tidak cocok!',
                 ]
 
-            );  
+            );
 
             // input data yang telah divalidasi
             $data = [
@@ -377,7 +528,7 @@ class SuperadminController extends Controller
 
             $request->validate(
                 [
-                    'nip_pegawai' => 'required|min:5',
+                    'nip_pegawai' => 'required|min:4',
                     'nama_pegawai' => 'required',
                     'bagian_pegawai' => 'required',
                     'jabatan_pegawai' => 'required',
@@ -386,7 +537,7 @@ class SuperadminController extends Controller
                 ],
                 [
                     'nip_pegawai.required' => 'Nip wajib diisi!',
-                    'nip_pegawai.min' => 'Nip minimal 5 angka!',
+                    'nip_pegawai.min' => 'NIPP minimal 4 angka!',
                     'nama_pegawai.required' => 'Nama pegawai wajib diisi!',
                     'bagian_pegawai.required' => 'Unit/bagian pegawai wajib diisi!',
                     'jabatan_pegawai.required' => 'Jabatan pegawai wajib diisi!',
@@ -418,7 +569,75 @@ class SuperadminController extends Controller
             }
         }
 
-        return back()->with('toast_error', 'Gagal melakukan update data user!');
+        // untuk update data stasiun
+        if ($request->input('jenis_input') == 'data_stasiun') {
+            $request->validate(
+                [
+                    'id_stasiun' => 'required|unique:stasiun,id_stasiun,' . $id . ',id_stasiun',
+                    'nama_stasiun' => 'required|unique:stasiun,nama_stasiun,' . $request->nama_stasiun . ',nama_stasiun'
+                ],
+                [
+                    'id_stasiun.required' => 'ID stasiun wajib diisi!',
+                    'id_stasiun.unique' => 'ID stasiun sudah ada!',
+                    'nama_stasiun.required' => 'Nama stasiun wajib diisi!',
+                    'nama_stasiun.unique' => 'Nama stasiun sudah ada!',
+                ]
+            );
+
+            $nama_stasiun =  ucwords(strtolower($request->nama_stasiun));
+
+            $data_stasiun = [
+                'id_stasiun' => $request->id_stasiun,
+                'nama_stasiun' => $nama_stasiun
+            ];
+
+            $update_stasiun = $this->modelsuperadmin->update_stasiun($data_stasiun, $id);
+
+            return $update_stasiun
+                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Stasiun berhasil diupdate!')
+                : redirect('/superadmin/master_stasiun')->with('toast_error', 'Update stasiun gagal, silakan coba lagi!');
+        }
+
+        // untuk update data barang
+        if ($request->input('jenis_input') == 'data_barang') {
+            $request->validate(
+                [
+                    'kode_barang_update' => 'required|unique:barang,kode_barang,' . $id . ',kode_barang',
+                    'nama_barang' => 'required'
+                ],
+                [
+                    'kode_barang_update.required' => 'Kode barang wajib diisi!',
+                    'kode_barang_update.unique' => 'Kode barang sudah ada!',
+                    'nama_barang.required' => 'Nama barang wajib diisi!',
+                ]
+            );
+
+            $nama_barang =  ucwords(strtolower($request->nama_barang));
+            $kode_barang = strtoupper($request->kode_barang_update);
+
+            $request->prosesor == null ? $prosesor = '-' : $prosesor = strtoupper($request->prosesor);
+            $request->ram == null ? $ram = '-' : $ram = strtoupper($request->ram);
+            $request->penyimpanan == null ? $penyimpanan = '-' : $penyimpanan = strtoupper($request->penyimpanan);
+
+            $data_barang = [
+                'kode_barang' => $kode_barang,
+                'nama_barang' => $nama_barang,
+                'prosesor' => $prosesor,
+                'ram' => $ram,
+                'penyimpanan' => $penyimpanan,
+                'status_barang' => $request->status_barang
+            ];
+
+            $update_barang = $this->modelsuperadmin->update_barang($data_barang, $id);
+
+            return $update_barang
+                ? redirect('/superadmin/master_barang')->with('toast_success', 'Barang berhasil diupdate!')
+                : redirect('/superadmin/master_barang')->with('toast_error', 'Update barang gagal, silakan coba lagi!');
+        }
+
+
+
+        return back()->with('toast_error', 'Gagal melakukan update data!');
     }
 
     /**
@@ -434,11 +653,9 @@ class SuperadminController extends Controller
             }
 
             //jika hapus user lain maka diizinkan termasuk superadmin lain
-            if ($this->modeluser->delete_datauser($id)) {
-                return back()->with('toast_success', 'User berhasil dihapus!');
-            } else {
-                return back()->with('toast_error', 'User gagal dihapus!');
-            }
+            return $this->modeluser->delete_datauser($id)
+                ? back()->with('toast_success', 'User berhasil dihapus!')
+                : back()->with('toast_error', 'User gagal dihapus!');
         } else if ($request->has('hapus_pegawai')) {
             //fungsi untuk mencegah pegawai menghapus datanya sendiri
             $pegawaiLogin = Auth::user()->nip;
@@ -447,11 +664,47 @@ class SuperadminController extends Controller
             }
 
             //jika hapus data pegawai lain maka diizinkan termasuk superadmin lain
-            if ($this->modelsuperadmin->delete_datapegawai($id)) {
-                return back()->with('toast_success', 'User berhasil dihapus!');
-            } else {
-                return back()->with('toast_error', 'User gagal dihapus!');
+            return $this->modelsuperadmin->delete_datapegawai($id)
+                ? back()->with('toast_success', 'Pegawai berhasil dihapus!')
+                : back()->with('toast_error', 'Pegawai gagal dihapus!');
+        } elseif ($request->has('hapus_stasiun')) {
+            // return $this->modelsuperadmin->delete_stasiun($id)
+            //     ? back()->with('toast_success', 'Stasiun berhasil dihapus!')
+            //     : back()->with('toast_error', 'Stasiun gagal dihapus!');
+
+            // Periksa apakah ada pegawai yang menggunakan stasiun
+            $pegawaiCount = DB::table('pegawai')->where('id_stasiun', $id)->count();
+
+            if ($pegawaiCount > 0) {
+                // Jika ada pegawai yang menggunakan stasiun, kembalikan respons dengan pesan peringatan
+                return back()->with('toast_error', 'Tidak dapat menghapus stasiun karena masih digunakan oleh data pegawai!');
             }
+
+            // Jika tidak ada pegawai yang menggunakan stasiun, lakukan penghapusan
+            $deleted = DB::table('stasiun')->where('id_stasiun', $id)->delete();
+
+            return $deleted
+                ? back()->with('toast_success', 'Stasiun berhasil dihapus!')
+                : back()->with('toast_error', 'Stasiun gagal dihapus!');
+        } elseif ($request->has('hapus_barang')) {
+            return $this->modelsuperadmin->delete_barang($id)
+                ? back()->with('toast_success', 'Barang berhasil dihapus!')
+                : back()->with('toast_error', 'Barang gagal dihapus!');
+        } elseif ($request->has('hapus_permintaan')) {
+
+            $kode_barang = $request->kode_barang;
+
+            $data_barang = [
+                'status_barang' => 'dikembalikan',
+                'updated_at' => now(),
+            ];
+
+            $update_barang = $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
+            $hapus_permintaan = $this->modelsuperadmin->delete_permintaan($id);
+
+            return $update_barang && $hapus_permintaan
+                ? back()->with('toast_success', 'Permintaan berhasil dihapus!')
+                : back()->with('toast_error', 'Permintaan gagal dihapus!');
         } else {
             return back()->with('toast_error', 'Tidak ada data yang dihapus!');
         }
