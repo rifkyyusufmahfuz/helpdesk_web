@@ -52,21 +52,24 @@
                                         </td>
 
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-warning text-white" data-bs-toggle="modal"
-                                                data-bs-target="#modal_update_pegawai{{ $pegawai->nip }}"><i
-                                                    class="fa fa-edit"></i>
-                                            </button>
-                                            <form id="form-delete-{{ $pegawai->nip }}"
-                                                action="/superadmin/crud/{{ $pegawai->nip }}" method="POST"
-                                                style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="hapus_pegawai" id="hapus_pegawai">
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="confirm_delete_pegawai('{{ $pegawai->nip }}')">
-                                                    <i class="fa fa-trash"></i>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-warning text-white mr-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modal_update_pegawai{{ $pegawai->nip }}"><i
+                                                        class="fa fa-edit"></i>
                                                 </button>
-                                            </form>
+                                                <form id="form-delete-{{ $pegawai->nip }}"
+                                                    action="/superadmin/crud/{{ $pegawai->nip }}" method="POST"
+                                                    style="display: inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="hidden" name="hapus_pegawai" id="hapus_pegawai">
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                        onclick="confirm_delete_pegawai('{{ $pegawai->nip }}')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

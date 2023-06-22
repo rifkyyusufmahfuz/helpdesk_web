@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Psy\CodeCleaner\ReturnTypePass;
 
 class SuperadminModel extends Model
 {
@@ -273,5 +274,113 @@ class SuperadminModel extends Model
     public function delete_permintaan($id)
     {
         return DB::table('permintaan')->where('id_permintaan', $id)->delete() ? true : false;
+    }
+
+
+    public function get_tindak_lanjut()
+    {
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->leftJoin('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->join('tindak_lanjut', 'permintaan.id_permintaan', '=', 'tindak_lanjut.id_permintaan')
+            ->join('users AS users_admin', 'tindak_lanjut.id', '=', 'users_admin.id')
+            ->join('pegawai AS pegawai_admin', 'users_admin.nip', '=', 'pegawai_admin.nip')
+            ->join('stasiun AS stasiun_admin', 'pegawai_admin.id_stasiun', '=', 'stasiun_admin.id_stasiun')
+            ->where('permintaan.tipe_permintaan', '=', 'hardware')
+            ->orWhere('permintaan.tipe_permintaan', '=', 'software')
+            ->select(
+                'permintaan.*',
+                'permintaan.created_at as permintaan_created_at',
+                // 'kategori_software.*',
+                'users.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+                'tindak_lanjut.*',
+                'users_admin.nip AS nip_admin',
+                'pegawai_admin.nama AS nama_admin',
+                'pegawai_admin.bagian AS bagian_admin',
+                'pegawai_admin.jabatan AS jabatan_admin',
+                'stasiun_admin.nama_stasiun AS lokasi_admin'
+            )
+            ->orderBy('permintaan.updated_at', 'desc')
+            ->get()
+            ->toArray();
+    }
+
+
+    public function delete_tindaklanjut($id)
+    {
+        return DB::table('tindak_lanjut')->where('id_tindak_lanjut', $id)->delete() ? true : false;
+    }
+
+    public function update_otorisasi($data_otorisasi, $id_otorisasi)
+    {
+        return DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update($data_otorisasi) ? true : false;
+    }
+
+    public function update_permintaan($id_permintaan, $data_permintaan)
+    {
+        return DB::table('permintaan')->where('id_permintaan', $id_permintaan)->update($data_permintaan) ? true : false;
+    }
+
+
+
+    public function get_otorisasi()
+    {
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            // ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->leftJoin('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('users AS users_manager', 'otorisasi.id', '=', 'users_manager.id')
+            ->join('pegawai AS pegawai_manager', 'users_manager.nip', '=', 'pegawai_manager.nip')
+            ->join('stasiun AS stasiun_manager', 'pegawai_manager.id_stasiun', '=', 'stasiun_manager.id_stasiun')
+            ->where('permintaan.tipe_permintaan', '=', 'hardware')
+            ->orWhere('permintaan.tipe_permintaan', '=', 'software')
+            ->where('status_approval', '!=', 'pending')
+            ->where('status_approval', '!=', 'waiting')
+            ->select(
+                'permintaan.*',
+                'otorisasi.created_at as otorisasi_created_at',
+                'otorisasi.*',
+                // 'kategori_software.*',
+                'users.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+                // 'tindak_lanjut.*',
+                'users_manager.nip AS nip_manager',
+                'pegawai_manager.nama AS nama_manager',
+                'pegawai_manager.bagian AS bagian_manager',
+                'pegawai_manager.jabatan AS jabatan_manager',
+                'stasiun_manager.nama_stasiun AS lokasi_manager'
+            )
+            ->orderBy('permintaan.updated_at', 'desc')
+            ->get()
+            ->toArray();
+    }
+
+    public function delete_otorisasi($id)
+    {
+        return DB::table('otorisasi')->where('id_otorisasi', $id)->delete() ? true : false;
+    }
+
+    public function delete_bast($id)
+    {
+        return DB::table('bast')->where('id_bast', $id)->delete() ? true : false;
+    }
+
+    public function delete_bast_by_id_permintaan($id)
+    {
+        return DB::table('bast')->where('id_permintaan', $id)->delete() ? true : false;
     }
 }

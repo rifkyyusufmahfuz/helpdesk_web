@@ -70,7 +70,8 @@ Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], fun
     Route::get('/superadmin/transaksi_permintaan_hardware', [SuperadminController::class, 'transaksi_permintaan_hardware']);
     Route::get('/superadmin/transaksi_otorisasi', [SuperadminController::class, 'transaksi_otorisasi']);
     Route::get('/superadmin/transaksi_tindaklanjut', [SuperadminController::class, 'transaksi_tindaklanjut']);
-    Route::get('/superadmin/transaksi_bast', [SuperadminController::class, 'transaksi_bast']);
+    Route::get('/superadmin/transaksi_bast_barang_masuk', [SuperadminController::class, 'transaksi_bast_barang_masuk']);
+    Route::get('/superadmin/transaksi_bast_barang_keluar', [SuperadminController::class, 'transaksi_bast_barang_keluar']);
 });
 
 Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');

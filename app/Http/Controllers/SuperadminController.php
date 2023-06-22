@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminModel;
 use App\Models\ManagerModel;
-use App\Models\PegawaiModel;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\RoleModel;
@@ -146,19 +145,61 @@ class SuperadminController extends Controller
 
     public function transaksi_tindaklanjut()
     {
-        // 
+        $data_tindaklanjut = $this->modelsuperadmin->get_tindak_lanjut();
+
+        $list_hardware = $this->modelmanager->get_list_hardware();
+        $list_software = $this->modelmanager->get_list_software();
+
+        return view(
+            'superadmin.transaksi_tindaklanjut.data_tindaklanjut',
+            [
+                'data_tindaklanjut' => $data_tindaklanjut,
+                'list_hardware' => $list_hardware,
+                'list_software' => $list_software
+            ]
+        );
     }
 
     public function transaksi_otorisasi()
     {
-        // 
+        $data_otorisasi = $this->modelsuperadmin->get_otorisasi();
+        $list_hardware = $this->modelmanager->get_list_hardware();
+        $list_software = $this->modelmanager->get_list_software();
+
+        return view(
+            'superadmin.transaksi_otorisasi.data_otorisasi',
+            [
+                'data_tindaklanjut' => $data_otorisasi,
+                'list_hardware' => $list_hardware,
+                'list_software' => $list_software
+            ]
+        );
     }
 
-    public function transaksi_bast()
+    public function transaksi_bast_barang_masuk()
     {
-        // 
+        $bast_barang_masuk = $this->modeladmin->get_bast_barang_masuk();
+
+        return view(
+            'superadmin.transaksi_bast.data_barang_masuk',
+            [
+                'bast_barang_masuk' => $bast_barang_masuk,
+            ]
+        );
     }
 
+
+    public function transaksi_bast_barang_keluar()
+    {
+        $bast_barang_keluar = $this->modeladmin->get_bast_barang_keluar();
+
+        return view(
+            'superadmin.transaksi_bast.data_barang_keluar',
+            [
+                'bast_barang_keluar' => $bast_barang_keluar,
+            ]
+        );
+    }
 
 
 
@@ -652,10 +693,23 @@ class SuperadminController extends Controller
                 return redirect('/superadmin/datauseraktif')->with('toast_error', 'Akun Anda tidak diizinkan untuk dihapus!');
             }
 
+            // Periksa apakah ada pegawai yang menggunakan data permintaan
+            $pegawaiCount = DB::table('permintaan')->where('id', $id)->count();
+
+            if ($pegawaiCount > 0) {
+                // Jika ada pegawai yang menggunakan data permintaan, kembalikan respons dengan pesan peringatan
+                return back()->with('toast_error', 'Tidak dapat menghapus user karena masih terkait pada data permintaan!');
+            }
+
+            //hapus user jika tidak ada permintaan dan bukan superadmin
+            $hapus_user  = $this->modeluser->delete_datauser($id);
+
             //jika hapus user lain maka diizinkan termasuk superadmin lain
-            return $this->modeluser->delete_datauser($id)
+            return $hapus_user
                 ? back()->with('toast_success', 'User berhasil dihapus!')
                 : back()->with('toast_error', 'User gagal dihapus!');
+
+            // end of condition
         } else if ($request->has('hapus_pegawai')) {
             //fungsi untuk mencegah pegawai menghapus datanya sendiri
             $pegawaiLogin = Auth::user()->nip;
@@ -663,10 +717,28 @@ class SuperadminController extends Controller
                 return back()->with('toast_error', 'Data Anda tidak diizinkan untuk dihapus!');
             }
 
+
+            // Periksa apakah ada pegawai yang menggunakan data permintaan
+            $pegawaiCount = DB::table('pegawai')
+                ->join('users', 'pegawai.nip', '=', 'users.nip')
+                ->join('permintaan', 'users.id', '=', 'permintaan.id')
+                ->where('pegawai.nip', $id)
+                ->count();
+
+
+            if ($pegawaiCount > 0) {
+                // Jika ada pegawai yang menggunakan data permintaan, kembalikan respons dengan pesan peringatan
+                return back()->with('toast_error', 'Tidak bisa hapus pegawai karena masih terkait pada data permintaan!');
+            }
+
+            $hapus_pegawai = $this->modelsuperadmin->delete_datapegawai($id);
+
             //jika hapus data pegawai lain maka diizinkan termasuk superadmin lain
-            return $this->modelsuperadmin->delete_datapegawai($id)
+            return $hapus_pegawai
                 ? back()->with('toast_success', 'Pegawai berhasil dihapus!')
                 : back()->with('toast_error', 'Pegawai gagal dihapus!');
+
+            // end of condition
         } elseif ($request->has('hapus_stasiun')) {
             // return $this->modelsuperadmin->delete_stasiun($id)
             //     ? back()->with('toast_success', 'Stasiun berhasil dihapus!')
@@ -681,30 +753,389 @@ class SuperadminController extends Controller
             }
 
             // Jika tidak ada pegawai yang menggunakan stasiun, lakukan penghapusan
-            $deleted = DB::table('stasiun')->where('id_stasiun', $id)->delete();
+            $deleted = $this->modelsuperadmin->hapus_stasiun($id);
 
             return $deleted
                 ? back()->with('toast_success', 'Stasiun berhasil dihapus!')
                 : back()->with('toast_error', 'Stasiun gagal dihapus!');
+
+            // end of condition
         } elseif ($request->has('hapus_barang')) {
             return $this->modelsuperadmin->delete_barang($id)
                 ? back()->with('toast_success', 'Barang berhasil dihapus!')
                 : back()->with('toast_error', 'Barang gagal dihapus!');
+
+            // end of condition
         } elseif ($request->has('hapus_permintaan')) {
 
-            $kode_barang = $request->kode_barang;
 
-            $data_barang = [
-                'status_barang' => 'dikembalikan',
-                'updated_at' => now(),
-            ];
+            $permintaan = DB::table('permintaan')->where('id_permintaan', $id)->first();
 
-            $update_barang = $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
-            $hapus_permintaan = $this->modelsuperadmin->delete_permintaan($id);
+            if ($permintaan) {
 
-            return $update_barang && $hapus_permintaan
-                ? back()->with('toast_success', 'Permintaan berhasil dihapus!')
-                : back()->with('toast_error', 'Permintaan gagal dihapus!');
+                // Hapus file tanda tangan dari folder public
+                // Dapatkan nama file tanda tangan dari kolom ttd_requestor
+                $namaFileTandaTangan = $permintaan->ttd_requestor;
+
+                // Hapus file tanda tangan dari folder public
+                $filePaths = [
+                    public_path('tandatangan/instalasi_software/requestor/' . $namaFileTandaTangan),
+                    public_path('tandatangan/pengecekan_hardware/requestor/' . $namaFileTandaTangan)
+                ];
+
+                foreach ($filePaths as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+
+                // Hapus data permintaan dari tabel
+                $hapus_permintaan = $this->modelsuperadmin->delete_permintaan($id);
+
+
+                if ($hapus_permintaan) {
+                    $kode_barang = $request->kode_barang;
+
+                    $data_barang = [
+                        'status_barang' => 'dikembalikan',
+                        'updated_at' => now(),
+                    ];
+
+                    $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
+
+                    return back()->with('toast_success', 'Tindak lanjut berhasil dihapus!');
+                } else {
+                    return back()->with('toast_error', 'Tindak lanjut gagal dihapus!');
+                }
+            } else {
+                return back()->with('toast_error', 'Data tindak lanjut tidak ditemukan!');
+            }
+
+            // end of condition
+        } elseif ($request->has('hapus_tindaklanjut')) {
+
+
+            $tindakLanjut = DB::table('tindak_lanjut')->where('id_tindak_lanjut', $id)->first();
+
+            if ($tindakLanjut) {
+                $id_permintaan = $tindakLanjut->id_permintaan;
+
+                // Hapus file tanda tangan dari folder public
+                // Dapatkan nama file tanda tangan dari kolom ttd_tindak_lanjut
+                $namaFileTandaTangan = $tindakLanjut->ttd_tindak_lanjut;
+
+                // Hapus file tanda tangan dari folder public
+                $filePaths = [
+                    public_path('tandatangan/instalasi_software/admin/' . $namaFileTandaTangan),
+                    public_path('tandatangan/pengecekan_hardware/executor/' . $namaFileTandaTangan)
+                ];
+
+                foreach ($filePaths as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+
+                // Hapus data tindak_lanjut dari tabel
+                $hapus_tindaklanjut = $this->modelsuperadmin->delete_tindaklanjut($id);
+
+                if ($hapus_tindaklanjut) {
+                    $permintaan = DB::table('permintaan')->where('id_permintaan', $id_permintaan)->first();
+
+                    if ($permintaan) {
+                        $tipePermintaan = $permintaan->tipe_permintaan;
+                        $id_otorisasi = $permintaan->id_otorisasi;
+
+                        $data_otorisasi = [
+                            'status_approval' => 'pending',
+                            'updated_at' => now(),
+                        ];
+                        $this->modelsuperadmin->update_otorisasi($data_otorisasi, $id_otorisasi);
+
+                        // Ubah status_permintaan dan status_otorisasi
+                        if ($tipePermintaan == 'hardware') {
+                            $data_permintaan = [
+                                'status_permintaan' => 4,
+                                'updated_at' => now(),
+                            ];
+                        } elseif ($tipePermintaan == 'software') {
+                            $data_permintaan = [
+                                'status_permintaan' => 1,
+                                'updated_at' => now(),
+                            ];
+                        }
+                        $this->modelsuperadmin->update_permintaan($id_permintaan, $data_permintaan);
+                    }
+                    return back()->with('toast_success', 'Tindak lanjut berhasil dihapus!');
+                } else {
+                    return back()->with('toast_error', 'Tindak lanjut gagal dihapus!');
+                }
+            } else {
+                return back()->with('toast_error', 'Data tindak lanjut tidak ditemukan!');
+            }
+
+
+            // end of condition
+        } elseif ($request->has('hapus_otorisasi')) {
+
+            $otorisasi = DB::table('otorisasi')->where('id_otorisasi', $id)->first();
+            $permintaan = DB::table('permintaan')->where('id_otorisasi', $id)->first();
+
+            if ($otorisasi && $permintaan) {
+                $id_permintaan = $permintaan->id_permintaan;
+
+                // Hapus file tanda tangan manager dari folder public
+                // Dapatkan nama file tanda tangan dari kolom ttd_tindak_lanjut
+                $namaFileTandaTangan = $otorisasi->ttd_manager;
+
+                // Hapus file tanda tangan manager dari folder public
+                $filePaths = [
+                    public_path('tandatangan/instalasi_software/manager/' . $namaFileTandaTangan),
+                    public_path('tandatangan/pengecekan_hardware/manager/' . $namaFileTandaTangan)
+                ];
+
+                foreach ($filePaths as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+
+                // Hapus file tanda tangan admin / executor dari folder public
+                $tindakLanjut = DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->first();
+                // Dapatkan nama file tanda tangan dari kolom ttd_tindak_lanjut
+                $namaFileTandaTangan = $tindakLanjut->ttd_tindak_lanjut;
+
+                // Hapus file tanda tangan dari folder public
+                $filePaths_admin = [
+                    public_path('tandatangan/instalasi_software/admin/' . $namaFileTandaTangan),
+                    public_path('tandatangan/pengecekan_hardware/executor/' . $namaFileTandaTangan)
+                ];
+
+                foreach ($filePaths_admin as $filePath_2) {
+                    if (file_exists($filePath_2)) {
+                        unlink($filePath_2);
+                    }
+                }
+
+
+                // Hapus file tanda tangan requestor dari folder public
+                // Dapatkan nama file tanda tangan dari kolom ttd_requestor
+                $namaFileTandaTangan = $permintaan->ttd_requestor;
+
+                // Hapus file tanda tangan dari folder public
+                $filePaths_requestor = [
+                    public_path('tandatangan/instalasi_software/requestor/' . $namaFileTandaTangan),
+                    public_path('tandatangan/pengecekan_hardware/requestor/' . $namaFileTandaTangan)
+                ];
+
+                foreach ($filePaths_requestor as $filePath_3) {
+                    if (file_exists($filePath_3)) {
+                        unlink($filePath_3);
+                    }
+                }
+
+
+                // Hapus data tindak_lanjut dari tabel
+                $hapus_otorisasi = $this->modelsuperadmin->delete_otorisasi($id);
+
+                if ($hapus_otorisasi) {
+                    // $permintaan = DB::table('permintaan')->where('id_permintaan', $id_permintaan)->first();
+
+                    // if ($permintaan) {
+                    //     $id_otorisasi = $permintaan->id_otorisasi;
+
+                    //     $data_otorisasi = [
+                    //         'status_approval' => 'waiting',
+                    //         'updated_at' => now(),
+                    //     ];
+                    //     $data_permintaan = [
+                    //         'status_permintaan' => 2,
+                    //         'updated_at' => now(),
+                    //     ];
+
+                    //     $this->modelsuperadmin->update_otorisasi($data_otorisasi, $id_otorisasi);
+                    //     $this->modelsuperadmin->update_permintaan($id_permintaan, $data_permintaan);
+                    // }
+                    return back()->with('toast_success', 'Otorisasi berhasil dihapus!');
+                } else {
+                    return back()->with('toast_error', 'Otorisasi gagal dihapus!');
+                }
+            } else {
+                return back()->with('toast_error', 'Data otorisasi tidak ditemukan!');
+            }
+
+            // end of condition
+        } elseif ($request->has('hapus_bast')) {
+
+            $bast = DB::table('bast')->where('id_bast', $id)->first();
+            $permintaan = DB::table('bast')->where('id_bast', $id)
+                ->join('permintaan', 'bast.id_permintaan', '=', 'permintaan.id_permintaan')
+                ->first();
+
+            if ($bast && $permintaan) {
+                $id_permintaan = $permintaan->id_permintaan;
+
+                // Hapus file tanda tangan manager dari folder public
+                // Dapatkan nama file tanda tangan dari kolom ttd_tindak_lanjut
+                $namaFileTandaTangan_1 = $bast->ttd_menyerahkan;
+
+                // Hapus file tanda tangan manager dari folder public
+                $filePaths = [
+                    public_path('tandatangan/bast/barang_masuk/yang_menyerahkan/' . $namaFileTandaTangan_1),
+                    public_path('tandatangan/bast/barang_masuk/yang_menerima/' . $namaFileTandaTangan_1),
+                    public_path('tandatangan/bast/barang_keluar/yang_menyerahkan/' . $namaFileTandaTangan_1),
+                    public_path('tandatangan/bast/barang_keluar/yang_menerima/' . $namaFileTandaTangan_1)
+                ];
+
+                foreach ($filePaths as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+
+                $namaFileTandaTangan_2 = $bast->ttd_menerima;
+                // Hapus file tanda tangan dari folder public
+                $filePaths_admin = [
+                    public_path('tandatangan/bast/barang_masuk/yang_menyerahkan/' . $namaFileTandaTangan_2),
+                    public_path('tandatangan/bast/barang_masuk/yang_menerima/' . $namaFileTandaTangan_2),
+                    public_path('tandatangan/bast/barang_keluar/yang_menyerahkan/' . $namaFileTandaTangan_2),
+                    public_path('tandatangan/bast/barang_keluar/yang_menerima/' . $namaFileTandaTangan_2)
+                ];
+
+                foreach ($filePaths_admin as $filePath_2) {
+                    if (file_exists($filePath_2)) {
+                        unlink($filePath_2);
+                    }
+                }
+
+                // Hapus data tindak_lanjut dari tabel
+                $hapus_bast = $this->modelsuperadmin->delete_bast($id);
+
+                if ($hapus_bast) {
+
+                    // $jenis_bast = $bast->jenis_bast;
+                    $id_otorisasi = $permintaan->id_otorisasi;
+                    $kode_barang = $permintaan->kode_barang;
+
+                    $data_otorisasi = [
+                        'status_approval' => 'pending',
+                        'updated_at' => now(),
+                    ];
+                    $this->modelsuperadmin->update_otorisasi($data_otorisasi, $id_otorisasi);
+
+
+                    $data_permintaan = [
+                        'status_permintaan' => 5,
+                        'updated_at' => now(),
+                    ];
+
+                    $data_barang = [
+                        'status_barang' => 'siap diambil',
+                        'updated_at' => now(),
+                    ];
+
+
+                    $this->modelsuperadmin->update_permintaan($id_permintaan, $data_permintaan);
+                    $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
+
+
+
+
+                    return back()->with('toast_success', 'BAST berhasil dihapus!');
+                } else {
+                    return back()->with('toast_error', 'BAST gagal dihapus!');
+                }
+            } else {
+                return back()->with('toast_error', 'Data BAST tidak ditemukan!');
+            }
+
+            // end of condition
+        } elseif ($request->has('hapus_bast_barang_masuk')) {
+
+            $bast = DB::table('bast')->where('id_permintaan', $id)->first();
+            $permintaan = DB::table('permintaan')->where('id_permintaan', $id)
+                ->first();
+
+            if ($bast && $permintaan) {
+                $id_permintaan = $bast->id_permintaan;
+
+                $bastBarangMasuk = DB::table('bast')->where('id_permintaan', $id)->where('jenis_bast', 'barang_masuk')->first();
+                $bastBarangKeluar = DB::table('bast')->where('id_permintaan', $id)->where('jenis_bast', 'barang_keluar')->first();
+
+                if ($bastBarangMasuk) {
+                    // Hapus file tanda tangan untuk BAST jenis barang_masuk dari folder public
+                    $namaFilettdmasuk_1 = $bastBarangMasuk->ttd_menyerahkan;
+                    $namaFilettdmasuk_2 = $bastBarangMasuk->ttd_menerima;
+
+                    $filePathsBarangMasuk = [
+                        public_path('tandatangan/bast/barang_masuk/yang_menyerahkan/' . $namaFilettdmasuk_1),
+                        public_path('tandatangan/bast/barang_masuk/yang_menerima/' . $namaFilettdmasuk_2)
+                    ];
+
+                    foreach ($filePathsBarangMasuk as $filePathBarangMasuk) {
+                        if (file_exists($filePathBarangMasuk)) {
+                            unlink($filePathBarangMasuk);
+                        }
+                    }
+                }
+
+                if ($bastBarangKeluar) {
+                    // Hapus file tanda tangan untuk BAST jenis barang_keluar dari folder public
+                    $namaFilettd_keluar_1 = $bastBarangKeluar->ttd_menyerahkan;
+                    $namaFilettd_keluar_2 = $bastBarangKeluar->ttd_menerima;
+
+                    $filePathsBarangKeluar = [
+                        public_path('tandatangan/bast/barang_keluar/yang_menyerahkan/' . $namaFilettd_keluar_1),
+                        public_path('tandatangan/bast/barang_keluar/yang_menerima/' . $namaFilettd_keluar_2)
+                    ];
+
+                    foreach ($filePathsBarangKeluar as $filePathBarangKeluar) {
+                        if (file_exists($filePathBarangKeluar)) {
+                            unlink($filePathBarangKeluar);
+                        }
+                    }
+                }
+
+                // Hapus data bast berdasarkan id_permintaan dari tabel
+                $hapus_bast = $this->modelsuperadmin->delete_bast_by_id_permintaan($id);
+
+                if ($hapus_bast) {
+
+                    $jenis_bast = $bast->jenis_bast;
+                    $id_otorisasi = $permintaan->id_otorisasi;
+                    $kode_barang = $permintaan->kode_barang;
+
+                    $data_otorisasi = [
+                        'status_approval' => 'pending',
+                        'updated_at' => now(),
+                    ];
+                    $this->modelsuperadmin->update_otorisasi($data_otorisasi, $id_otorisasi);
+
+                    // Ubah status_permintaan dan status_otorisasi
+
+                    $data_permintaan = [
+                        'status_permintaan' => 3,
+                        'updated_at' => now(),
+                    ];
+
+                    $data_barang = [
+                        'status_barang' => 'belum diterima',
+                        'updated_at' => now(),
+
+                    ];
+
+                    $this->modelsuperadmin->update_permintaan($id_permintaan, $data_permintaan);
+                    $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
+
+                    return back()->with('toast_success', 'BAST berhasil dihapus!');
+                } else {
+                    return back()->with('toast_error', 'BAST gagal dihapus!');
+                }
+            } else {
+                return back()->with('toast_error', 'Data BAST tidak ditemukan!');
+            }
+
+            // end of condition
         } else {
             return back()->with('toast_error', 'Tidak ada data yang dihapus!');
         }

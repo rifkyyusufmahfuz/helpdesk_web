@@ -305,27 +305,6 @@ class AdminController extends Controller
         else if ($request->input('jenis_bast') == 'barang_masuk') {
             $id_permintaan = $request->id_permintaan;
 
-            //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
-            $folderPath_p1 = public_path('tandatangan/bast/barang_masuk/yang_menyerahkan/');
-            if (!is_dir($folderPath_p1)) {
-                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
-                mkdir($folderPath_p1, 0777, true);
-            }
-            $filename_ttd_p1 = "bast_pihakpertama_" . $id_permintaan . ".png";
-            $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
-            file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
-
-            //Tanda tangan yang menerima barang / Pihak kedua / P2
-            $folderPath_p2 = public_path('tandatangan/bast/barang_masuk/yang_menerima/');
-            if (!is_dir($folderPath_p2)) {
-                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
-                mkdir($folderPath_p2, 0777, true);
-            }
-
-            $filename_ttd_p2 = "bast_pihakkedua_" . $id_permintaan . ".png";
-            $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
-            file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
-
             //generate id_bast 
             $bast_terbaru =  $this->modeladmin->cari_id_bast();
 
@@ -351,6 +330,27 @@ class AdminController extends Controller
                 $tahunSekarang = date('Y');
             }
             $id_bast_baru = sprintf('%04d', $urutanBaru) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
+            //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
+            $folderPath_p1 = public_path('tandatangan/bast/barang_masuk/yang_menyerahkan/');
+            if (!is_dir($folderPath_p1)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p1, 0777, true);
+            }
+            $filename_ttd_p1 = "bast_pihakpertama_" . $id_bast_baru . ".png";
+            $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
+            file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
+
+            //Tanda tangan yang menerima barang / Pihak kedua / P2
+            $folderPath_p2 = public_path('tandatangan/bast/barang_masuk/yang_menerima/');
+            if (!is_dir($folderPath_p2)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p2, 0777, true);
+            }
+
+            $filename_ttd_p2 = "bast_pihakkedua_" . $id_bast_baru . ".png";
+            $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
+            file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
 
 
             if ($request->input('keperluan') == 'pengecekan_hardware') {
@@ -432,27 +432,6 @@ class AdminController extends Controller
         } else if ($request->input('jenis_bast') == 'barang_keluar') {
             $id_permintaan = $request->id_permintaan;
 
-            //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
-            $folderPath_p1 = public_path('tandatangan/bast/barang_keluar/yang_menyerahkan/');
-            if (!is_dir($folderPath_p1)) {
-                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
-                mkdir($folderPath_p1, 0777, true);
-            }
-            $filename_ttd_p1 = "bast_pihakpertama_" . $id_permintaan . ".png";
-            $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
-            file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
-
-            //Tanda tangan yang menerima barang / Pihak kedua / P2
-            $folderPath_p2 = public_path('tandatangan/bast/barang_keluar/yang_menerima/');
-            if (!is_dir($folderPath_p2)) {
-                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
-                mkdir($folderPath_p2, 0777, true);
-            }
-
-            $filename_ttd_p2 = "bast_pihakkedua_" . $id_permintaan . ".png";
-            $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
-            file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
-
             //generate id_bast 
             $bast_terbaru =  $this->modeladmin->cari_id_bast();
 
@@ -478,6 +457,27 @@ class AdminController extends Controller
                 $tahunSekarang = date('Y');
             }
             $id_bast_baru = sprintf('%04d', $urutanBaru) . '-KCI-BAST-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
+            //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
+            $folderPath_p1 = public_path('tandatangan/bast/barang_keluar/yang_menyerahkan/');
+            if (!is_dir($folderPath_p1)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p1, 0777, true);
+            }
+            $filename_ttd_p1 = "bast_pihakpertama_" . $id_bast_baru . ".png";
+            $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
+            file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('signature')));
+
+            //Tanda tangan yang menerima barang / Pihak kedua / P2
+            $folderPath_p2 = public_path('tandatangan/bast/barang_keluar/yang_menerima/');
+            if (!is_dir($folderPath_p2)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($folderPath_p2, 0777, true);
+            }
+
+            $filename_ttd_p2 = "bast_pihakkedua_" . $id_bast_baru . ".png";
+            $nama_file_ttd_p2 = $folderPath_p2 . $filename_ttd_p2;
+            file_put_contents($nama_file_ttd_p2, file_get_contents($request->input('ttd_bast')));
 
 
             if ($request->input('keperluan') == 'pengecekan_hardware') {

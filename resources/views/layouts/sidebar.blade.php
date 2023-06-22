@@ -157,42 +157,70 @@
             </div>
         </li>
 
-        <li
-            class="nav-item {{ request()->is('') || request()->is('superadmin/transaksi_tindaklanjut') | request()->is('superadmin/transaksi_bast') ? 'active' : '' }}">
 
-            <a class="nav-link {{ request()->is('') || request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasivalidasi') || request()->is('superadmin/transaksi_bast') ? '' : 'collapsed' }}"
-                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-user-gear"></i>
-                <span>Data Transaksi</span>
+        {{-- transaksi tindak lanjut --}}
+        <li
+            class="nav-item {{ request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasi') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasi') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseTransaksiTindaklanjut"
+                aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-boxes"></i>
+                <span>Tindak Lanjut Layanan</span>
             </a>
-            <div id="collapseDataTransaksi"
-                class="collapse {{ request()->is('') || request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasivalidasi') || request()->is('superadmin/transaksi_bast') ? 'show' : '' }}"
+            <div id="collapseTransaksiTindaklanjut"
+                class="collapse {{ request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasi') ? 'show' : '' }}"
                 aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Data Transaksi:</h6>
-
-
-                    <a class="collapse-item {{ request()->is('') ? 'active' : '' }}"
+                    <h6 class="collapse-header">Admin & Executor:</h6>
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_tindaklanjut') ? 'active' : '' }}"
                         href="/superadmin/transaksi_tindaklanjut">
-                        <i class="fas fa-fw fa-user-times"></i>
+                        <i class="fas fa-fw fa-cogs"></i>
                         <span>Tindak Lanjut</span>
                     </a>
-                    <a class="collapse-item {{ request()->is('superadmin/transaksi_otorisasivalidasi') ? 'active' : '' }}"
-                        href="/superadmin/transaksi_otorisasivalidasi">
-                        <i class="fas fa-fw fa-user-group"></i>
+                    <h6 class="collapse-header">Manager:</h6>
+
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_otorisasi') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_otorisasi">
+                        <i class="fas fa-fw fa-stamp"></i>
                         <span>Otorisasi & Validasi</span>
                     </a>
+                </div>
+            </div>
+        </li>
 
-                    <a class="collapse-item {{ request()->is('superadmin/transaksi_bast') ? 'active' : '' }}"
-                        href="/superadmin/transaksi_bast">
-                        <i class="fas fa-fw fa-user-group"></i>
-                        <span>BAST</span>
+        <li
+            class="nav-item {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('') | request()->is('superadmin/transaksi_bast_barang_masuk') ? 'active' : '' }}">
+
+            <a class="nav-link {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('superadmin/transaksi_bast_barang_masuk') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi"
+                aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-user-gear"></i>
+                <span>BAST</span>
+            </a>
+            <div id="collapseDataTransaksi"
+                class="collapse {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('superadmin/transaksi_bast_barang_masuk') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Serah Terima Barang:</h6>
+
+                    {{-- BARANG KELUAR --}}
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_bast_barang_keluar') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_bast_barang_keluar">
+                        <i class="fas fa-fw fa-box"></i>
+                        <i class="fas fa-fw fa-arrow-up"></i>
+                        <span>Barang Keluar</span>
+                    </a>
+                    {{-- BARANG MASUK --}}
+                    <a class="collapse-item {{ request()->is('superadmin/transaksi_bast_barang_masuk') ? 'active' : '' }}"
+                        href="/superadmin/transaksi_bast_barang_masuk">
+                        <i class="fas fa-fw fa-box"></i>
+                        <i class="fas fa-fw fa-arrow-down"></i>
+                        <span>Barang Masuk</span>
                     </a>
                 </div>
             </div>
         </li>
     @endif
-
 
 
 
