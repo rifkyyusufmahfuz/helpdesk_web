@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Utils\RomanNumberConverter;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
+use App\Utils\RomanNumberConverter;
 
 class PermintaanSeeder extends Seeder
 {
@@ -17,15 +16,14 @@ class PermintaanSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('kategori_software')->insert([
+        $kategoriSoftwareId = DB::table('kategori_software')->insertGetId([
             'operating_system' => true,
             'microsoft_office' => true,
             'software_design' => true,
             'software_lainnya' => true,
         ]);
 
-        //A
-        DB::table('otorisasi')->insert([
+        $otorisasiId = DB::table('otorisasi')->insertGetId([
             'id_otorisasi' => 1,
             'tanggal_approval' => null,
             'status_approval' => 'pending',
@@ -34,54 +32,31 @@ class PermintaanSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        $barangData = [];
+        $bastData = [];
+        $permintaanData = [];
 
-        //B
         for ($i = 1; $i <= 200; $i++) {
-            DB::table('barang')->insert([
+            $randomDate = Carbon::now()->subDays(rand(1, 365));
+            $randomStatus = (rand(0, 1) == 0) ? 'diterima' : 'dikembalikan';
+
+            $barangData[] = [
                 'kode_barang' => 'KCI-213' . $i,
                 'nama_barang' => 'Nama Barang ' . $i,
                 'prosesor' => 'Prosesor ' . $i,
                 'ram' =>  $i . 'GB',
                 'penyimpanan' => $i . 'GB',
-                'status_barang' => 'belum diterima',
+                'status_barang' => $randomStatus,
                 'jumlah_barang' => 1,
-                'created_at' => now(),
-            ]);
-        }
+                'created_at' => $randomDate,
+            ];
 
-        //C
-        $latestPermintaan = DB::table('permintaan')->orderByDesc('id_permintaan')->first();
+            $newIdPermintaan = sprintf('%04d', $i) . '-KCI-ITHELPDESK-' . RomanNumberConverter::convertMonthToRoman(date('n')) . '-' . date('Y');
 
-        if ($latestPermintaan) {
-            $latestId = $latestPermintaan->id_permintaan;
-            $lastIdParts = explode('-', $latestId);
-            $lastUrutan = intval($lastIdParts[0]);
-            $lastBulan = $lastIdParts[3];
-            $lastTahun = $lastIdParts[4];
-
-            $bulanSekarang = date('n');
-            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
-            $tahunSekarang = date('Y');
-
-            if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
-                $urutanBaru = 1;
-            } else {
-                $urutanBaru = $lastUrutan + 1;
-            }
-        } else {
-            $urutanBaru = 1;
-            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman(date('n'));
-            $tahunSekarang = date('Y');
-        }
-
-        for ($i = 1; $i <= 200; $i++) {
-            $newIdPermintaan = sprintf('%04d', $urutanBaru) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . $tahunSekarang;
-
-            $randomDate = \Carbon\Carbon::now()->subDays(rand(1, 365));
             $randomTipePermintaan = (rand(0, 1) == 0) ? 'software' : 'hardware';
             $randomStatusPermintaan = (string) rand(0, 6);
 
-            DB::table('permintaan')->insert([
+            $permintaanData[] = [
                 'id_permintaan' => $newIdPermintaan,
                 'keluhan_kebutuhan' => 'Uraian Kebutuhan ' . $i,
                 'tipe_permintaan' => $randomTipePermintaan,
@@ -89,57 +64,51 @@ class PermintaanSeeder extends Seeder
                 'tanggal_permintaan' => $randomDate,
                 'ttd_requestor' => 'requestor_' . $i . '.png',
                 'id' => 1,
-                'id_kategori' => 1,
-                'id_otorisasi' => 1,
+                'id_kategori' => $kategoriSoftwareId,
+                'id_otorisasi' => $otorisasiId,
                 'kode_barang' => 'KCI-213' . $i,
                 'created_at' => $randomDate,
                 'updated_at' => $randomDate,
-            ]);
+            ];
 
-            $urutanBaru++;
-        }
+            $stasiunIds = DB::table('stasiun')->pluck('id_stasiun')->toArray();
+            $pegawaiNips = DB::table('pegawai')->pluck('nip')->toArray();
 
-
-        //D
-        $selectedSoftware = [
-            'Microsoft Windows',
-            'Linux OS',
-            'Mac OS',
-            'Microsoft Office Standar',
-            'Microsoft Office For Mac',
-            'Adobe Photoshop',
-            'Adobe After Effect',
-            'Adobe Premiere',
-            'Adobe Ilustrator',
-            'Autocad',
-            'Sketch Up Pro',
-            'Corel Draw',
-            'Microsoft Project',
-            'Microsoft Visio',
-            'Vray Fr Sketchup',
-            'Antivirus',
-            'Nitro PDF Pro',
-            'Open Office',
-            'SAP',
-            'Lainnya',
-        ];
-
-        $permintaan = DB::table('permintaan')->get();
-
-        $softwareData = [];
-        foreach ($selectedSoftware as $software) {
-            foreach ($permintaan as $item) {
-                $randomDate = \Carbon\Carbon::now()->subDays(rand(1, 365));
-
-                $softwareData[] = [
-                    'nama_software' => $software,
-                    'id_permintaan' => $item->id_permintaan,
+            if ($randomStatus == 'dikembalikan') {
+                $bastData[] = [
+                    'id_bast' => 'BAST-' . sprintf('%03d', $i),
+                    'tanggal_bast' => $randomDate,
+                    'jenis_bast' => 'barang_keluar',
+                    'perihal' => 'Perihal ' . $i,
+                    'ttd_menyerahkan' => 'Penyerah ' . $i,
+                    'ttd_menerima' => 'Penerima ' . $i,
+                    'yang_menyerahkan' => $pegawaiNips[array_rand($pegawaiNips)],
+                    'yang_menerima' => $pegawaiNips[array_rand($pegawaiNips)],
+                    'id_permintaan' => $newIdPermintaan,
+                    'id_stasiun' => $stasiunIds[array_rand($stasiunIds)],
+                    'created_at' => $randomDate,
+                    'updated_at' => $randomDate,
+                ];
+            } else {
+                $bastData[] = [
+                    'id_bast' => 'BAST-' . sprintf('%03d', $i),
+                    'tanggal_bast' => $randomDate,
+                    'jenis_bast' => 'barang_masuk',
+                    'perihal' => 'Perihal ' . $i,
+                    'ttd_menyerahkan' => 'Penyerah ' . $i,
+                    'ttd_menerima' => 'Penerima ' . $i,
+                    'yang_menyerahkan' => $pegawaiNips[array_rand($pegawaiNips)],
+                    'yang_menerima' => $pegawaiNips[array_rand($pegawaiNips)],
+                    'id_permintaan' => $newIdPermintaan,
+                    'id_stasiun' => $stasiunIds[array_rand($stasiunIds)],
                     'created_at' => $randomDate,
                     'updated_at' => $randomDate,
                 ];
             }
         }
 
-        DB::table('software')->insert($softwareData);
+        DB::table('barang')->insert($barangData);
+        DB::table('permintaan')->insert($permintaanData);
+        DB::table('bast')->insert($bastData);
     }
 }

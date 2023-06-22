@@ -48,6 +48,7 @@
 {{-- <script src="{{ asset('custom_script/js/signature.js') }}"></script> --}}
 <script src="{{ asset('custom_script/js/notifikasi.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 
 
 {{-- end script untuk tanda tangan  --}}

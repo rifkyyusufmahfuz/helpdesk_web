@@ -33,17 +33,64 @@ class SuperadminController extends Controller
 
     public function index()
     {
-        $data = [
-            'data_user' => $this->modelsuperadmin->get_data_user(),
-            'data_role' => $this->modelsuperadmin->get_data_role(),
-            'roleCounts' => $this->modelsuperadmin->hitung_user_by_role(),
-            'activeUser' => $this->modelsuperadmin->hitung_data_user_aktif(),
-            'inactiveUser' => $this->modelsuperadmin->hitung_data_user_nonaktif(),
-            'totalUser' => $this->modelsuperadmin->hitung_semua_user(),
-        ];
+        $activeUsersCount = DB::table('users')->where('status', 1)->count();
+        $inactiveUsersCount = DB::table('users')->where('status', 0)->count();
 
-        return view('superadmin.index', $data);
+        $pegawaiByRole = DB::table('roles')
+            ->join('users', 'roles.id_role', '=', 'users.id_role')
+            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->select('roles.nama_role', DB::raw('COUNT(pegawai.nip) as pegawai_count'))
+            ->groupBy('roles.nama_role')
+            ->get();
+
+        $stasiunCount = DB::table('stasiun')
+            ->join('pegawai', 'stasiun.id_stasiun', '=', 'pegawai.id_stasiun')
+            ->select('stasiun.nama_stasiun', DB::raw('COUNT(pegawai.nip) as pegawai_count'))
+            ->groupBy('stasiun.nama_stasiun')
+            ->get();
+
+        $pegawaiTerdaftar = DB::table('users')->whereNotNull('nip')->count();
+        $totalPegawai = DB::table('pegawai')->count();
+
+        $barangCounts = DB::table('barang')
+            ->select('status_barang', DB::raw('COUNT(kode_barang) as jumlah_barang'))
+            ->groupBy('status_barang')
+            ->get();
+
+        $permintaanCounts = DB::table('permintaan')
+            ->select('status_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('status_permintaan')
+            ->get();
+
+        // Query untuk menghitung jumlah permintaan berdasarkan tipe_permintaan
+        $permintaanCountsByType = DB::table('permintaan')
+            ->select('tipe_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('tipe_permintaan')
+            ->get();
+
+        // Query untuk menghitung jumlah BAST berdasarkan jenis_bast
+        $bastCountsByType = DB::table('bast')
+            ->select('jenis_bast', DB::raw('COUNT(id_bast) as jumlah_bast'))
+            ->groupBy('jenis_bast')
+            ->get();
+
+
+        return view('superadmin.index')->with(compact(
+            'activeUsersCount',
+            'inactiveUsersCount',
+            'pegawaiByRole',
+            'stasiunCount',
+            'pegawaiTerdaftar',
+            'totalPegawai',
+            'barangCounts',
+            'permintaanCounts',
+            'permintaanCountsByType',
+            'bastCountsByType'
+        ));
     }
+
+
+
 
     public function halaman_datauser()
     {
