@@ -277,7 +277,7 @@
                     labels: pegawaiRoleLabels,
                     datasets: [{
                         data: pegawaiRoleCounts,
-                        backgroundColor: ['green', 'yellow', 'orange']
+                        backgroundColor: ['blue', 'yellow', 'green', 'orange']
                     }]
                 },
                 options: {

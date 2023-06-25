@@ -114,19 +114,19 @@ class StasiunSeeder extends Seeder
             DB::table('stasiun')->insert($data);
         }
 
-        $jumlah_data_pegawai = 500; // Jumlah data pegawai yang ingin dibuat
+        // $jumlah_data_pegawai = 500; // Jumlah data pegawai yang ingin dibuat
 
-        for ($i = 0; $i < $jumlah_data_pegawai; $i++) {
-            $random_stasiun = $stasiun[array_rand($stasiun)]; // Memilih stasiun secara acak
-            $id_stasiun = $random_stasiun['id_stasiun'];
+        // for ($i = 0; $i < $jumlah_data_pegawai; $i++) {
+        //     $random_stasiun = $stasiun[array_rand($stasiun)]; // Memilih stasiun secara acak
+        //     $id_stasiun = $random_stasiun['id_stasiun'];
 
-            DB::table('pegawai')->insert([
-                'nip' => Str::random(5), // Fungsi untuk menghasilkan string acak dengan panjang 5 karakter
-                'nama' => Str::random(10),
-                'bagian' => Str::random(20),
-                'jabatan' => Str::random(8),
-                'id_stasiun' => $id_stasiun
-            ]);
-        }
+        //     DB::table('pegawai')->insert([
+        //         'nip' => Str::random(5), // Fungsi untuk menghasilkan string acak dengan panjang 5 karakter
+        //         'nama' => Str::random(10),
+        //         'bagian' => Str::random(20),
+        //         'jabatan' => Str::random(8),
+        //         'id_stasiun' => $id_stasiun
+        //     ]);
+        // }
     }
 }

@@ -18,7 +18,6 @@
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
                             <th>Kebutuhan</th>
-                            {{-- <th>Nama Pegawai</th> --}}
                             <th>Status Otorisasi</th>
                             <th class="text-center">Status Permintaan</th>
                             <th class="text-center">Aksi</th>
@@ -32,21 +31,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                {{-- <td>
-                                    @if ($data->operating_system)
-                                        <span>Sistem Operasi</span>
-                                    @elseif($data->microsoft_office)
-                                        <span>Microsoft Office</span>
-                                    @elseif ($data->software_design)
-                                        <span>Software Design</span>
-                                    @elseif ($data->software_lainnya)
-                                        <span>Software Lainnya</span>
-                                    @endif
-                                </td> --}}
                                 <td>{{ $data->keluhan_kebutuhan }}</td>
-
-                                {{-- <td>{{ $data->nama }}</td> --}}
-
                                 <td>{{ ucwords($data->status_approval) }}</td>
 
 
@@ -85,7 +70,6 @@
                                                                     : 'Selesai')))))) }}
                                     </span>
                                 </td>
-
 
                                 <td class="text-center">
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
@@ -131,9 +115,7 @@
                                             </button>
                                         </form>
                                     </div>
-
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>

@@ -6,91 +6,285 @@
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
         </div>
 
+        <!-- Content Row -->
+
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-header">Permintaan Instalasi Software</div>
+
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Status Permintaan</h6>
+                        {{-- <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div> --}}
+                    </div>
+                    <!-- Card Body -->
                     <div class="card-body">
-                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $software_total }}</p>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Pending</span>
-                                <span class="badge badge-primary badge-pill">{{ $software_pending }}</span>
-                            </li>
-                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Revisi</span>
-                                <span class="badge badge-primary badge-pill">{{ $software_revisi }}</span>
-                            </li> --}}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Proses</span>
-                                <span class="badge badge-primary badge-pill">{{ $software_diproses }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Selesai</span>
-                                <span class="badge badge-primary badge-pill">{{ $software_diproses }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Ditolak</span>
-                                <span class="badge badge-primary badge-pill">{{ $software_ditolak }}</span>
-                            </li>
-                        </ul>
+                        <div class="chart-pie">
+                            @if (!empty($statusPermintaanData))
+                                <canvas id="status-permintaan-chart"></canvas>
+                            @else
+                                <p class="text-center">Belum ada permintaan</p>
+                            @endif
+
+                        </div>
+                        <div class="mt-2 text-center small">
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-danger"></i> Pending
+                            </span>
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-warning"></i> Ditinjau
+                            </span>
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-info"></i> Menunggu unit
+                            </span>
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-primary"></i> Diproses
+                            </span>
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-secondary"></i> Unit siap diambil
+                            </span>
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-success"></i> Permintaan selesai
+                            </span>
+                            <span class="mr-2 small">
+                                <i class="fas fa-circle text-dark"></i> Ditolak
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-header">Permintaan Pengecekan Hardware</div>
-                    <div class="card-body">
-                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $hardware_total }}</p>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Pending</span>
-                                <span class="badge badge-primary badge-pill">{{ $hardware_pending }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Proses</span>
-                                <span class="badge badge-primary badge-pill">{{ $hardware_proses }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Selesai</span>
-                                <span class="badge badge-primary badge-pill">{{ $hardware_selesai }}</span>
-                            </li>
-                        </ul>
+            <!-- Pie Chart -->
+            <di v class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Total Permintaan</h6>
+                        {{-- <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div> --}}
                     </div>
-                </div>
-            </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-pie pt-2">
+                            @if (!empty($permintaanData))
+                                <canvas id="permintaan-chart"></canvas>
+                            @else
+                                <p class="text-center">Belum ada permintaan</p>
+                            @endif
 
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-header">Status Keseluruhan</div>
-                    <div class="card-body">
-                        <p class="card-text">Jumlah Permintaan Keseluruhan: {{ $total }}</p>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Pending</span>
-                                <span class="badge badge-primary badge-pill">{{ $pending }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Proses</span>
-                                <span class="badge badge-primary badge-pill">{{ $diproses }}</span>
-                            </li>
-                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Revisi</span>
-                                <span class="badge badge-primary badge-pill">{{ $revisi }}</span>
-                            </li> --}}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Selesai</span>
-                                <span class="badge badge-primary badge-pill">{{ $selesai }}</span>
-                            </li>
-                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bold">Ditolak</span>
-                                <span class="badge badge-primary badge-pill">{{ $ditolak }}</span>
-                            </li> --}}
-                        </ul>
+                        </div>
+                        <div class=" mt-2 text-center small">
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-success"></i> Hardware
+                            </span>
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-primary"></i> Software
+                            </span>
+                            {{-- <span class="mr-2">
+                                <i class="fas fa-circle text-info"></i> Referral
+                            </span> --}}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </di>
         </div>
+
+
+
+        {{-- untuk permintaan software --}}
+        <script>
+            var permintaanData = {!! $permintaanData !!};
+
+            var statusLabels = ['Hardware', 'Software'];
+            var jumlahPermintaan = [];
+
+            for (var i = 0; i < permintaanData.length; i++) {
+                // statusLabels.push(permintaanData[i].status_permintaan);
+                jumlahPermintaan.push(permintaanData[i].jumlah_permintaan);
+            }
+
+            var permintaanChartCanvas = document.getElementById('permintaan-chart').getContext('2d');
+            var permintaanChart = new Chart(permintaanChartCanvas, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Hardware", "Software"],
+                    datasets: [{
+                        data: jumlahPermintaan,
+                        backgroundColor: ['#1cc88a', '#4e73df']
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: false
+                    },
+                    cutoutPercentage: 80,
+                }
+            });
+        </script>
+
+
+        {{-- untuk permintaan status --}}
+        <script>
+            var statusPermintaanData = {!! $statusPermintaanData !!};
+
+            var statusPermintaanLabels = ['Pending', 'Ditinjau', 'Menunggu unit', 'Diproses', 'Proses selesai',
+                'Permintaan selesai', 'Ditolak'
+            ];
+            var jumlahPermintaanHardware = [];
+
+            for (var i = 0; i < statusPermintaanData.length; i++) {
+                // statusPermintaanLabels.push(statusPermintaanData[i].status_permintaan);
+                jumlahPermintaanHardware.push(statusPermintaanData[i].jumlah_permintaan);
+            }
+
+            var statusPermintaanChartCanvas = document.getElementById('status-permintaan-chart').getContext('2d');
+            var statusPermintaanChart = new Chart(statusPermintaanChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels: statusPermintaanLabels,
+                    datasets: [{
+                        data: jumlahPermintaanHardware,
+                        backgroundColor: ['#e74a3b', '#f6c23e', '#36b9cc', '#4e73df', '#858796', '#1cc88a',
+                            '#5a5c69'
+                        ] // Sesuaikan warna sesuai dengan jumlah status_permintaan yang ada
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    // Opsi konfigurasi lainnya
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: false
+                    },
+                }
+            });
+        </script>
+
+
+
+
+        <script>
+            // Data untuk grafik permintaan keseluruhan
+            var allData = @json($allData);
+
+            // Membuat grafik bar untuk permintaan keseluruhan
+            var allChart = new Chart(document.getElementById('all-chart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(allData),
+                    datasets: [{
+                            label: 'Pending',
+                            data: Object.values(allData).map(function(item) {
+                                return item['pending'];
+                            }),
+                            backgroundColor: '#ff0000' // Merah untuk status "Pending"
+                        },
+                        {
+                            label: 'Ditinjau',
+                            data: Object.values(allData).map(function(item) {
+                                return item['ditinjau'];
+                            }),
+                            backgroundColor: '#ffa500' // Oranye untuk status "Ditinjau"
+                        },
+                        {
+                            label: 'Menunggu Unit',
+                            data: Object.values(allData).map(function(item) {
+                                return item['menunggu_unit'];
+                            }),
+                            backgroundColor: '#800080' // Ungu untuk status "Menunggu Unit"
+                        },
+                        {
+                            label: 'Diproses',
+                            data: Object.values(allData).map(function(item) {
+                                return item['diproses'];
+                            }),
+                            backgroundColor: '#0000ff' // Biru untuk status "Diproses"
+                        },
+                        {
+                            label: 'Proses Selesai',
+                            data: Object.values(allData).map(function(item) {
+                                return item['proses_selesai'];
+                            }),
+                            backgroundColor: '#00bfff' // Biru Muda untuk status "Proses Selesai"
+                        },
+                        {
+                            label: 'Permintaan Selesai',
+                            data: Object.values(allData).map(function(item) {
+                                return item['permintaan_selesai'];
+                            }),
+                            backgroundColor: '#008000' // Hijau untuk status "Permintaan Selesai"
+                        },
+                        {
+                            label: 'Ditolak',
+                            data: Object.values(allData).map(function(item) {
+                                return item['ditolak'];
+                            }),
+                            backgroundColor: '#808080' // Abu-abu untuk status "Ditolak"
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+
+
+
+
+
+
+
     </div>
 @endsection

@@ -28,62 +28,44 @@ class PegawaiController extends Controller
 
     public function index()
     {
-        $id_user = auth()->user()->id;
 
-        $software_total = PermintaanModel::where('tipe_permintaan', '=', 'software')
-            ->where('id', '=', $id_user)
-            ->count();
-        $software_pending = PermintaanModel::where('tipe_permintaan', '=', 'software')
-            ->where('status_permintaan', '=', '1')
-            ->orwhere('status_permintaan', '=', '2')
-            ->orwhere('status_permintaan', '=', '3')
-            ->where('id', '=', $id_user)
-            ->count();
-        $software_diproses = PermintaanModel::where('tipe_permintaan', '=', 'software')
-            ->where('status_permintaan', '=', '4')
-            ->where('id', '=', $id_user)
-            ->count();
-        $software_ditolak = PermintaanModel::where('tipe_permintaan', '=', 'software')
-            ->where('status_permintaan', '=', '7')
-            ->where('id', '=', $id_user)
-            ->count();
+        $permintaanData = DB::table('permintaan')
+            ->where('id', auth()->user()->id)
+            ->select('tipe_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('tipe_permintaan')
+            ->get();
 
-        $hardware_total = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('id', '=', $id_user)
-            ->count();
-        $hardware_pending = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('status_permintaan', '=', 'pending')
-            ->where('id', '=', $id_user)
-            ->count();
-        $hardware_proses = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('status_permintaan', '=', 'proses')
-            ->where('id', '=', $id_user)
-            ->count();
-        $hardware_selesai = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('status_permintaan', '=', 'selesai')
-            ->where('id', '=', $id_user)
-            ->count();
 
-        $total = $software_total + $hardware_total;
-        $pending = $software_pending + $hardware_pending;
-        $diproses = $hardware_proses + $software_diproses;
-        $selesai = $hardware_selesai;
+        $statusPermintaanData = DB::table('permintaan')
+            ->where('id', auth()->user()->id)
+            ->select('status_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('status_permintaan')
+            ->get();
+
+
+        $allData = PermintaanModel::where('id', auth()->user()->id)
+            ->groupBy(['tipe_permintaan', 'status_permintaan'])
+            ->selectRaw('tipe_permintaan, status_permintaan, COUNT(*) as count')
+            ->get()
+            ->groupBy('tipe_permintaan')
+            ->map(function ($group) {
+                return $group->pluck('count', 'status_permintaan')->toArray();
+            })
+            ->toArray();
 
         return view('pegawai.index', compact(
-            'software_total',
-            'software_pending',
-            'software_diproses',
-            'software_ditolak',
-            'hardware_total',
-            'hardware_pending',
-            'hardware_proses',
-            'hardware_selesai',
-            'total',
-            'pending',
-            'diproses',
-            'selesai',
+            'permintaanData',
+            'statusPermintaanData',
+            'allData'
         ));
     }
+
+
+
+
+
+
+
 
     public function permintaan_software()
     {

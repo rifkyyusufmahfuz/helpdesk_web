@@ -8,6 +8,7 @@ use App\Models\PermintaanModel;
 use App\Models\TindakLanjutModel;
 use Illuminate\Http\Request;
 use App\Utils\RomanNumberConverter;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -25,34 +26,33 @@ class AdminController extends Controller
 
     public function index()
     {
-        $software_total = OtorisasiModel::count();
-        $software_pending = OtorisasiModel::where('status_approval', '=', 'pending')->count();
-        $software_waiting = OtorisasiModel::where('status_approval', '=', 'waiting')->count();
-        $software_revisi = OtorisasiModel::where('status_approval', '=', 'revision')->count();
-        $software_diterima = OtorisasiModel::where('status_approval', '=', 'approved')->count();
-        $software_ditolak = OtorisasiModel::where('status_approval', '=', 'rejected')->count();
-
-        $hardware_total = PermintaanModel::where('tipe_permintaan', '=', 'hardware')->count();
-        $hardware_pending = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('status_permintaan', '=', 'pending')
-            ->count();
-        $hardware_proses = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('status_permintaan', '=', 'proses')
-            ->count();
-        $hardware_selesai = PermintaanModel::where('tipe_permintaan', '=', 'hardware')
-            ->where('status_permintaan', '=', 'selesai')
-            ->count();
+        $permintaanData = DB::table('permintaan')
+            ->select('tipe_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('tipe_permintaan')
+            ->get();
 
 
-        $total = $software_total + $hardware_total;
-        $pending = $software_pending + $hardware_pending;
-        $revisi = $software_revisi;
-        $diproses = $hardware_proses;
-        $diterima = $software_diterima + $hardware_selesai;
-        $selesai = $hardware_selesai;
-        $ditolak = $software_ditolak;
+        $statusPermintaanData = DB::table('permintaan')
+            ->select('status_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('status_permintaan')
+            ->get();
 
-        return view('admin.index', compact('software_total', 'software_pending', 'software_revisi', 'software_diterima', 'software_ditolak', 'hardware_total', 'hardware_pending', 'hardware_proses', 'hardware_selesai', 'total', 'pending', 'revisi', 'diproses', 'diterima', 'selesai', 'ditolak'));
+
+        $allData = PermintaanModel::where('id', auth()->user()->id)
+            ->groupBy(['tipe_permintaan', 'status_permintaan'])
+            ->selectRaw('tipe_permintaan, status_permintaan, COUNT(*) as count')
+            ->get()
+            ->groupBy('tipe_permintaan')
+            ->map(function ($group) {
+                return $group->pluck('count', 'status_permintaan')->toArray();
+            })
+            ->toArray();
+
+        return view('admin.index', compact(
+            'permintaanData',
+            'statusPermintaanData',
+            'allData'
+        ));
     }
 
     public function permintaan_software()

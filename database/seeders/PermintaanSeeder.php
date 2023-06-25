@@ -36,7 +36,7 @@ class PermintaanSeeder extends Seeder
         $bastData = [];
         $permintaanData = [];
 
-        for ($i = 1; $i <= 200; $i++) {
+        for ($i = 1; $i <= 120; $i++) {
             $randomDate = Carbon::now()->subDays(rand(1, 365));
             $randomStatus = (rand(0, 1) == 0) ? 'diterima' : 'dikembalikan';
 
