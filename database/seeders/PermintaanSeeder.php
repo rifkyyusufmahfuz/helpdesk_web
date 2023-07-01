@@ -23,18 +23,12 @@ class PermintaanSeeder extends Seeder
             'software_lainnya' => true,
         ]);
 
-        $otorisasiId = DB::table('otorisasi')->insertGetId([
-            'id_otorisasi' => 1,
-            'tanggal_approval' => null,
-            'status_approval' => 'pending',
-            'catatan' => '',
-            'id' => null,
-            'created_at' => now(),
-        ]);
-
         $barangData = [];
         $bastData = [];
         $permintaanData = [];
+        $otorisasiData = [];
+
+        $nextOtorisasiId = 1;
 
         for ($i = 1; $i <= 120; $i++) {
             $randomDate = Carbon::now()->subDays(rand(1, 365));
@@ -56,6 +50,14 @@ class PermintaanSeeder extends Seeder
             $randomTipePermintaan = (rand(0, 1) == 0) ? 'software' : 'hardware';
             $randomStatusPermintaan = (string) rand(0, 6);
 
+            $otorisasiData[] = [
+                'id_otorisasi' => $nextOtorisasiId,
+                'tanggal_approval' => null,
+                'status_approval' => 'pending',
+                'catatan' => '',
+                'created_at' => now(),
+            ];
+
             $permintaanData[] = [
                 'id_permintaan' => $newIdPermintaan,
                 'keluhan_kebutuhan' => 'Uraian Kebutuhan ' . $i,
@@ -65,11 +67,13 @@ class PermintaanSeeder extends Seeder
                 'ttd_requestor' => 'requestor_' . $i . '.png',
                 'id' => 1,
                 'id_kategori' => $kategoriSoftwareId,
-                'id_otorisasi' => $otorisasiId,
+                'id_otorisasi' => $nextOtorisasiId,
                 'kode_barang' => 'KCI-213' . $i,
                 'created_at' => $randomDate,
                 'updated_at' => $randomDate,
             ];
+
+            $nextOtorisasiId++;
 
             $stasiunIds = DB::table('stasiun')->pluck('id_stasiun')->toArray();
             $pegawaiNips = DB::table('pegawai')->pluck('nip')->toArray();
@@ -108,6 +112,7 @@ class PermintaanSeeder extends Seeder
         }
 
         DB::table('barang')->insert($barangData);
+        DB::table('otorisasi')->insert($otorisasiData);
         DB::table('permintaan')->insert($permintaanData);
         DB::table('bast')->insert($bastData);
     }

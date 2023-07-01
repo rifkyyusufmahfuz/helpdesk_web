@@ -12,7 +12,7 @@
                 </div>
                 <div class="modal-body" id="signature_pad_manager_2_{{ $data->id_permintaan }}">
                     <form action="/manager/crud/{{ $data->id_permintaan }}" method="POST"
-                        id="setujui_{{ $data->id_permintaan }}" data-id-permintaan-2="{{ $data->id_permintaan }}">
+                        id="tolak_{{ $data->id_permintaan }}" data-id-permintaan-2="{{ $data->id_permintaan }}">
                         @csrf
                         @method('PUT')
                         <input hidden name="otorisasi_manager" value="ditolak">
@@ -119,17 +119,17 @@
             document.getElementById("ttd_manager_2_" + id_permintaan).value = "";
             signaturePad_2.clear();
             // Call tanda tangan function again
-            initializeSignature(canvas);
+            initializeSignature_2(canvas);
         }
 
         //fungsi tanda tangan
         var canvasElements = document.getElementsByClassName('isi-ttd-2');
 
         for (var i = 0; i < canvasElements.length; i++) {
-            initializeSignature(canvasElements[i]);
+            initializeSignature_2(canvasElements[i]);
         }
 
-        function initializeSignature(canvas) {
+        function initializeSignature_2(canvas) {
             // var canvas = document.getElementById("the_canvas_manager_2_" + id_permintaan);
             signaturePad_2 = new SignaturePad(canvas, {
                 minWidth: 1,
@@ -165,6 +165,15 @@
             var el_note = document.getElementById("catatan_ttd_manager_2_" + id_permintaan);
             el_note.innerHTML = "";
         }
+
+        // Tangani peristiwa "shown.bs.modal" untuk inisialisasi tanda tangan setiap kali modal ditampilkan
+        $('#tolak_permintaan_{{ $data->id_permintaan }}').on('shown.bs.modal', function() {
+            var canvasElements = document.querySelectorAll(
+                '#tolak_permintaan_{{ $data->id_permintaan }} .isi-ttd-2');
+            canvasElements.forEach(function(canvas) {
+                initializeSignature_2(canvas);
+            });
+        });
     </script>
 
     <script>

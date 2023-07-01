@@ -225,4 +225,16 @@ class ManagerModel extends Model
     {
         return DB::table('barang')->where('kode_barang', $kode_barang)->update($data_barang) ? true : false;
     }
+
+    public function get_laporan_permintaan()
+    {
+        return DB::table('laporan_permintaan')
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function update_laporan($data_laporan, $id_laporan)
+    {
+        return DB::table('laporan_permintaan')->where('id_laporan', $id_laporan)->update($data_laporan) ? true : false;
+    }
 }

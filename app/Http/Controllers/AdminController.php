@@ -64,7 +64,8 @@ class AdminController extends Controller
             'admin.software.permintaan_software',
             [
                 'permintaan' => $permintaan,
-                'list_software' => $list_software
+                'list_software' => $list_software,
+                'now' => \Carbon\Carbon::now()->format('Y-m-d')
             ]
         );
     }
@@ -249,7 +250,17 @@ class AdminController extends Controller
         );
     }
 
+    public function halaman_cetak_laporan_permintaan()
+    {
+        $laporan_permintaan = $this->modeladmin->get_laporan_permintaan();
 
+        return view(
+            'admin.laporan_permintaan.halaman_cetak_laporan',
+            compact(
+                'laporan_permintaan'
+            )
+        );
+    }
 
 
     /**

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\CetakDokumenModel;
+use App\Models\HardwareModel;
+use App\Models\LaporanPermintaanModel;
+use App\Models\PermintaanModel;
+use App\Models\SoftwareModel;
 use Illuminate\Http\Request;
 use Nasution\Terbilang;
+use App\Utils\RomanNumberConverter;
 
 class CetakDokumenController extends Controller
 {
@@ -253,5 +258,213 @@ class CetakDokumenController extends Controller
             'rekomendasi' => $tindaklanjut ? $tindaklanjut->rekomendasi : null,
             'nama_admin' => $data_admin ? $data_admin->nama : null,
         ]);
+    }
+
+
+    //user role admin yang bisa melakukan create laporan
+    public function create_laporan_permintaan(Request $request)
+    {
+
+        $request->validate(
+            [
+                'jenis_filter' => 'required',
+            ]
+        );
+
+        //generate id_bast 
+        $cari_id_laporan =  $this->modelcetak->cari_id_laporan();
+
+        if ($cari_id_laporan) {
+            $latestId = $cari_id_laporan->id_laporan;
+            $lastIdParts = explode('-', $latestId);
+            $lastUrutan = intval($lastIdParts[0]);
+            $lastBulan = $lastIdParts[3];
+            $lastTahun = $lastIdParts[4];
+
+            $bulanSekarang = date('n');
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
+            $tahunSekarang = date('Y');
+
+            if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
+                $urutanBaru = 1;
+            } else {
+                $urutanBaru = $lastUrutan + 1;
+            }
+        } else {
+            $urutanBaru = 1;
+            $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman(date('n'));
+            $tahunSekarang = date('Y');
+        }
+        $id_laporan_baru = sprintf('%04d', $urutanBaru) . '-KCI-LP-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
+        //Tanda tangan yang menyerahkan barang / Pihak Pertama / P1
+        $folderPath_p1 = public_path('tandatangan/laporan_permintaan/admin/');
+        if (!is_dir($folderPath_p1)) {
+            //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+            mkdir($folderPath_p1, 0777, true);
+        }
+
+        $filename_ttd_p1 = "lp_admin_" . $id_laporan_baru . ".png";
+        $nama_file_ttd_p1 = $folderPath_p1 . $filename_ttd_p1;
+        file_put_contents($nama_file_ttd_p1, file_get_contents($request->input('ttd_bast')));
+
+        $nip = auth()->user()->pegawai->nip;
+
+        if ($request->jenis_filter == 'harian') {
+            $data = [
+                'id_laporan' => $id_laporan_baru,
+                'jenis_laporan' => $request->jenis_laporan,
+                'periode_laporan' => $request->jenis_filter,
+                'tanggal_awal' => $request->tanggal,
+                'status_laporan' => 'belum divalidasi',
+                'nip_admin' => $nip,
+                'ttd_admin' => $filename_ttd_p1,
+                'created_at' => now()
+            ];
+        } elseif ($request->jenis_filter == 'mingguan') {
+            $data = [
+                'id_laporan' => $id_laporan_baru,
+                'jenis_laporan' => $request->jenis_laporan,
+                'periode_laporan' => $request->jenis_filter,
+                'tanggal_awal' =>  $request->tanggal_awal,
+                'tanggal_akhir' =>  $request->tanggal_akhir,
+                'status_laporan' => 'belum divalidasi',
+                'nip_admin' => $nip,
+                'ttd_admin' => $filename_ttd_p1,
+                'created_at' => now()
+            ];
+        } elseif ($request->jenis_filter == 'bulanan') {
+            $data = [
+                'id_laporan' => $id_laporan_baru,
+                'jenis_laporan' => $request->jenis_laporan,
+                'periode_laporan' => $request->jenis_filter,
+                'bulan' =>  $request->bulan,
+                'status_laporan' => 'belum divalidasi',
+                'nip_admin' => $nip,
+                'ttd_admin' => $filename_ttd_p1,
+                'created_at' => now()
+            ];
+        } elseif ($request->jenis_filter == 'tahunan') {
+            $data = [
+                'id_laporan' => $id_laporan_baru,
+                'jenis_laporan' => $request->jenis_laporan,
+                'periode_laporan' => $request->jenis_filter,
+                'tahun' => $request->tahun,
+                'status_laporan' => 'belum divalidasi',
+                'nip_admin' => $nip,
+                'ttd_admin' => $filename_ttd_p1,
+                'created_at' => now()
+            ];
+        }
+
+        $nama_admin = auth()->user()->pegawai->nama;
+
+        $filter = $request->jenis_filter;
+
+        $notifikasi = [
+            'pesan' => 'Admin ' . $nama_admin . ' telah membuat laporan permintaan ' . $filter . ' dengan Nomor Laporan : ' . $id_laporan_baru . ' dan menunggu divalidasi oleh Manager.',
+            'tautan' => '/manager/laporan_periodik',
+            'created_at' => now(),
+            'role_id' => 3, //role manager
+        ];
+
+        $kirim_notifikasi = $this->modelcetak->input_notifikasi($notifikasi);
+
+        $input_laporan = $this->modelcetak->input_laporan($data);
+
+
+        return $input_laporan && $kirim_notifikasi ? back()->with('toast_success', 'Laporan ' . $filter . ' berhasil dibuat. Menunggu validasi dari Manager!') : back()->with('toast_error', 'Laporan gagal dibuat');
+    }
+
+    public function cetak_laporan_periodik($id_laporan)
+    {
+        $laporan = LaporanPermintaanModel::findOrFail($id_laporan);
+        $data_laporan = $this->modelcetak->get_laporan_by_id_laporan($id_laporan);
+
+        // Hitung total permintaan
+        $totalPermintaanSoftware = 0;
+        $totalPermintaanHardware = 0;
+        // Hitung jumlah software dan hardware berdasarkan jenis_laporan
+        $softwareCounts = collect();
+        $hardwareCounts = collect();
+
+        if ($laporan->periode_laporan === 'harian') {
+            // Hitung total permintaan dan jumlah software/hardware harian
+            $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
+                ->whereDate('tanggal_permintaan', $laporan->tanggal_awal)->count();
+            $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
+                ->whereDate('tanggal_permintaan', $laporan->tanggal_awal)->count();
+
+            $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereDate('permintaan.tanggal_permintaan', $laporan->tanggal_awal);
+            })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
+
+            $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereDate('permintaan.tanggal_permintaan', $laporan->tanggal_awal);
+            })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
+        } elseif ($laporan->periode_laporan === 'mingguan') {
+            // Hitung total permintaan dan jumlah software/hardware mingguan
+            $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
+                ->whereBetween('tanggal_permintaan', [$laporan->tanggal_awal, $laporan->tanggal_akhir])->count();
+            $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
+                ->whereBetween('tanggal_permintaan', [$laporan->tanggal_awal, $laporan->tanggal_akhir])->count();
+
+            $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereBetween('permintaan.tanggal_permintaan', [$laporan->tanggal_awal, $laporan->tanggal_akhir]);
+            })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
+
+            $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereBetween('permintaan.tanggal_permintaan', [$laporan->tanggal_awal, $laporan->tanggal_akhir]);
+            })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
+        } elseif ($laporan->periode_laporan === 'bulanan') {
+            // Hitung total permintaan dan jumlah software/hardware bulanan
+            $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
+                ->whereMonth('tanggal_permintaan', $laporan->bulan)->count();
+            $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
+                ->whereMonth('tanggal_permintaan', $laporan->bulan)->count();
+
+            $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->bulan);
+            })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
+
+            $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->bulan);
+            })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
+        } elseif ($laporan->periode_laporan === 'tahunan') {
+            // Hitung total permintaan dan jumlah software/hardware tahunan
+            $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
+                ->whereYear('tanggal_permintaan', $laporan->tahun)->count();
+            $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
+                ->whereYear('tanggal_permintaan', $laporan->tahun)->count();
+
+            $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereYear('permintaan.tanggal_permintaan', $laporan->tahun);
+            })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
+
+            $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
+                $query->whereYear('permintaan.tanggal_permintaan', $laporan->tahun);
+            })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
+        }
+
+        // Cari software dengan total permintaan terbanyak
+        $softwareTerbanyak = $softwareCounts->max('total');
+        $softwareTerbanyakData = $softwareCounts->where('total', $softwareTerbanyak)->first();
+
+        $namaSoftwareTerbanyak = $softwareTerbanyakData ? $softwareTerbanyakData->nama_software : null;
+        $totalPermintaanTerbanyak = $softwareTerbanyakData ? $softwareTerbanyakData->total : 0;
+
+
+
+        // Pass data ke view cetak_laporan_permintaan
+        return view('cetak.form_laporan_permintaan', compact(
+            'laporan',
+            'totalPermintaanSoftware',
+            'totalPermintaanHardware',
+            'softwareCounts',
+            'hardwareCounts',
+            'data_laporan',
+            'namaSoftwareTerbanyak',
+            'totalPermintaanTerbanyak'
+        ));
     }
 }

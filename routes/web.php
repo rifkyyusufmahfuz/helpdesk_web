@@ -91,6 +91,8 @@ Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], fun
     Route::get('/admin/permintaan_hardware/cek_hardware/{id_permintaan}', [AdminController::class, 'cek_hardware']);
     Route::get('/admin/permintaan_hardware/bast_hardware/{id_permintaan}', [AdminController::class, 'bast_hardware']);
     Route::post('/admin/tindak_lanjut_hardware/{id_permintaan}', [AdminController::class, 'tindak_lanjut_hardware']);
+
+    Route::get('/admin/laporan_periodik', [AdminController::class, 'halaman_cetak_laporan_permintaan']);
 });
 
 // untuk Manager
@@ -103,6 +105,7 @@ Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], fun
 
     Route::get('/manager/permintaan_hardware', [ManagerController::class, 'permintaan_hardware']);
     Route::get('/manager/riwayat_validasi', [ManagerController::class, 'riwayat_validasi']);
+    Route::get('/manager/laporan_periodik', [ManagerController::class, 'halaman_cetak_laporan_permintaan']);
 });
 
 // untuk manager dan admin
@@ -138,3 +141,6 @@ Route::get('/cetak_bast/barang_masuk/{kode_barang}', [CetakDokumenController::cl
 Route::get('/cetak_bast/barang_keluar/{kode_barang}', [CetakDokumenController::class, 'cetak_bast_barang_keluar']);
 Route::get('/form_instalasi_software/{id}', [CetakDokumenController::class, 'cetak_form_instalasi_software']);
 Route::get('/form_pengecekan_hardware/{id}', [CetakDokumenController::class, 'cetak_form_pengecekan_hardware']);
+
+Route::post('/create_laporan_permintaan', [CetakDokumenController::class, 'create_laporan_permintaan']);
+Route::get('/form_laporan_permintaan_periodik/{id}', [CetakDokumenController::class, 'cetak_laporan_periodik']);

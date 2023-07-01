@@ -129,6 +129,11 @@
          width: 250px;
          margin-bottom: -8px;
      }
+     /* css untuk tampilan form laporan  */
+     
+     .total-software {
+         text-align: center !important;
+     }
      /* Cetak ke media A4 */
      
      @media print {

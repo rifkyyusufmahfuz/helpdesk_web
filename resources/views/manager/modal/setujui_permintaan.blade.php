@@ -164,6 +164,15 @@
             var el_note = document.getElementById("catatan_ttd_manager_" + id_permintaan);
             el_note.innerHTML = "";
         }
+
+        // Tangani peristiwa "shown.bs.modal" untuk inisialisasi tanda tangan setiap kali modal ditampilkan
+        $('#setujui_permintaan_{{ $data->id_permintaan }}').on('shown.bs.modal', function() {
+            var canvasElements = document.querySelectorAll(
+                '#setujui_permintaan_{{ $data->id_permintaan }} .isi-ttd');
+            canvasElements.forEach(function(canvas) {
+                initializeSignature(canvas);
+            });
+        });
     </script>
 
     <script>

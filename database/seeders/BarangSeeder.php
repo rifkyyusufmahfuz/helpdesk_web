@@ -14,7 +14,7 @@ class BarangSeeder extends Seeder
     public function run(): void
     {
         // $statusBarang = ['belum diterima', 'diterima', 'siap diambil', 'dikembalikan'];
-        $statusBarang = ['belum diterima', 'siap diambil'];
+        // $statusBarang = ['belum diterima', 'siap diambil'];
 
         for ($i = 1; $i <= 50; $i++) {
             DB::table('barang')->insert([
@@ -24,7 +24,8 @@ class BarangSeeder extends Seeder
                 'ram' => $i . 'GB',
                 'penyimpanan' => $i . 'GB',
                 'jumlah_barang' => rand(1, 10),
-                'status_barang' => $statusBarang[rand(0, count($statusBarang) - 1)],
+                // 'status_barang' => $statusBarang[rand(0, count($statusBarang) - 1)],
+                'status_barang' => 'belum diterima',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

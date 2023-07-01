@@ -144,4 +144,47 @@ class CetakDokumenModel extends Model
     {
         return DB::table('hardware')->where('id_permintaan', $id_permintaan)->get();
     }
+
+
+    public function cari_id_laporan()
+    {
+        return DB::table('laporan_permintaan')->orderByDesc('id_laporan')->first();
+    }
+
+    public function input_notifikasi($notifikasi)
+    {
+        return DB::table('notifikasi')->insert($notifikasi) ? true : false;
+    }
+
+    public function input_laporan($data)
+    {
+        return DB::table('laporan_permintaan')->insert($data) ? true : false;
+    }
+
+    public function get_laporan_by_id_laporan($id_laporan)
+    {
+        return DB::table('laporan_permintaan')
+            ->leftJoin('pegawai AS pegawai_admin', 'laporan_permintaan.nip_admin', '=', 'pegawai_admin.nip')
+            ->leftJoin('stasiun AS stasiun_admin', 'pegawai_admin.id_stasiun', '=', 'stasiun_admin.id_stasiun')
+            ->leftJoin('pegawai AS pegawai_manager', 'laporan_permintaan.nip_manager', '=', 'pegawai_manager.nip')
+            ->leftJoin('stasiun AS stasiun_manager', 'pegawai_manager.id_stasiun', '=', 'stasiun_manager.id_stasiun')
+
+            ->where('id_laporan', $id_laporan)
+
+            ->select(
+                'laporan_permintaan.*',
+
+                'pegawai_admin.nama AS nama_admin',
+                'pegawai_admin.nip AS nip_admin',
+                'pegawai_admin.bagian AS bagian_admin',
+                'pegawai_admin.jabatan AS jabatan_admin',
+                'stasiun_admin.nama_stasiun AS lokasi_admin',
+                'pegawai_manager.nama AS nama_manager',
+                'pegawai_manager.nip AS nip_manager',
+                'pegawai_manager.bagian AS bagian_manager',
+                'pegawai_manager.jabatan AS jabatan_manager',
+                'stasiun_manager.nama_stasiun AS lokasi_manager'
+            )
+            ->get();
+    }
 }

@@ -357,6 +357,29 @@
                 </div>
             </div>
         </li>
+
+        {{-- MENU CETAK LAPORAN --}}
+        <li class="nav-item {{ request()->is('admin/laporan_periodik*') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('admin/laporan_periodik*') || request()->is('') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseLaporanPeriodik"
+                aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-file-invoice"></i>
+                <span>Laporan Permintaan</span>
+            </a>
+            <div id="collapseLaporanPeriodik"
+                class="collapse {{ request()->is('admin/laporan_periodik*') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
+                    <a class="collapse-item {{ request()->is('admin/laporan_periodik*') ? 'active' : '' }}"
+                        href="/admin/laporan_periodik">
+                        <i class="fas fa-fw fa-print"></i>
+                        <span>Laporan Periodik</span>
+                    </a>
+
+                </div>
+            </div>
+        </li>
     @endif
 
 
@@ -466,6 +489,30 @@
                         <i class="fas fa-fw fa-history"></i>
                         <span class="custom-span">Riwayat Validasi</span>
                     </a>
+                </div>
+            </div>
+        </li>
+
+
+        {{-- MENU CETAK LAPORAN --}}
+        <li class="nav-item {{ request()->is('manager/laporan_periodik*') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('manager/laporan_periodik*') || request()->is('') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseLaporanPeriodik"
+                aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-file-invoice"></i>
+                <span>Laporan Permintaan</span>
+            </a>
+            <div id="collapseLaporanPeriodik"
+                class="collapse {{ request()->is('manager/laporan_periodik*') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
+                    <a class="collapse-item {{ request()->is('manager/laporan_periodik*') ? 'active' : '' }}"
+                        href="/manager/laporan_periodik">
+                        <i class="fas fa-fw fa-print"></i>
+                        <span>Laporan Periodik</span>
+                    </a>
+
                 </div>
             </div>
         </li>

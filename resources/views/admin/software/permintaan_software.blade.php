@@ -8,6 +8,11 @@
                 <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
                 <p class="small text-gray-800">Daftar permintaan instalasi software</p>
             </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cetak_laporan_permintaan"><i
+                        class="fas fa-print"></i> Cetak
+                    Laporan</button>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -128,5 +133,6 @@
         @include('admin.software.modal.proses_software')
         {{-- @include('admin.software.modal.input_barang') --}}
         @include('admin.software.modal.detail_permintaan_software')
+        @include('admin.software.modal.cetak_laporan_permintaan_software')
     @endif
 @endsection

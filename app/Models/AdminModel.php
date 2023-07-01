@@ -544,4 +544,12 @@ class AdminModel extends Model
             ->orderBy('created_at', 'desc')
             ->get();
     }
+
+
+    public function get_laporan_permintaan()
+    {
+        return DB::table('laporan_permintaan')
+            ->orderByDesc('created_at')
+            ->get();
+    }
 }

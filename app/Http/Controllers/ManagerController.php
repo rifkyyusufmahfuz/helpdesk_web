@@ -89,6 +89,18 @@ class ManagerController extends Controller
         );
     }
 
+    public function halaman_cetak_laporan_permintaan()
+    {
+        //
+        $laporan_permintaan = $this->modelmanager->get_laporan_permintaan();
+
+        return view(
+            'manager.laporan_permintaan.halaman_cetak_laporan',
+            compact(
+                'laporan_permintaan'
+            )
+        );
+    }
 
 
 
@@ -163,6 +175,8 @@ class ManagerController extends Controller
             $kirim_notifikasi = $this->modelmanager->input_notifikasi($notifikasi);
 
             return $update_otorisasi && $kirim_notifikasi ? back()->with('toast_success', 'Revisi berhasil diajukan ke Admin!') : back()->with('toast_error', 'Pengajuan revisi gagal, silakan coba lagi!');
+
+            // END OF FUNCTION
         } elseif ($request->has('otorisasi_manager')) {
             $request->validate(
                 [
@@ -299,6 +313,8 @@ class ManagerController extends Controller
                     ? back()->with('warning', 'Permintaan ditolak dan proses Instalasi Software tidak akan dilanjutkan.')
                     : back()->with('error', 'Otorisasi permintaan gagal, silakan coba lagi!');
             }
+
+            // END OF FUNCTION
         } elseif ($request->has('divalidasi')) {
 
             // Validasi data yang diterima dari form
@@ -352,6 +368,54 @@ class ManagerController extends Controller
             return $update_otorisasi && $update_permintaan && $kirim_notifikasi ?
                 back()->with('success', 'Rekomendasi pengecekan hardware telah divalidasi!')
                 : back()->with('error', 'Validasi gagal, silakan coba lagi!');
+
+            // END OF FUNCTION
+        } elseif ($request->has('validasi_laporan')) {
+
+            // Validasi data yang diterima dari form
+            $request->validate([
+                // 'catatan_manager_' . $id_permintaan => 'required',
+                'ttd_manager_' . $id_permintaan => 'required',
+            ]);
+
+            //Tanda tangan manager untuk menyetujui permintaan
+            $lokasi_simpan_ttd = public_path('tandatangan/laporan_permintaan/manager/');
+            if (!is_dir($lokasi_simpan_ttd)) {
+                //buat folder "tandatangan" jika folder tersebut belum ada di direktori "public"
+                mkdir($lokasi_simpan_ttd, 0777, true);
+            }
+            $nama_file_ttd_manager = "validasilaporan_" . $id_permintaan . ".png";
+            $tanda_tangan_manager = $lokasi_simpan_ttd . $nama_file_ttd_manager;
+            file_put_contents($tanda_tangan_manager, file_get_contents($request->input('ttd_manager_' . $id_permintaan)));
+
+            $nip_manager = auth()->user()->pegawai->nip;
+
+            $data_laporan = [
+                'status_laporan' => 'sudah divalidasi',
+                'nip_manager' => $nip_manager,
+                'ttd_manager' => $nama_file_ttd_manager,
+                'updated_at' => now(),
+            ];
+
+
+            // untuk input ke table notifikasi
+            $notifikasi = [
+                'pesan' => 'Laporan permintaan dengan nomor laporan "' . $id_permintaan . '" telah divalidasi!',
+                'tautan' => '/admin/laporan_periodik',
+                'created_at' => now(),
+                'role_id' => 2,
+            ];
+
+            $update_laporan = $this->modelmanager->update_laporan($data_laporan, $id_permintaan);
+
+            if ($update_laporan) {
+                $kirim_notifikasi = $this->modelmanager->input_notifikasi($notifikasi);
+                return back()->with('success', 'Laporan permintaan periodik "' . $id_permintaan . '" telah divalidasi!');
+            } elseif (!$update_laporan) {
+                return back()->with('warning', 'Validasi gagal, silakan coba lagi!');
+            }
+
+            // END OF FUNCTION
         }
     }
 
