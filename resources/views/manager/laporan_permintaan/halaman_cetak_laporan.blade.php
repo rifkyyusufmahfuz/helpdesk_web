@@ -30,13 +30,14 @@
                             <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_laporan }}</td>
-                                <td>{{ $data->created_at }}</td>
+                                <td>{{ $data->laporan_created }}</td>
                                 <td class="text-center">{{ ucwords($data->jenis_laporan) }}</td>
                                 <td class="text-center">{{ ucwords($data->periode_laporan) }}</td>
                                 <td class="text-center">{{ ucwords($data->status_laporan) }}</td>
 
 
                                 <td class="text-center">
+
                                     {{-- UNTUK MENAMPILKAN VIEW CETAK FORM INSTALASI SOFTWARE --}}
                                     <div class="overlay" id="overlay_{{ $data->id_laporan }}">
                                         <div class="iframe-container">
@@ -56,8 +57,10 @@
                                         </div>
                                     </div>
                                     {{-- END OF OVERLAY --}}
+
                                     <div class="btn-group" role="group">
-                                        <button class="btn btn-sm btn-success rounded" data-bs-toggle="modal"
+                                        <button {{ $data->status_laporan === 'sudah divalidasi' ? 'disabled' : '' }}
+                                            class="btn btn-sm btn-success rounded" data-bs-toggle="modal"
                                             data-bs-target="#setujui_permintaan_{{ $data->id_laporan }}"
                                             title="Setujui Permintaan">
                                             <i class="fas fa-check"></i>
@@ -65,11 +68,11 @@
 
                                         <button id="view_form_laporan_{{ $data->id_laporan }}"
                                             class="btn btn-sm bg-primary text-white rounded ml-2"
-                                            title="Cetak Form Permintaan Instalasi Software"
+                                            title="Cetak Form Laporan Permintaan"
                                             onclick="loadIframe('{{ $data->id_laporan }}')">
                                             <i class="fa fa-print"></i>
                                         </button>
-                                        
+
                                     </div>
                                 </td>
                             </tr>

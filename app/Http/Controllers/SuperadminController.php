@@ -248,7 +248,17 @@ class SuperadminController extends Controller
         );
     }
 
+    public function transaksi_laporan_permintaan()
+    {
+        $laporan_permintaan = $this->modeladmin->get_laporan_permintaan();
 
+        return view(
+            'superadmin.transaksi_laporan_periodik.laporan_periodik',
+            compact(
+                'laporan_permintaan'
+            )
+        );
+    }
 
 
 
@@ -1181,6 +1191,31 @@ class SuperadminController extends Controller
             } else {
                 return back()->with('toast_error', 'Data BAST tidak ditemukan!');
             }
+
+            // end of condition
+        } elseif ($request->has('hapus_laporan_periodik')) {
+
+            $laporan = DB::table('laporan_permintaan')->where('id_laporan', $id)->first();
+
+            // Hapus file tanda tangan admin dari folder public tanda tangan laporan permintaan
+            $ttd_admin = $laporan->ttd_admin;
+            $tanda_tangan_admin = public_path('tandatangan/laporan_permintaan/admin/' . $ttd_admin);
+            file_exists($tanda_tangan_admin) ? unlink($tanda_tangan_admin) : null;
+
+            // Hapus file tanda tangan manager dari folder public tanda tangan laporan permintaan
+            $ttd_manager = $laporan->ttd_manager;
+            if (isset($ttd_manager)) {
+                $tanda_tangan_manager = public_path('tandatangan/laporan_permintaan/manager/' . $ttd_manager);
+                file_exists($tanda_tangan_manager) ? unlink($tanda_tangan_manager) : null;
+            }
+
+            // Hapus data laporan berdasarkan id_laporan dari tabel
+            $hapus_laporan_periodik = $this->modelsuperadmin->delete_laporan_periodik_by_id_laporan($id);
+
+            return $hapus_laporan_periodik
+                ? back()->with('toast_success', 'Laporan periodik ' . $id . ' berhasil dihapus!')
+                : back()->with('toast_error', 'Laporan periodik gagal dihapus!');
+
 
             // end of condition
         } else {

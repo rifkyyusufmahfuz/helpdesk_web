@@ -135,7 +135,7 @@
             <a class="nav-link {{ request()->is('superadmin/transaksi_permintaan_software') || request()->is('superadmin/transaksi_permintaan_hardware') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseTransaksiPermintaan"
                 aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-boxes"></i>
+                <i class="fas fa-fw fa-cogs"></i>
                 <span>Permintaan Layanan</span>
             </a>
             <div id="collapseTransaksiPermintaan"
@@ -150,7 +150,7 @@
                     </a>
                     <a class="collapse-item {{ request()->is('superadmin/transaksi_permintaan_hardware') ? 'active' : '' }}"
                         href="/superadmin/transaksi_permintaan_hardware">
-                        <i class="fas fa-fw fa-user-check"></i>
+                        <i class="fas fa-fw fa-tools"></i>
                         <span>Pengecekan Hardware</span>
                     </a>
                 </div>
@@ -164,7 +164,7 @@
             <a class="nav-link {{ request()->is('superadmin/transaksi_tindaklanjut') || request()->is('superadmin/transaksi_otorisasi') ? '' : 'collapsed' }}"
                 href="#" data-toggle="collapse" data-target="#collapseTransaksiTindaklanjut"
                 aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-boxes"></i>
+                <i class="fas fa-fw fa-file-contract"></i>
                 <span>Tindak Lanjut Layanan</span>
             </a>
             <div id="collapseTransaksiTindaklanjut"
@@ -174,7 +174,7 @@
                     <h6 class="collapse-header">Admin & Executor:</h6>
                     <a class="collapse-item {{ request()->is('superadmin/transaksi_tindaklanjut') ? 'active' : '' }}"
                         href="/superadmin/transaksi_tindaklanjut">
-                        <i class="fas fa-fw fa-cogs"></i>
+                        <i class="fas fa-fw fa-wrench"></i>
                         <span>Tindak Lanjut</span>
                     </a>
                     <h6 class="collapse-header">Manager:</h6>
@@ -217,6 +217,29 @@
                         <i class="fas fa-fw fa-arrow-down"></i>
                         <span>Barang Masuk</span>
                     </a>
+                </div>
+            </div>
+        </li>
+
+        {{-- MENU CETAK LAPORAN --}}
+        <li class="nav-item {{ request()->is('superadmin/laporan_periodik*') || request()->is('') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('superadmin/laporan_periodik*') || request()->is('') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseLaporanPeriodik"
+                aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-file-invoice"></i>
+                <span>Laporan Permintaan</span>
+            </a>
+            <div id="collapseLaporanPeriodik"
+                class="collapse {{ request()->is('superadmin/laporan_periodik*') || request()->is('') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
+                    <a class="collapse-item {{ request()->is('superadmin/laporan_periodik*') ? 'active' : '' }}"
+                        href="/superadmin/laporan_periodik">
+                        <i class="fas fa-fw fa-print"></i>
+                        <span>Laporan Periodik</span>
+                    </a>
+
                 </div>
             </div>
         </li>
@@ -501,6 +524,14 @@
                 aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-file-invoice"></i>
                 <span>Laporan Permintaan</span>
+                @php
+                    $laporan_count = DB::table('laporan_permintaan')
+                        ->where('status_laporan', 'belum divalidasi')
+                        ->count();
+                @endphp
+                @if ($laporan_count > 0)
+                    <span class="badge badge-danger badge-pill badge-counter">{{ $laporan_count }}</span>
+                @endif
             </a>
             <div id="collapseLaporanPeriodik"
                 class="collapse {{ request()->is('manager/laporan_periodik*') || request()->is('') ? 'show' : '' }}"
@@ -511,8 +542,15 @@
                         href="/manager/laporan_periodik">
                         <i class="fas fa-fw fa-print"></i>
                         <span>Laporan Periodik</span>
+                        @php
+                            $laporan_count = DB::table('laporan_permintaan')
+                                ->where('status_laporan', 'belum divalidasi')
+                                ->count();
+                        @endphp
+                        @if ($laporan_count > 0)
+                            <span class="badge badge-danger badge-pill badge-counter">{{ $laporan_count }}</span>
+                        @endif
                     </a>
-
                 </div>
             </div>
         </li>

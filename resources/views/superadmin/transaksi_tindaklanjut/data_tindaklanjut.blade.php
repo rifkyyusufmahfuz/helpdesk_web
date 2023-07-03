@@ -43,7 +43,7 @@
                                             @method('DELETE')
                                             <input hidden name="hapus_tindaklanjut" id="hapus_tindaklanjut">
                                             <button type="button" class="btn btn-sm btn-danger"
-                                                onclick="confirmDelete('{{ $data->id_tindak_lanjut }}', 'Anda yakin ingin menghapus data tindak lanjut ini?', 'Menghapus data tindak lanjut akan menghapus data yang terkait pada tindak lanjut ini dan Admin harus menindaklanjuti ulang permintaan.')">
+                                                onclick="confirmDelete('{{ $data->id_tindak_lanjut }}', 'Hapus data tindak lanjut ini?', 'Menghapus data tindak lanjut akan menghapus data yang terkait pada tindak lanjut ini dan Admin harus menindaklanjuti ulang permintaan.')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>

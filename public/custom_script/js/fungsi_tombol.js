@@ -15,23 +15,6 @@ function confirmDelete(id, title, text) {
     });
 }
 
-// tombol aksi hapus data pegawai
-function confirm_delete_pegawai(id) {
-    Swal.fire({
-        title: 'Anda yakin ingin menghapus data pegawai ini?',
-        text: 'Menghapus data pegawai juga akan menghapus akun user dan data yang terkait pada akun tersebut!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Batal',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Submit form jika user menekan tombol "Ya, hapus"
-            document.querySelector('#form-delete-' + id).submit();
-        }
-    });
-}
-
 // tombol aksi aktivasi user
 function aktivasi_user(id) {
     Swal.fire({

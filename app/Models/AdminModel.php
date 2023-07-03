@@ -34,7 +34,7 @@ class AdminModel extends Model
                 'barang.*',
             )
             ->where('tipe_permintaan', 'software')
-            ->orderBy('permintaan.updated_at', 'asc')
+            ->orderBy('permintaan.status_permintaan', 'asc')
             ->get()
             ->toArray();
     }
@@ -315,7 +315,7 @@ class AdminModel extends Model
                 'barang.*',
             )
             ->where('tipe_permintaan', 'hardware')
-            ->orderBy('permintaan.updated_at', 'desc')
+            ->orderBy('status_permintaan', 'asc')
             ->get()
             ->toArray();
     }
@@ -549,7 +549,7 @@ class AdminModel extends Model
     public function get_laporan_permintaan()
     {
         return DB::table('laporan_permintaan')
-            ->orderByDesc('created_at')
+            ->orderByDesc('status_laporan')
             ->get();
     }
 }

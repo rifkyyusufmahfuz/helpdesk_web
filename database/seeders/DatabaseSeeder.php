@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             NotifikasiSeeder::class,
 
-            PermintaanSeeder::class,
-            BarangSeeder::class
+            // PermintaanSeeder::class,
+            // BarangSeeder::class
         ]);
     }
 }

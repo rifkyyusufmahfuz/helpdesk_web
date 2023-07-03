@@ -46,7 +46,7 @@
                                             @method('DELETE')
                                             <input hidden name="hapus_otorisasi" id="hapus_otorisasi">
                                             <button type="button" class="btn btn-sm btn-danger"
-                                                onclick="confirmDelete('{{ $data->id_otorisasi }}', 'Anda yakin ingin menghapus data otorisasi ini?', 'Menghapus data otorisasi akan menghapus data permintaan, tindak lanjut Admin/Executor, BAST Barang, dan data terkait lainnya.')">
+                                                onclick="confirmDelete('{{ $data->id_otorisasi }}', 'Hapus data otorisasi ini?', 'Menghapus data otorisasi akan menghapus data permintaan, tindak lanjut Admin/Executor, BAST Barang, dan data terkait lainnya.')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>

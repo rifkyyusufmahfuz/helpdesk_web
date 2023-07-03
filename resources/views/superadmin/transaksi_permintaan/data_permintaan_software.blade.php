@@ -101,7 +101,7 @@
                                             <input hidden name="hapus_permintaan" id="hapus_permintaan">
                                             <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
                                             <button type="button" class="btn btn-sm btn-danger"
-                                                onclick="confirmDelete('{{ $data->id_permintaan }}', 'Anda yakin ingin menghapus permintaan ini?', 'Menghapus data permintaan akan menghapus data yang terkait pada permintaan ini. Data barang tetap ada dengan status Dikembalikan.')">
+                                                onclick="confirmDelete('{{ $data->id_permintaan }}', 'Hapus permintaan ini?', 'Menghapus data permintaan akan menghapus data yang terkait pada permintaan ini. Data barang tetap ada dengan status Dikembalikan.')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>

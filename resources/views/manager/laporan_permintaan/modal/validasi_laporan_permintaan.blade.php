@@ -37,9 +37,14 @@
                                             <th>Tahun</th>
                                         @endif
                                         <th>Status Laporan</th>
+                                        <th>Dibuat oleh</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        // Mengubah string tanggal menjadi objek Carbon
+                                        $format_date = \Carbon\Carbon::parse($data->tanggal_awal);
+                                    @endphp
                                     <tr>
                                         <td>{{ ucwords($data->periode_laporan) }}</td>
                                         @if ($data->periode_laporan == 'harian')
@@ -48,11 +53,14 @@
                                             <td>{{ $data->tanggal_awal }}</td>
                                             <td>{{ $data->tanggal_akhir }}</td>
                                         @elseif ($data->periode_laporan == 'bulanan')
-                                            <td>{{ $data->bulan }}</td>
+                                            {{-- tampilkan hanya bulan saja --}}
+                                            <td>{{ $format_date->isoFormat('MMMM') }}</td>
                                         @elseif ($data->periode_laporan == 'tahunan')
-                                            <td>{{ $data->tahun }}</td>
+                                            {{-- tampilkan hanya tahun --}}
+                                            <td>{{ $format_date->isoFormat('Y') }}</td>
                                         @endif
                                         <td>{{ ucwords($data->status_laporan) }}</td>
+                                        <td>{{ $data->nama }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,8 +90,8 @@
                                 <input class="form-check-input konfirmasi-checkbox" type="checkbox"
                                     id="konfirmasi_{{ $data->id_laporan }}">
                                 <label class="form-check-label text-justify" for="konfirmasi_{{ $data->id_laporan }}">
-                                    Setujui permintaan <b>{{ $data->id_laporan }}</b> dan akan diteruskan ke Admin
-                                    untuk melanjutkan proses instalasi.
+                                    Laporan permintaan periodik dengan nomor laporan "<b>{{ $data->id_laporan }}</b>"
+                                    sudah dicek dan telah sesuai ketentuan. Laporan ini akan divalidasi.
                                 </label>
                             </div>
                         </div>
@@ -92,7 +100,7 @@
                             <button type="reset" class="btn btn-sm btn-secondary"
                                 data-bs-dismiss="modal">Batal</button>
                             <button disabled type="submit" class="btn btn-sm btn-primary btn-simpan"
-                                id="btn-simpan">Simpan</button>
+                                id="btn-simpan">Validasi</button>
                         </div>
                     </form>
                 </div>

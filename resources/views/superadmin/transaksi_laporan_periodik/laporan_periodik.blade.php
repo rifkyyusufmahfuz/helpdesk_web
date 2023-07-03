@@ -60,19 +60,28 @@
 
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
-                                        <button {{ $data->status_laporan == 'belum divalidasi' ? 'disabled' : '' }}
-                                            id="view_form_laporan_{{ $data->id_laporan }}"
-                                            class="btn btn-sm bg-primary text-white rounded ml-2"
+                                        <button id="view_form_laporan_{{ $data->id_laporan }}"
+                                            class="btn btn-sm bg-primary text-white rounded mr-1"
                                             title="Cetak Form Laporan Permintaan"
-                                            onclick="loadIframe('{{ $data->id_laporan }}')">
-                                            <i class="fa fa-print"></i>
+                                            onclick="loadIframe('{{ $data->id_laporan }}')"><i class="fa fa-print"></i>
                                         </button>
 
+
+                                        <form id="form-delete-{{ $data->id_laporan }}"
+                                            action="/superadmin/crud/{{ $data->id_laporan }}" method="POST"
+                                            style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input hidden name="hapus_laporan_periodik">
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="confirmDelete('{{ $data->id_laporan }}', 'Hapus laporan periodik ini?', 'Laporan permintaan periodik dengan nomor laporan {{ $data->id_laporan }} akan dihapus!')">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
 
                                     </div>
                                 </td>
                             </tr>
-
 
                             {{-- script untuk fungsi iframe diload hanya saat tombol print diklik --}}
                             <script>

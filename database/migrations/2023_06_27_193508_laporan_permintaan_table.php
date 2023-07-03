@@ -17,8 +17,6 @@ return new class extends Migration
             $table->enum('jenis_laporan', ['software', 'hardware']);
             $table->date('tanggal_awal')->nullable();
             $table->date('tanggal_akhir')->nullable();
-            $table->integer('bulan')->nullable();
-            $table->integer('tahun')->nullable();
             $table->enum('status_laporan', ['belum divalidasi', 'sudah divalidasi'])->nullable();
             $table->string('nip_admin', 5);
             $table->foreign('nip_admin')->references('nip')->on('pegawai')

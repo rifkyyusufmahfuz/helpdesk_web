@@ -48,7 +48,7 @@
                                                 @method('DELETE')
                                                 <input type="hidden" name="hapus_stasiun" id="hapus_stasiun">
                                                 <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="confirmDelete('{{ $data->id_stasiun }}', 'Anda yakin ingin menghapus data stasiun ini?')">
+                                                    onclick="confirmDelete('{{ $data->id_stasiun }}', 'Hapus data stasiun ini?','Data stasiun {{ $data->nama_stasiun }} akan dihapus!')">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </form>

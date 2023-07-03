@@ -65,7 +65,7 @@
                                                     @method('DELETE')
                                                     <input type="hidden" name="hapus_pegawai" id="hapus_pegawai">
                                                     <button type="button" class="btn btn-sm btn-danger"
-                                                        onclick="confirm_delete_pegawai('{{ $pegawai->nip }}')">
+                                                        onclick="confirmDelete('{{ $pegawai->nip }}', 'Hapus data pegawai ini?', 'Data pegawai {{ $pegawai->nama }} ({{ $pegawai->nip }}) termasuk akun user pegawai ini akan dihapus!')">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>

@@ -10,8 +10,7 @@
             </div>
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cetak_laporan_permintaan"><i
-                        class="fas fa-print"></i> Cetak
-                    Laporan</button>
+                        class="fas fa-print"></i> Laporan Periodik</button>
             </div>
         </div>
         <div class="card-body">
@@ -133,6 +132,6 @@
         @include('admin.software.modal.proses_software')
         {{-- @include('admin.software.modal.input_barang') --}}
         @include('admin.software.modal.detail_permintaan_software')
-        @include('admin.software.modal.cetak_laporan_permintaan_software')
+        @include('admin.laporan_permintaan.cetak_laporan_permintaan_software')
     @endif
 @endsection

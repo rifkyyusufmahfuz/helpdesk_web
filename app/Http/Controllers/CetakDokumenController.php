@@ -209,7 +209,7 @@ class CetakDokumenController extends Controller
             "Adaptor/Power Supply",
             "Processor",
             "Fan/Heatsink",
-            "Lainnya..."
+            "Lainnya"
         );
 
         //BARU
@@ -334,22 +334,27 @@ class CetakDokumenController extends Controller
                 'created_at' => now()
             ];
         } elseif ($request->jenis_filter == 'bulanan') {
+            $bulan = $request->bulan; // Nilai bulan dari input form (misalnya, "2023-06")
+            $bulanDenganTanggal = $bulan . '-01'; // Gabungkan bulan dan tanggal (misalnya, "2023-06-01")
+
             $data = [
                 'id_laporan' => $id_laporan_baru,
                 'jenis_laporan' => $request->jenis_laporan,
                 'periode_laporan' => $request->jenis_filter,
-                'bulan' =>  $request->bulan,
+                'tanggal_awal' =>  $bulanDenganTanggal,
                 'status_laporan' => 'belum divalidasi',
                 'nip_admin' => $nip,
                 'ttd_admin' => $filename_ttd_p1,
                 'created_at' => now()
             ];
         } elseif ($request->jenis_filter == 'tahunan') {
+            $tahun = $request->tahun . '-01-01'; // Gabungkan bulan dan tanggal (misalnya, "2023-01-01")
+
             $data = [
                 'id_laporan' => $id_laporan_baru,
                 'jenis_laporan' => $request->jenis_laporan,
                 'periode_laporan' => $request->jenis_filter,
-                'tahun' => $request->tahun,
+                'tanggal_awal' => $tahun,
                 'status_laporan' => 'belum divalidasi',
                 'nip_admin' => $nip,
                 'ttd_admin' => $filename_ttd_p1,
@@ -362,7 +367,7 @@ class CetakDokumenController extends Controller
         $filter = $request->jenis_filter;
 
         $notifikasi = [
-            'pesan' => 'Admin ' . $nama_admin . ' telah membuat laporan permintaan ' . $filter . ' dengan Nomor Laporan : ' . $id_laporan_baru . ' dan menunggu divalidasi oleh Manager.',
+            'pesan' => 'Admin ' . $nama_admin . ' telah membuat laporan permintaan ' . $filter . ' dengan Nomor Laporan: "' . $id_laporan_baru . '" dan menunggu divalidasi oleh Manager.',
             'tautan' => '/manager/laporan_periodik',
             'created_at' => now(),
             'role_id' => 3, //role manager
@@ -419,30 +424,30 @@ class CetakDokumenController extends Controller
         } elseif ($laporan->periode_laporan === 'bulanan') {
             // Hitung total permintaan dan jumlah software/hardware bulanan
             $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
-                ->whereMonth('tanggal_permintaan', $laporan->bulan)->count();
+                ->whereMonth('tanggal_permintaan', $laporan->tanggal_awal)->count();
             $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
-                ->whereMonth('tanggal_permintaan', $laporan->bulan)->count();
+                ->whereMonth('tanggal_permintaan', $laporan->tanggal_awal)->count();
 
             $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
-                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->bulan);
+                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->bultanggal_awalan);
             })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
 
             $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
-                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->bulan);
+                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->tanggal_awal);
             })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
         } elseif ($laporan->periode_laporan === 'tahunan') {
             // Hitung total permintaan dan jumlah software/hardware tahunan
             $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
-                ->whereYear('tanggal_permintaan', $laporan->tahun)->count();
+                ->whereYear('tanggal_permintaan', $laporan->tanggal_awal)->count();
             $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
-                ->whereYear('tanggal_permintaan', $laporan->tahun)->count();
+                ->whereYear('tanggal_permintaan', $laporan->tanggal_awal)->count();
 
             $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
-                $query->whereYear('permintaan.tanggal_permintaan', $laporan->tahun);
+                $query->whereYear('permintaan.tanggal_permintaan', $laporan->tanggal_awal);
             })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
 
             $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
-                $query->whereYear('permintaan.tanggal_permintaan', $laporan->tahun);
+                $query->whereYear('permintaan.tanggal_permintaan', $laporan->tanggal_awal);
             })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
         }
 
@@ -451,8 +456,14 @@ class CetakDokumenController extends Controller
         $softwareTerbanyakData = $softwareCounts->where('total', $softwareTerbanyak)->first();
 
         $namaSoftwareTerbanyak = $softwareTerbanyakData ? $softwareTerbanyakData->nama_software : null;
-        $totalPermintaanTerbanyak = $softwareTerbanyakData ? $softwareTerbanyakData->total : 0;
+        $totalPermintaanSoftwareTerbanyak = $softwareTerbanyakData ? $softwareTerbanyakData->total : 0;
 
+        // Cari hardware dengan total pengecekan terbanyak
+        $hardwareTerbanyak = $hardwareCounts->max('total');
+        $hardwareTerbanyakData = $hardwareCounts->where('total', $hardwareTerbanyak)->first();
+
+        $namaHardwareTerbanyak = $hardwareTerbanyakData ? $hardwareTerbanyakData->komponen : null;
+        $totalPermintaanHardwareTerbanyak = $hardwareTerbanyakData ? $hardwareTerbanyakData->total : 0;
 
 
         // Pass data ke view cetak_laporan_permintaan
@@ -464,7 +475,10 @@ class CetakDokumenController extends Controller
             'hardwareCounts',
             'data_laporan',
             'namaSoftwareTerbanyak',
-            'totalPermintaanTerbanyak'
+            'totalPermintaanSoftwareTerbanyak',
+            'namaHardwareTerbanyak',
+            'totalPermintaanHardwareTerbanyak'
+
         ));
     }
 }

@@ -229,7 +229,13 @@ class ManagerModel extends Model
     public function get_laporan_permintaan()
     {
         return DB::table('laporan_permintaan')
-            ->orderByDesc('created_at')
+            ->join('pegawai', 'laporan_permintaan.nip_admin', '=', 'pegawai.nip')
+            ->select(
+                'laporan_permintaan.*',
+                'laporan_permintaan.created_at AS laporan_created',
+                'pegawai.*'
+            )
+            ->orderBy('status_laporan', 'asc')
             ->get();
     }
 

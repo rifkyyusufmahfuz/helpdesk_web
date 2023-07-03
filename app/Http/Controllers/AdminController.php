@@ -153,7 +153,8 @@ class AdminController extends Controller
             'admin.hardware.permintaan_hardware',
             [
                 'permintaan' => $permintaan,
-                'list_hardware' => $list_hardware
+                'list_hardware' => $list_hardware,
+                'now' => \Carbon\Carbon::now()->format('Y-m-d')
             ]
         );
     }
@@ -170,7 +171,7 @@ class AdminController extends Controller
             "Adaptor/Power Supply",
             "Processor",
             "Fan/Heatsink",
-            "Lainnya..."
+            "Lainnya"
         );
 
         $permintaan = $this->modeladmin->get_permintaan_hardware_by_id($id_permintaan);

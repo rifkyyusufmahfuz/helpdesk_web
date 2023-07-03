@@ -383,4 +383,9 @@ class SuperadminModel extends Model
     {
         return DB::table('bast')->where('id_permintaan', $id)->delete() ? true : false;
     }
+
+    public function delete_laporan_periodik_by_id_laporan($id)
+    {
+        return DB::table('laporan_permintaan')->where('id_laporan', $id)->delete() ? true : false;
+    }
 }

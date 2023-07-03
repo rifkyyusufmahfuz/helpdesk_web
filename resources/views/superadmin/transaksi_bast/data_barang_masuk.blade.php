@@ -72,7 +72,7 @@
                                             @method('DELETE')
                                             <input hidden name="hapus_bast_barang_masuk" id="hapus_bast_barang_masuk">
                                             <button type="button" class="btn btn-sm btn-danger"
-                                                onclick="confirmDelete('{{ $data->id_permintaan }}', 'Anda yakin ingin menghapus data BAST ini?', 'Menghapus data BAST akan membatalkan seluruh BAST pada permintaan terkait. Untuk permintaan pengecekan hardware, harus mengajukan validasi ulang ke Manager lalu membuat BAST baru.')">
+                                                onclick="confirmDelete('{{ $data->id_permintaan }}', 'Hapus data BAST ini?', 'Menghapus data BAST akan membatalkan seluruh BAST pada permintaan terkait. Untuk permintaan pengecekan hardware, harus mengajukan validasi ulang ke Manager lalu membuat BAST baru.')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>

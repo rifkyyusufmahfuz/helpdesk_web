@@ -8,6 +8,10 @@
                 <h4 class="card-title mx-2">Permintaan Pengecekan Hardware</h4>
                 <p class="small text-gray-800">Daftar permintaan pengecekan hardware</p>
             </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cetak_laporan_permintaan"><i
+                        class="fas fa-print"></i> Laporan Periodik</button>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -17,9 +21,9 @@
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            <th>Keluhan</th>
+                            {{-- <th>Keluhan</th> --}}
                             {{-- <th>Nama Pegawai</th> --}}
-                            <th>Status Validasi</th>
+                            <th class="text-center">Status Validasi</th>
                             <th class="text-center">Status Permintaan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -32,10 +36,10 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                <td>{{ $data->keluhan_kebutuhan }}</td>
+                                {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
                                 {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
                                 {{-- <td>{{ $data->nama }}</td> --}}
-                                <td>
+                                <td class="text-center">
                                     <span
                                         class="badge badge-{{ $data->status_approval == 'pending'
                                             ? 'danger'
@@ -180,5 +184,6 @@
     @if (isset($data))
         {{-- @include('admin.software.modal.proses_software') --}}
         @include('admin.hardware.modal.detail_permintaan_hardware')
+        @include('admin.laporan_permintaan.cetak_laporan_permintaan_hardware')
     @endif
 @endsection
