@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ajukan_ke_manager_label">Permintaan Instalasi Software</h5>
+                <h5 class="modal-title" id="ajukan_ke_manager_label">Ajukan Persetujuan Instalasi Software</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -75,7 +75,7 @@
 
                     <div class="modal-footer p-0">
                         <button type="reset" class="btn btn-sm btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-sm btn-primary" id="btn-simpan">Simpan</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="btn-simpan">Ajukan</button>
                     </div>
                 </form>
             </div>

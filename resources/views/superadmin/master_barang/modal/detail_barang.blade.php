@@ -10,7 +10,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5>Update spesifikasi PC / Laptop</h5>
+                    <h5>Detail Spesifikasi Barang</h5>
                     <div class="form-group">
                         <label>No. Aset / Inventaris / Serial Number</label>
                         <span class="text-danger">*</span>

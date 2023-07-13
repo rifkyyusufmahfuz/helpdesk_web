@@ -235,7 +235,7 @@ class SuperadminModel extends Model
     public function get_data_barang()
     {
         return DB::table('barang')
-            ->orderBy('created_at', 'ASC')
+            ->orderByDesc('updated_at')
             ->get();
     }
 

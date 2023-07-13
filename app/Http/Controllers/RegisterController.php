@@ -44,15 +44,33 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         // validate form input
-        $request->validate([
-            'nip' => 'required|unique:pegawai',
-            'nama' => 'required',
-            'bagian' => 'required',
-            'jabatan' => 'required',
-            'lokasi' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required|min:3'
-        ]);
+        $request->validate(
+            [
+                'nip' => 'required|unique:pegawai',
+                'nama' => 'required',
+                'bagian' => 'required',
+                'jabatan' => 'required',
+                'lokasi' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required|min:6',
+                'confirm_password' => 'required|same:password'
+            ],
+            [
+                'nip.required' => 'NIP wajib diisi!',
+                'nip.unique' => 'NIP sudah terdaftar!',
+                'nama.required' => 'Nama wajib diisi!',
+                'bagian.required' => 'Bagian wajib diisi!',
+                'jabatan.required' => 'Jabatan wajib diisi!',
+                'lokasi.required' => 'Lokasi wajib diisi!',
+
+                'email.required' => 'Email wajib diisi!',
+                'email.unique' => 'Email sudah terdaftar!',
+                'password.required' => 'Password tidak boleh kosong!',
+                'password.min' => 'Password minimal 6 karakter!',
+                'confirm_password.required' => 'Konfirmasi Password tidak boleh kosong!',
+                'confirm_password.same' => 'Password tidak cocok!',
+            ]
+        );
 
         // ubah value nama stasiun menjadi id_stasiun
         $nama_stasiun = $request->input('lokasi');

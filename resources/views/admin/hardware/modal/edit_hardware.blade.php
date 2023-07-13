@@ -5,7 +5,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel{{ $data2->id_hardware }}">Edit Software</h5>
+                    <h5 class="modal-title" id="editModalLabel{{ $data2->id_hardware }}">Edit Hardware</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -19,13 +19,13 @@
 
                         <!-- Tambahkan input fields untuk mengedit software -->
                         <div class="form-group">
-                            <label for="komponen">Nama Software</label>
+                            <label for="komponen">Komponen</label>
                             <input type="text" class="form-control" id="komponen" name="komponen"
                                 value="{{ $data2->komponen }}" readonly>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="status_hardware">Status Hardware</label> <br>
+                            <label for="status_hardware">Status Komponen</label> <br>
                             <div class="form-check-inline">
                                 <input class="form-check-input @error('status_hardware') is-invalid @enderror"
                                     type="radio" name="status_hardware" id="OK" value="OK"
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="problem">*Catatan</label>
+                            <label for="problem">*Problem</label>
                             <textarea class="form-control @error('problem') is-invalid @enderror" name="problem" id="problem" cols="20"
                                 rows="5">{{ $data2->problem }}</textarea>
                             <span class="small">*Kosongkan apabila tidak ada problem</span>

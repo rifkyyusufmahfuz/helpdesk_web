@@ -173,3 +173,24 @@ function confirm_delete_hardware(id) {
         }
     });
 }
+
+
+// Konfirmasi Logout
+document.getElementById('logout-link').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    Swal.fire({
+        title: 'Logout',
+        text: 'Yakin ingin Logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = document.getElementById('logout-link').getAttribute('href');
+        }
+    });
+});

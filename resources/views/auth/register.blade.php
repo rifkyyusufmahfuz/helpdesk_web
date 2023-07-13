@@ -28,11 +28,17 @@
                                         <input onkeypress="return event.charCode >= 48 && event.charCode <=57"
                                             name="nip" id="nip" type="text" class="form-control"
                                             maxlength="5" />
+                                        @error('nip')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-sm-7">
                                         <label for="nama">Nama</label>
                                         <input name="nama" id="nama" type="text" class="form-control"
                                             onkeypress="return event.charCode < 48 || event.charCode > 57" />
+                                        @error('nama')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -40,11 +46,17 @@
                                     <div class="form-group col-sm-5">
                                         <label for="bagian">Unit/Bagian</label>
                                         <input name="bagian" id="bagian" type="text" class="form-control" />
+                                        @error('bagian')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group col-sm-7">
                                         <label for="jabatan">Jabatan</label>
                                         <input name="jabatan" id="jabatan" type="text" class="form-control" />
+                                        @error('jabatan')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -69,18 +81,27 @@
                                 <span>Data Akun</span>
                                 <hr>
                                 <div class="form-group">
-                                    <label for="username">Email</label>
+                                    <label for="email">Email</label>
                                     <input type="email" name="email" id="email" class="form-control" />
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input name="password" id="password" type="password" class="form-control" />
+                                    @error('password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="konfirmasi_password">Konfirmasi Password</label>
-                                    <input name="konfirmasi_password" id="konfirmasi_password" type="password"
+                                    <label for="confirm_password">Konfirmasi Password</label>
+                                    <input name="confirm_password" id="confirm_password" type="password"
                                         class="form-control" />
+                                    @error('confirm_password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

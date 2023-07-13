@@ -138,7 +138,7 @@ class AdminController extends Controller
     public function tindak_lanjut_software(Request $request)
     {
         if ($this->modeladmin->tindak_lanjut_permintaan_software($request)) {
-            return redirect('/admin/permintaan_software')->with('toast_success', 'Permintaan berhasil diajukan ke manager!');
+            return redirect('/admin/permintaan_software')->with('toast_success', 'Permintaan berhasil diajukan ke Manajer!');
         } else {
             return redirect('/admin/permintaan_software')->with('toast_error', 'Permintaan gagal ditambahkan!');
         }
@@ -216,7 +216,7 @@ class AdminController extends Controller
     public function tindak_lanjut_hardware(Request $request)
     {
         if ($this->modeladmin->tindak_lanjut_permintaan_hardware($request)) {
-            return redirect('/admin/permintaan_hardware')->with('toast_success', 'Permintaan berhasil diajukan ke manager!');
+            return redirect('/admin/permintaan_hardware')->with('toast_success', 'Rekomendasi berhasil diajukan ke Manajer!');
         } else {
             return redirect('/admin/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan!');
         }

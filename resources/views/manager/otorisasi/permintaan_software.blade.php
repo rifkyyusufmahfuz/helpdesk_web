@@ -115,14 +115,14 @@
                                         </button>
 
                                         <button class="btn btn-sm btn-primary rounded text-white mx-1"
-                                            data-bs-toggle="modal"
+                                            data-bs-toggle="modal" title="Revisi Permintaan"
                                             data-bs-target="#modal_revisi_permintaan_{{ $data->id_permintaan }}"><i
                                                 class="fa fa-undo"></i>
                                         </button>
 
                                         <button class="btn btn-sm btn-danger rounded mr-1" data-bs-toggle="modal"
                                             data-bs-target="#tolak_permintaan_{{ $data->id_permintaan }}"
-                                            title="Setujui Permintaan">
+                                            title="Tolak Permintaan">
                                             <i class="fas fa-ban"></i>
                                         </button>
 

@@ -62,7 +62,7 @@
                                         <button {{ $data->status_laporan === 'sudah divalidasi' ? 'disabled' : '' }}
                                             class="btn btn-sm btn-success rounded" data-bs-toggle="modal"
                                             data-bs-target="#setujui_permintaan_{{ $data->id_laporan }}"
-                                            title="Setujui Permintaan">
+                                            title="Validasi Laporan">
                                             <i class="fas fa-check"></i>
                                         </button>
 

@@ -99,7 +99,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <input type="hidden" name="hapus_user" id="hapus_user">
-                                                    <button type="button" class="btn-sm btn-danger"
+                                                    <button type="button" class="btn-sm btn-danger" title="Hapus data"
                                                         onclick="confirmDelete('{{ $user->id }}', 'Hapus data user ini?', 'Data user {{ $user->nama }} ({{ $user->email }}) akan dihapus!')">
                                                         <i class="fa fa-trash"></i>
                                                     </button>

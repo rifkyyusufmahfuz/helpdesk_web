@@ -354,6 +354,7 @@ class SuperadminController extends Controller
                 'status' => true,
                 'nip'  => $request->nip_pegawai,
                 'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ];
 
             // melakukan proses penyimpanan data user
@@ -386,8 +387,8 @@ class SuperadminController extends Controller
             $input_stasiun = $this->modelsuperadmin->input_stasiun($data_stasiun);
 
             return $input_stasiun
-                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Stasiun berhasil diinput!')
-                : redirect('/superadmin/master_stasiun')->with('toast_error', 'Input stasiun gagal, silakan coba lagi!');
+                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Data stasiun berhasil diinput!')
+                : redirect('/superadmin/master_stasiun')->with('toast_error', 'Input data stasiun gagal, silakan coba lagi!');
         } elseif ($request->input('jenis_input') == 'data_barang') {
             $request->validate(
                 [
@@ -456,6 +457,7 @@ class SuperadminController extends Controller
                 'jabatan' => $request->input('jabatan_pegawai'),
                 'id_stasiun' => $id_stasiun,
                 'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ];
             // melakukan proses penyimpanan data pegawai
             if ($this->modelsuperadmin->insert_datapegawai($data)) {
@@ -692,8 +694,8 @@ class SuperadminController extends Controller
             $update_stasiun = $this->modelsuperadmin->update_stasiun($data_stasiun, $id);
 
             return $update_stasiun
-                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Stasiun berhasil diupdate!')
-                : redirect('/superadmin/master_stasiun')->with('toast_error', 'Update stasiun gagal, silakan coba lagi!');
+                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Data stasiun berhasil diupdate!')
+                : redirect('/superadmin/master_stasiun')->with('toast_error', 'Update data stasiun gagal, silakan coba lagi!');
         }
 
         // untuk update data barang
@@ -813,8 +815,8 @@ class SuperadminController extends Controller
             $deleted = $this->modelsuperadmin->hapus_stasiun($id);
 
             return $deleted
-                ? back()->with('toast_success', 'Stasiun berhasil dihapus!')
-                : back()->with('toast_error', 'Stasiun gagal dihapus!');
+                ? back()->with('toast_success', 'Data stasiun berhasil dihapus!')
+                : back()->with('toast_error', 'Data stasiun gagal dihapus!');
 
             // end of condition
         } elseif ($request->has('hapus_barang')) {
@@ -829,6 +831,11 @@ class SuperadminController extends Controller
             $permintaan = DB::table('permintaan')->where('id_permintaan', $id)->first();
 
             if ($permintaan) {
+                if ($permintaan->tipe_permintaan == 'software') {
+                    $tipe_permintaan = 'instalasi software';
+                } elseif ($permintaan->tipe_permintaan == 'hardware') {
+                    $tipe_permintaan = 'pengecekan hardware';
+                }
 
                 // Hapus file tanda tangan dari folder public
                 // Dapatkan nama file tanda tangan dari kolom ttd_requestor
@@ -860,12 +867,12 @@ class SuperadminController extends Controller
 
                     $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
 
-                    return back()->with('toast_success', 'Tindak lanjut berhasil dihapus!');
+                    return back()->with('toast_success', 'Permintaan ' . $tipe_permintaan . ' dengan nomor "' . $id . '" berhasil dihapus!');
                 } else {
-                    return back()->with('toast_error', 'Tindak lanjut gagal dihapus!');
+                    return back()->with('toast_error', 'Permintaan gagal dihapus!');
                 }
             } else {
-                return back()->with('toast_error', 'Data tindak lanjut tidak ditemukan!');
+                return back()->with('toast_error', 'Data Permintaan tidak ditemukan!');
             }
 
             // end of condition

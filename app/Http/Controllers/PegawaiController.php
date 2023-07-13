@@ -87,7 +87,6 @@ class PegawaiController extends Controller
         }
     }
 
-
     public function permintaan_hardware()
     {
         $id = auth()->user()->id;

@@ -74,7 +74,7 @@
                     <button class="btn btn-md btn-info mb-3" data-toggle="modal"
                         data-target="#ajukan_ke_manager_{{ $data->id_permintaan }}"
                         {{ !$isSoftwareFilled ? 'disabled' : '' }}>
-                        <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager
+                        <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manajer
                     </button>
                 @endforeach
 

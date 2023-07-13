@@ -57,7 +57,7 @@
                     <button class="btn btn-md btn-info mb-3" data-bs-toggle="modal"
                         data-bs-target="#ajukan_ke_manager_{{ $data->id_permintaan }}"
                         {{ !$isHardwareFilled ? 'disabled' : '' }}>
-                        <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager
+                        <i class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manajer
                     </button>
                 @endforeach
 
@@ -68,10 +68,10 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Software</th>
-                            <th>Versi</th>
-                            <th>Catatan</th>
-                            <th>Aksi</th>
+                            <th>Komponen</th>
+                            <th>Status Komponen</th>
+                            <th>Problem</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}

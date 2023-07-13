@@ -72,11 +72,11 @@
                     Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <a id="logout-link" class="dropdown-item" href="{{ route('logout') }}">
+                <a id="logout-link" class="dropdown-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); confirmLogout();">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>
-
             </div>
         </li>
 

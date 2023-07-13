@@ -54,7 +54,7 @@
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <button class="btn btn-sm btn-warning text-white mr-1"
-                                                    data-bs-toggle="modal"
+                                                    data-bs-toggle="modal" title="Update data pegawai"
                                                     data-bs-target="#modal_update_pegawai{{ $pegawai->nip }}"><i
                                                         class="fa fa-edit"></i>
                                                 </button>
@@ -64,7 +64,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <input type="hidden" name="hapus_pegawai" id="hapus_pegawai">
-                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                    <button type="button" class="btn btn-sm btn-danger" title="Hapus data pegawai"
                                                         onclick="confirmDelete('{{ $pegawai->nip }}', 'Hapus data pegawai ini?', 'Data pegawai {{ $pegawai->nama }} ({{ $pegawai->nip }}) termasuk akun user pegawai ini akan dihapus!')">
                                                         <i class="fa fa-trash"></i>
                                                     </button>

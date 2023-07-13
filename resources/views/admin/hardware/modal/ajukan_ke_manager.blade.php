@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ajukan_ke_manager_label">Permintaan Instalasi Software</h5>
+                <h5 class="modal-title" id="ajukan_ke_manager_label">Ajukan Rekomendasi Pengecekan Hardware</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,7 +14,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div id="detail_admin">
-                        <h6>Pengajuan Permintaan</h6>
+                        <h6>Direkomendasikan oleh</h6>
                         <input hidden id="id_permintaan" name="id_permintaan" value="{{ $data->id_permintaan }}">
                         <input hidden id="id_otorisasi" name="id_otorisasi" value="{{ $data->id_otorisasi }}">
 
@@ -68,7 +68,7 @@
                         <hr>
 
                         <div class="form-group text-center">
-                            <label for="">Signature</label>
+                            <label for="">Tanda Tangan</label>
                             <div>
                                 <div id="note">Silakan tanda tangan di area kolom ini</div>
                                 <canvas onmouseover="my_function();" id="the_canvas" class="form-ttd isi-ttd"
@@ -84,7 +84,7 @@
 
                     <div class="modal-footer p-0">
                         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-sm btn-primary" id="btn-simpan">Simpan</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="btn-simpan">Ajukan</button>
                     </div>
                 </form>
             </div>
