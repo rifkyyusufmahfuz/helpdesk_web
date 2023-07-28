@@ -812,7 +812,7 @@ class SuperadminController extends Controller
             }
 
             // Jika tidak ada pegawai yang menggunakan stasiun, lakukan penghapusan
-            $deleted = $this->modelsuperadmin->hapus_stasiun($id);
+            $deleted = $this->modelsuperadmin->delete_stasiun($id);
 
             return $deleted
                 ? back()->with('toast_success', 'Data stasiun berhasil dihapus!')

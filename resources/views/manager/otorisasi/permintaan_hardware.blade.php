@@ -105,7 +105,7 @@
 
                                         <button class="btn btn-sm btn-success rounded mr-1" data-bs-toggle="modal"
                                             data-bs-target="#validasi_rekomendasi_{{ $data->id_permintaan }}"
-                                            title="Setujui Rekomendasi">
+                                            title="Validasi Rekomendasi">
                                             <i class="fas fa-check"></i>
                                         </button>
 

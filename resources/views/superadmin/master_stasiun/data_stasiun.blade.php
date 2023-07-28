@@ -37,7 +37,7 @@
                                         <td>{{ $data->id_stasiun }}</td>
                                         <td>{{ $data->nama_stasiun }}</td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-warning text-white" data-bs-toggle="modal"
+                                            <button title="Update Stasiun" class="btn btn-sm btn-warning text-white" data-bs-toggle="modal"
                                                 data-bs-target="#modal_update_stasiun{{ $data->id_stasiun }}"><i
                                                     class="fa fa-edit"></i>
                                             </button>

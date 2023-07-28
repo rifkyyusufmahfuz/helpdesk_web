@@ -57,7 +57,7 @@
                                     <div class="btn-group" role="group">
                                         <button id="view_bast_barang_masuk_{{ $data->id_permintaan }}"
                                             class="btn btn-sm bg-primary text-white rounded ml-2"
-                                            title="Cetak Form Permintaan Instalasi Software"
+                                            title="Cetak Form BAST"
                                             onclick="loadIframe('{{ $data->id_permintaan }}')">
                                             <i class="fa fa-print"></i>
                                         </button>

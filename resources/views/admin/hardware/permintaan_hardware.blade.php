@@ -154,7 +154,7 @@
                                             method="GET" style="display: inline-block;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
-                                                title="Pengajuan Software"
+                                                title="Tindak Lanjut Pengecekan"
                                                 {{ $data->status_permintaan == '4' && $data->status_approval == 'pending' ? '' : 'disabled' }}>
                                                 <i class="fas fa-tools"></i>
                                             </button>

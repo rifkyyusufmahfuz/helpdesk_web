@@ -54,13 +54,13 @@
                                             <div class="btn-group">
                                                 {{-- tombol edit --}}
                                                 <button type="button" class="btn-sm btn-warning text-white"
-                                                    data-bs-toggle="modal" title="Edit data user"
+                                                    data-bs-toggle="modal" title="Update data user"
                                                     data-bs-target="#modalEditUser{{ $user->id }}"><i
                                                         class="fa fa-edit"></i>
                                                 </button>
                                                 {{-- tombol edit password --}}
                                                 <button type="button" class="btn-sm btn-warning text-white"
-                                                    data-bs-toggle="modal" title="Ubah password"
+                                                    data-bs-toggle="modal" title="Update password"
                                                     data-bs-target="#modalEditPassword{{ $user->id }}">
                                                     <i class="fa fa-key"></i>
                                                 </button>

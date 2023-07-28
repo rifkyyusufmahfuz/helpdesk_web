@@ -41,7 +41,6 @@ Route::get('/registrasi', [RegisterController::class, 'index']);
 Route::resource('/registrasi/registrasi_akun', RegisterController::class);
 
 
-
 // Role
 // 1 = superadmin
 // 2 = admin
