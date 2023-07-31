@@ -56,7 +56,7 @@
         <div class="card-body">
             <button type="button" class="btn btn-primary mb-3 btn-sm float-left" data-bs-toggle="modal"
                 data-bs-target="#permintaan_hardware">
-                <i class="fa fa-user-plus"></i> Ajukan Permintaan
+                <i class="fa fa-plus"></i> Ajukan Permintaan
             </button>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

@@ -238,7 +238,7 @@ class PegawaiModel extends Model
         $nama = ucwords(auth()->user()->pegawai->nama);
         $simpan_notifikasi = DB::table('notifikasi')->insert([
             'role_id' => 2,
-            'pesan' => 'Permintaan instalasi software baru dari requestor ' . $nama,
+            'pesan' => 'Pegawai ' . $nama . ' baru saja mengajukan permintaan instalasi software dengan ID Permintaan "' . $newIdPermintaan . '"',
             'tautan' => '/admin/permintaan_software',
             'created_at' => now()
         ]);
@@ -434,7 +434,7 @@ class PegawaiModel extends Model
         $nama = ucwords(auth()->user()->pegawai->nama);
         $simpan_notifikasi = DB::table('notifikasi')->insert([
             'role_id' => 2,
-            'pesan' => 'Requestor ' . $nama . ' baru saja mengajukan permintaan pengecekan hardware dengan ID Permintaan "' . $newIdPermintaan . '"',
+            'pesan' => 'Pegawai ' . $nama . ' baru saja mengajukan permintaan pengecekan hardware dengan ID Permintaan "' . $newIdPermintaan . '"',
             'tautan' => '/admin/permintaan_hardware',
             'created_at' => now()
         ]);

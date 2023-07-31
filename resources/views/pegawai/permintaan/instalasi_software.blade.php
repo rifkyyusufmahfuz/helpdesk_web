@@ -56,10 +56,10 @@
         <div class="card-body">
             <button type="button" class="btn btn-primary mb-3 btn-sm float-left" data-toggle="modal"
                 data-target="#modal_instalasi_software">
-                <i class="fa fa-user-plus"></i> Ajukan Permintaan
+                <i class="fa fa-plus"></i> Ajukan Permintaan
             </button>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>ID Permintaan</th>
