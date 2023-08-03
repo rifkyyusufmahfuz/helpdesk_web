@@ -20,8 +20,8 @@
                         <input hidden id="id_otorisasi" name="id_otorisasi" value="{{ $data->id_otorisasi }}">
                         <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
 
-                        <h5>Setujui Permintaan</h5>
-                        <span>Permintaan instalasi software berikut ini akan disetujui:</span><br>
+                        <h5>Tolak Permintaan</h5>
+                        <span>Permintaan instalasi software berikut ini akan ditolak:</span><br>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

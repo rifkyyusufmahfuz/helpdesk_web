@@ -16,31 +16,17 @@
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Status Permintaan</h6>
-                        {{-- <div class="dropdown no-arrow">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-header">Dropdown Header:</div>
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div> --}}
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-pie">
-                            @if (!empty($statusPermintaanData))
+                            @if (count($statusPermintaanData) > 0)
                                 <canvas id="status-permintaan-chart"></canvas>
                             @else
                                 <p class="text-center">Belum ada permintaan</p>
                             @endif
-
                         </div>
+
                         <div class="mt-2 text-center small">
                             <span class="mr-2 small">
                                 <i class="fas fa-circle text-danger"></i> Pending
@@ -74,31 +60,17 @@
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Total Permintaan</h6>
-                        {{-- <div class="dropdown no-arrow">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-header">Dropdown Header:</div>
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div> --}}
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-pie pt-2">
-                            @if (!empty($permintaanData))
+                            @if (count($permintaanData) > 0)
                                 <canvas id="permintaan-chart"></canvas>
                             @else
                                 <p class="text-center">Belum ada permintaan</p>
                             @endif
-
                         </div>
+
                         <div class=" mt-2 text-center small">
                             <span class="mr-2">
                                 <i class="fas fa-circle text-success"></i> Hardware
@@ -106,9 +78,6 @@
                             <span class="mr-2">
                                 <i class="fas fa-circle text-primary"></i> Software
                             </span>
-                            {{-- <span class="mr-2">
-                                <i class="fas fa-circle text-info"></i> Referral
-                            </span> --}}
                         </div>
                     </div>
                 </div>
@@ -162,17 +131,22 @@
 
         {{-- untuk permintaan status --}}
         <script>
-            var statusPermintaanData = {!! $statusPermintaanData !!};
+            var sortedChartData = {!! json_encode($sortedChartData) !!};
 
-            var statusPermintaanLabels = ['Pending', 'Ditinjau', 'Menunggu unit', 'Diproses', 'Proses selesai',
-                'Permintaan selesai', 'Ditolak'
+            var statusPermintaanLabels = ['Pending', 'Ditinjau', 'Menunggu Unit', 'Diproses', 'Unit Siap Diambil',
+                'Permintaan Selesai', 'Ditolak'
             ];
+
+            var statusPermintaanColors = ['#e74a3b', '#f6c23e', '#36b9cc', '#4e73df', '#858796', '#1cc88a',
+                '#5a5c69'
+            ];
+
             var jumlahPermintaanHardware = [];
 
-            for (var i = 0; i < statusPermintaanData.length; i++) {
-                // statusPermintaanLabels.push(statusPermintaanData[i].status_permintaan);
-                jumlahPermintaanHardware.push(statusPermintaanData[i].jumlah_permintaan);
-            }
+            // Pemetaan data dari sortedChartData ke dalam jumlahPermintaanHardware
+            statusPermintaanLabels.forEach(function(label) {
+                jumlahPermintaanHardware.push(sortedChartData[label] || 0);
+            });
 
             var statusPermintaanChartCanvas = document.getElementById('status-permintaan-chart').getContext('2d');
             var statusPermintaanChart = new Chart(statusPermintaanChartCanvas, {
@@ -181,9 +155,7 @@
                     labels: statusPermintaanLabels,
                     datasets: [{
                         data: jumlahPermintaanHardware,
-                        backgroundColor: ['#e74a3b', '#f6c23e', '#36b9cc', '#4e73df', '#858796', '#1cc88a',
-                            '#5a5c69'
-                        ] // Sesuaikan warna sesuai dengan jumlah status_permintaan yang ada
+                        backgroundColor: statusPermintaanColors
                     }]
                 },
                 options: {
@@ -205,8 +177,6 @@
                 }
             });
         </script>
-
-
 
 
         <script>

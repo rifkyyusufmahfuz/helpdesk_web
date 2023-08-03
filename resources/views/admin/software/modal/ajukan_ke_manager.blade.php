@@ -66,11 +66,6 @@
                                     data-action="clear">Clear</button>
                             </div>
                         </div>
-
-                        <div class="d-flex justify-content-end my-2" id="tombol_detail_pegawai">
-                            <button type="button" class="btn btn-sm btn-danger mr-1" id="tombol_kembali_2"><i
-                                    class="fas fa-arrow-left"></i> Kembali</button>
-                        </div>
                     </div>
 
                     <div class="modal-footer p-0">

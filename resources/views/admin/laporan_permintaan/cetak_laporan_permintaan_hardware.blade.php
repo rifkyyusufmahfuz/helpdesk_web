@@ -71,7 +71,7 @@
                         <hr>
                         <!-- Signature Pad -->
                         <div class="form-group text-center">
-                            <label for="">Tanda tangan Penerima</label>
+                            <label for="">Tanda tangan Admin</label>
                             <div>
                                 <div id="note2">Silakan tanda tangan di area kolom ini</div>
                                 <canvas onmouseover="my_function2()" class="form-ttd" id="the_canvas2" class="isi-ttd"

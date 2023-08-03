@@ -42,6 +42,38 @@ class PegawaiController extends Controller
             ->groupBy('status_permintaan')
             ->get();
 
+        // Mapping status_permintaan ke label sesuai spesifikasi
+        $statusMapping = [
+            1 => 'Pending',
+            2 => 'Ditinjau',
+            3 => 'Menunggu Unit',
+            4 => 'Diproses',
+            5 => 'Unit Siap Diambil',
+            6 => 'Permintaan Selesai',
+            0 => 'Ditolak'
+        ];
+        $statusPermintaanLabels = [
+            'Pending',
+            'Ditinjau',
+            'Menunggu Unit',
+            'Diproses',
+            'Unit Siap Diambil',
+            'Permintaan Selesai',
+            'Ditolak'
+        ];
+
+        // Membuat array untuk menyimpan data yang akan digunakan di view
+        $chartData = [];
+        foreach ($statusPermintaanData as $data) {
+            $status = $statusMapping[$data->status_permintaan] ?? 'Tidak Diketahui';
+            $chartData[$status] = $data->jumlah_permintaan;
+        }
+
+        // Mengurutkan data sesuai urutan statusPermintaanLabels
+        $sortedChartData = [];
+        foreach ($statusPermintaanLabels as $label) {
+            $sortedChartData[$label] = $chartData[$label] ?? 0;
+        }
 
         $allData = PermintaanModel::where('id', auth()->user()->id)
             ->groupBy(['tipe_permintaan', 'status_permintaan'])
@@ -55,17 +87,11 @@ class PegawaiController extends Controller
 
         return view('pegawai.index', compact(
             'permintaanData',
-            'statusPermintaanData',
-            'allData'
+            'sortedChartData',
+            'allData',
+            'statusPermintaanData'
         ));
     }
-
-
-
-
-
-
-
 
     public function permintaan_software()
     {

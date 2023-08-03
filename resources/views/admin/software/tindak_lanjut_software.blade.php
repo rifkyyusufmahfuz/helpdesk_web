@@ -67,9 +67,6 @@
                 <p class="text-danger small">*Tambah software yang akan diinstal, setelah itu ajukan ke manager</p>
                 <button class="btn btn-md btn-success  mb-3" data-bs-toggle="modal" data-bs-target="#tambah_software"><i
                         class="fas fa-plus fa-sm mr-2"></i>Tambah Software</button>
-
-                {{-- <button class="btn btn-md btn-info  mb-3" data-toggle="modal" data-target="#forwardToManager"><i
-                        class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager</button> --}}
                 @foreach ($permintaan as $data)
                     <button class="btn btn-md btn-info mb-3" data-toggle="modal"
                         data-target="#ajukan_ke_manager_{{ $data->id_permintaan }}"
@@ -81,7 +78,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No.</th>

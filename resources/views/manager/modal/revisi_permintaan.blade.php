@@ -11,7 +11,7 @@
                 </div>
                 <div class="modal-body">
                     <h5>Revisi Permintaan</h5>
-                    <span>Permintaan instalasi software berikut ini akan disetujui:</span><br>
+                    <span>Permintaan instalasi software berikut ini akan direvisi:</span><br>
                     <table class="table table-bordered">
                         <thead>
                             <tr>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ManagerModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\PermintaanModel;
+
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\DumpHandler;
 
 class ManagerController extends Controller
@@ -20,7 +23,97 @@ class ManagerController extends Controller
 
     public function index()
     {
-        return view('manager.index');
+        $permintaanData = DB::table('permintaan')
+            ->select('tipe_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('tipe_permintaan')
+            ->get();
+
+
+        $statusPermintaanData = DB::table('permintaan')
+            ->select('status_permintaan', DB::raw('COUNT(id_permintaan) as jumlah_permintaan'))
+            ->groupBy('status_permintaan')
+            ->get();
+
+        // Mapping status_permintaan ke label sesuai spesifikasi
+        $statusMapping = [
+            1 => 'Pending',
+            2 => 'Ditinjau',
+            3 => 'Menunggu Unit',
+            4 => 'Diproses',
+            5 => 'Unit Siap Diambil',
+            6 => 'Permintaan Selesai',
+            0 => 'Ditolak'
+        ];
+        $statusPermintaanLabels = [
+            'Pending',
+            'Ditinjau',
+            'Menunggu Unit',
+            'Diproses',
+            'Unit Siap Diambil',
+            'Permintaan Selesai',
+            'Ditolak'
+        ];
+
+        // Membuat array untuk menyimpan data yang akan digunakan di view
+        $chartData = [];
+        foreach ($statusPermintaanData as $data) {
+            $status = $statusMapping[$data->status_permintaan] ?? 'Tidak Diketahui';
+            $chartData[$status] = $data->jumlah_permintaan;
+        }
+
+        // Mengurutkan data sesuai urutan statusPermintaanLabels
+        $sortedChartData = [];
+        foreach ($statusPermintaanLabels as $label) {
+            $sortedChartData[$label] = $chartData[$label] ?? 0;
+        }
+
+        // status otorisasi
+        // Ambil data otorisasi berdasarkan status
+        $otorisasiData = DB::table('otorisasi')
+            ->select('status_approval', DB::raw('COUNT(id_otorisasi) as jumlah_otorisasi'))
+            ->groupBy('status_approval')
+            ->get();
+
+        // Mapping status otorisasi ke label
+        $statusMappingOtorisasi = [
+            'pending' => 'Belum diajukan',
+            'waiting' => 'Menunggu Otorisasi',
+            'approved' => 'Disetujui',
+            'revision' => 'Revisi',
+            'rejected' => 'Ditolak'
+        ];
+
+        // Membuat array untuk menyimpan data yang akan digunakan di view
+        $chartDataOtorisasi = [];
+        foreach ($otorisasiData as $data) {
+            $status = $statusMappingOtorisasi[$data->status_approval] ?? 'Tidak Diketahui';
+            $chartDataOtorisasi[$status] = $data->jumlah_otorisasi;
+        }
+
+        // Mengurutkan data sesuai urutan statusMappingOtorisasi
+        $sortedChartDataOtorisasi = [];
+        foreach ($statusMappingOtorisasi as $key => $label) {
+            $sortedChartDataOtorisasi[$label] = $chartDataOtorisasi[$label] ?? 0;
+        }
+
+
+
+        $allData = PermintaanModel::where('id', auth()->user()->id)
+            ->groupBy(['tipe_permintaan', 'status_permintaan'])
+            ->selectRaw('tipe_permintaan, status_permintaan, COUNT(*) as count')
+            ->get()
+            ->groupBy('tipe_permintaan')
+            ->map(function ($group) {
+                return $group->pluck('count', 'status_permintaan')->toArray();
+            })
+            ->toArray();
+
+        return view('manager.index', compact(
+            'permintaanData',
+            'sortedChartData',
+            'allData',
+            'sortedChartDataOtorisasi'
+        ));
     }
 
 

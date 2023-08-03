@@ -11,15 +11,12 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            {{-- <th>Kategori Software</th> --}}
-                            {{-- <th>Uraian Kebutuhan</th> --}}
-                            {{-- <th>Nama Pegawai</th> --}}
                             <th>Status Otorisasi</th>
                             <th class="text-center">Status Permintaan</th>
                             <th class="text-center">Aksi</th>
@@ -33,19 +30,6 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                {{-- <td>
-                                    @if ($data->operating_system)
-                                        <span>Sistem Operasi</span>
-                                    @elseif($data->microsoft_office)
-                                        <span>Microsoft Office</span>
-                                    @elseif ($data->software_design)
-                                        <span>Software Design</span>
-                                    @elseif ($data->software_lainnya)
-                                        <span>Software Lainnya</span>
-                                    @endif
-                                </td> --}}
-                                {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
-                                {{-- <td>{{ $data->nama }}</td> --}}
                                 <td>{{ ucwords($data->status_approval) }}</td>
 
 
@@ -88,25 +72,6 @@
                                 <td class="text-center">
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
-
-                                        {{-- <form id="setujui_permintaan-{{ $data->id_permintaan }}"
-                                                action="/manager/crud/{{ $data->id_permintaan }}" method="POST"
-                                                style="display: inline-block;">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" name="status_permintaan" value="3">
-                                                <input type="hidden" name="status_approval" value="approved">
-                                                <input type="hidden" name="id_permintaan"
-                                                    value="{{ $data->id_permintaan }}">
-
-                                                <button {{ $data->status_approval != 'waiting' ? 'disabled' : '' }}
-                                                    type="button" class="btn btn-sm btn-success"
-                                                    onclick="setujui_permintaan('{{ $data->id_permintaan }}')"
-                                                    title="Setujui Permintaan">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-
-                                            </form> --}}
 
                                         <button class="btn btn-sm btn-success rounded" data-bs-toggle="modal"
                                             data-bs-target="#setujui_permintaan_{{ $data->id_permintaan }}"
