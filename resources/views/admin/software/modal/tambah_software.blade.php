@@ -16,9 +16,9 @@
                         <input type="text" name="id_permintaan"
                             value="{{ old('id_permintaan', $data->id_permintaan) }}" hidden>
                         <label for="nama_software">Software</label>
-                        <select class="form-control @error('nama_software') is-invalid @enderror" name="nama_software"
-                            id="nama_software">
-                            <option selected disabled>-- Pilih Software --</option>
+                        <select required class="form-control @error('nama_software') is-invalid @enderror"
+                            name="nama_software" id="nama_software">
+                            <option selected disabled value="">-- Pilih Software --</option>
                             @foreach ($list_software as $option)
                                 <option value="{{ $option }}" @if (old('nama_software') == $option) selected @endif>
                                     {{ $option }}</option>
@@ -33,8 +33,9 @@
 
                     <div class="form-group mt-3">
                         <label for="versi_software">Versi Software</label>
-                        <input class="form-control @error('versi_software') is-invalid @enderror" type="text"
-                            name="versi_software" id="versi_software" value="{{ old('versi_software') }}">
+                        <input required class="form-control @error('versi_software') is-invalid @enderror"
+                            type="text" name="versi_software" id="versi_software"
+                            value="{{ old('versi_software') }}">
                         @error('versi_software')
                             <div class="invalid-feedback">
                                 {{ $message }}

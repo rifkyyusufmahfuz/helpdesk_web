@@ -47,7 +47,7 @@
 
                         <div class="form-group text-center">
                             <label for="catatan_manager">Catatan Revisi</label>
-                            <textarea class="form-control" name="catatan_manager" id="catatan_manager" cols="30" rows="5"></textarea>
+                            <textarea required class="form-control" name="catatan_manager" id="catatan_manager" cols="30" rows="5"></textarea>
                         </div>
 
 

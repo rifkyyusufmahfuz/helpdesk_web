@@ -107,7 +107,7 @@ class AdminController extends Controller
     {
         $list_software = array(
             "Microsoft Windows",
-            "Microsoft Office Standart",
+            "Microsoft Office Standar",
             "Microsoft Visio",
             "Microsoft Project",
             "Autocad",
@@ -316,7 +316,8 @@ class AdminController extends Controller
                 // validasi form 
                 [
                     'id_permintaan' => 'required',
-                    'nama_software' => 'required',
+                    // 'nama_software' => 'required',
+                    'nama_software' => 'required|unique:software,nama_software,NULL, permintaan,id_permintaan,' . $request->id_permintaan,
                     'versi_software' => 'required',
                     // 'notes' => 'required',
                 ],
@@ -324,6 +325,7 @@ class AdminController extends Controller
                 [
                     'id_permintaan.required' => 'ID Permintaan wajib diisi!',
                     'nama_software.required' => 'Nama software wajib diisi!',
+                    'nama_software.unique' => 'Software ini sudah diinput!',
                     'versi_software.required' => 'Versi software wajib diisi!',
                     // 'notes' => 'Notes wajib diisi!',
                 ]
@@ -742,19 +744,19 @@ class AdminController extends Controller
         // untuk update software 
         else {
             $request->validate([
-                'versi_software' => 'required',
+                'versi_software_update' => 'required',
 
             ], [
-                'versi_software.required' => 'Isi versi software!',
+                'versi_software_update.required' => 'Isi versi software!',
             ]);
 
-            $catatan = $request->notes ?: '-';
+            $catatan = $request->notes_update ?: '-';
             $data = [
-                'versi_software' => $request->versi_software,
+                'versi_software' => $request->versi_software_update,
                 'notes' => $catatan,
                 'updated_at' => now(),
             ];
-            return $this->modeladmin->update_software($data, $id) ? back()->with('toast_success', 'Versi software dan catatan berhasil diinput!') : back()->with('toast_success', 'Versi software dan catatan gagal diinput!');
+            return $this->modeladmin->update_software($data, $id) ? back()->with('toast_success', 'Versi software dan catatan berhasil diupdate!') : back()->with('toast_success', 'Update versi software dan catatan gagal!');
         }
     }
 

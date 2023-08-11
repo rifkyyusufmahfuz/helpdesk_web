@@ -27,7 +27,7 @@
                                         <label for="nip">NIPP<span class="text-danger">*</span></label>
                                         <input onkeypress="return event.charCode >= 48 && event.charCode <=57"
                                             name="nip" id="nip" type="text" class="form-control"
-                                            maxlength="5" />
+                                            value="{{ old('nip') }}" maxlength="5" />
                                         @error('nip')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -35,6 +35,7 @@
                                     <div class="form-group col-sm-7">
                                         <label for="nama">Nama</label>
                                         <input name="nama" id="nama" type="text" class="form-control"
+                                            value="{{ old('nama') }}"
                                             onkeypress="return event.charCode < 48 || event.charCode > 57" />
                                         @error('nama')
                                             <span class="text-danger">{{ $message }}</span>
@@ -45,7 +46,8 @@
                                 <div class="row">
                                     <div class="form-group col-sm-5">
                                         <label for="bagian">Unit/Bagian</label>
-                                        <input name="bagian" id="bagian" type="text" class="form-control" />
+                                        <input name="bagian" id="bagian" type="text" class="form-control"
+                                            value="{{ old('bagian') }}" />
                                         @error('bagian')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -53,7 +55,8 @@
 
                                     <div class="form-group col-sm-7">
                                         <label for="jabatan">Jabatan</label>
-                                        <input name="jabatan" id="jabatan" type="text" class="form-control" />
+                                        <input name="jabatan" id="jabatan" type="text" class="form-control"
+                                            value="{{ old('jabatan') }}" />
                                         @error('jabatan')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -63,7 +66,7 @@
                                 <div class="form-group">
                                     <label class="form-label" for="lokasi">Lokasi</label>
                                     <input list="stasiun_list" class="form-control" id="lokasi" name="lokasi"
-                                        placeholder="Pilih lokasi">
+                                        placeholder="Pilih lokasi" value="{{ old('lokasi') }}">
                                     <datalist id="stasiun_list">
                                         @foreach ($data_stasiun as $stasiun)
                                             <option value="{{ $stasiun->nama_stasiun }}"></option>
@@ -82,7 +85,8 @@
                                 <hr>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" />
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        value="{{ old('email') }}" />
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

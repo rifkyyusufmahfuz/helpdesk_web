@@ -12,8 +12,8 @@
                 </div>
                 <div class="row ml-2 mt-2">
                     <div class="col-md-12">
-                        <button type="button" class="btn-primary btn-sm float-left" data-toggle="modal"
-                            data-target="#modalTambahPegawai">
+                        <button type="button" class="btn-primary btn-sm float-left" data-bs-toggle="modal"
+                            data-bs-target="#modalTambahPegawai">
                             <i class="fa fa-user-plus"></i> Tambah Data Pegawai
                         </button>
                     </div>

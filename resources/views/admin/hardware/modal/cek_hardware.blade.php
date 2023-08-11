@@ -15,9 +15,9 @@
                     <div class="form-group">
                         <input type="text" name="id_permintaan" value="{{ $data->id_permintaan }}" hidden>
                         <label for="komponen">Komponen</label>
-                        <select class="form-control @error('komponen') is-invalid @enderror" name="komponen"
+                        <select required class="form-control @error('komponen') is-invalid @enderror" name="komponen"
                             id="komponen">
-                            <option selected disabled>-- Pilih Komponen --</option>
+                            <option selected disabled value="">-- Pilih Komponen --</option>
                             @foreach ($list_hardware as $option)
                                 <option value="{{ $option }}" @if (old('komponen') == $option) selected @endif>
                                     {{ $option }}</option>
@@ -33,7 +33,7 @@
                     <div class="form-group mt-3">
                         <label for="status_hardware">Status Hardware</label> <br>
                         <div class="form-check-inline">
-                            <input class="form-check-input @error('status_hardware') is-invalid @enderror"
+                            <input required class="form-check-input @error('status_hardware') is-invalid @enderror"
                                 type="radio" name="status_hardware" id="status_hardware_ok" value="OK"
                                 {{ old('status_hardware') === 'OK' ? 'checked' : '' }}>
                             <label class="form-check-label" for="status_hardware_ok">OK</label>

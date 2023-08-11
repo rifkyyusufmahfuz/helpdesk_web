@@ -20,7 +20,7 @@ form2.addEventListener('submit', function(event) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Isi tanda tangan penerima terlebih dahulu!',
+            text: 'Isi tanda tangan terlebih dahulu!',
             toast: true,
             position: 'top-end',
             showConfirmButton: false,

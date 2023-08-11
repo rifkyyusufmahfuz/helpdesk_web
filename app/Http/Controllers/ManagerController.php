@@ -403,7 +403,7 @@ class ManagerController extends Controller
                     : back()->with('error', 'Otorisasi permintaan gagal, silakan coba lagi!');
             } elseif ($request->otorisasi_manager == 'ditolak') {
                 return $update_otorisasi && $update_permintaan && $update_barang && $kirim_notifikasi && $kirim_notifikasi_admin
-                    ? back()->with('warning', 'Permintaan ditolak dan proses Instalasi Software tidak akan dilanjutkan.')
+                    ? back()->with('warning', 'Permintaan telah ditolak dan proses instalasi software tidak akan dilanjutkan.')
                     : back()->with('error', 'Otorisasi permintaan gagal, silakan coba lagi!');
             }
 

@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTambahPegawaiLabel">Tambah Data Pegawai</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -48,7 +48,7 @@
                     <div class="form-group">
                         <label for="lokasi_pegawai">Lokasi</label>
                         <input required placeholder="-Pilih Lokasi-" list="stasiun_list" class="form-control"
-                            id="lokasi_pegawai" name="lokasi_pegawai">
+                            id="lokasi_pegawai" name="lokasi_pegawai" value="{{ old('lokasi_pegawai') }}">
                         <datalist id="stasiun_list">
                             @foreach ($data_stasiun as $stasiun)
                                 <option value="{{ $stasiun->nama_stasiun }}">
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="modal-footer py-2">
-                        <button type="reset" class="btn-sm btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="reset" class="btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn-sm btn-primary" id="form-tambah-pegawai">Simpan</button>
                     </div>
                 </form>
@@ -70,17 +70,25 @@
 
 {{-- Perulangan untuk cek error --}}
 <?php $listError = ['nip_pegawai', 'nama_pegawai', 'bagian_pegawai', 'jabatan_pegawai', 'lokasi_pegawai']; ?>
+@php
+    $showModal = false;
+@endphp
+
 @foreach ($listError as $err)
     @error($err)
-        <script type="text/javascript">
-            window.onload = function() {
-                OpenBootstrapPopup();
-            };
-
-            function OpenBootstrapPopup() {
-                $("#modalTambahPegawai").modal('show');
-            }
-        </script>
-    @break
-@enderror
+        @php
+            $showModal = true;
+            // Hentikan perulangan ketika ada error ditemukan
+            break;
+        @endphp
+    @enderror
 @endforeach
+
+@if ($showModal)
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Tampilkan modal secara otomatis ketika ada error
+            $("#modalTambahPegawai").modal('show');
+        });
+    </script>
+@endif

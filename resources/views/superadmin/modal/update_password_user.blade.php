@@ -15,7 +15,8 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="ganti_password">Password Baru</label>
-                            <input type="password" name="ganti_password" id="ganti_password" class="form-control" required>
+                            <input type="password" name="ganti_password" id="ganti_password" class="form-control"
+                                required>
                             @error('ganti_password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -43,13 +44,23 @@
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">
-            window.onload = function() {
-                OpenBootstrapPopup();
-            };
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                title: 'Update Gagal!',
+                text: '{{ $message }}',
 
-            function OpenBootstrapPopup() {
-                $("#modalEditPassword{{ $user->id }}").modal('show');
-            }
+                animation: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 6000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
         </script>
     @break
 @enderror

@@ -13,36 +13,35 @@
                     <form action="/superadmin/crud/{{ $pegawai->nip }}" method="POST" id="form-tambah-pegawai">
                         @csrf
                         @method('PUT')
-                        {{-- <input type="hidden" id="update_pegawai" name="update_pegawai" value=""> --}}
                         <div class="form-group">
-                            <label for="nip_pegawai">NIP</label>
-                            <input maxlength="5" type="text" class="form-control" id="nip_pegawai"
-                                name="nip_pegawai" required value="{{ $pegawai->nip }}">
-                            @error('nip_pegawai')
+                            <label for="nip_pegawai_update">NIP</label>
+                            <input maxlength="5" type="text" class="form-control" id="nip_pegawai_update"
+                                name="nip_pegawai_update" required value="{{ $pegawai->nip }}">
+                            @error('nip_pegawai_update')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="nama_pegawai">Nama Pegawai</label>
-                            <input required type="text" class="form-control" id="nama_pegawai" name="nama_pegawai"
-                                value="{{ $pegawai->nama }}">
-                            @error('nama_pegawai')
+                            <label for="nama_pegawai_update">Nama Pegawai</label>
+                            <input required type="text" class="form-control" id="nama_pegawai_update"
+                                name="nama_pegawai_update" value="{{ $pegawai->nama }}">
+                            @error('nama_pegawai_update')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="bagian_pegawai">Unit/Bagian</label>
-                            <input required type="text" class="form-control" id="bagian_pegawai"
-                                name="bagian_pegawai" value="{{ $pegawai->bagian }}">
-                            @error('bagian_pegawai')
+                            <label for="bagian_pegawai_update">Unit/Bagian</label>
+                            <input required type="text" class="form-control" id="bagian_pegawai_update"
+                                name="bagian_pegawai_update" value="{{ $pegawai->bagian }}">
+                            @error('bagian_pegawai_update')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="jabatan_pegawai">Jabatan</label>
-                            <input required type="text" class="form-control" id="jabatan_pegawai"
-                                name="jabatan_pegawai" value="{{ $pegawai->jabatan }}">
-                            @error('jabatan_pegawai')
+                            <label for="jabatan_pegawai_update">Jabatan</label>
+                            <input required type="text" class="form-control" id="jabatan_pegawai_update"
+                                name="jabatan_pegawai_update" value="{{ $pegawai->jabatan }}">
+                            @error('jabatan_pegawai_update')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -53,7 +52,8 @@
                         <div class="form-group">
                             <label for="lokasi_pegawai">Lokasi</label>
                             <input list="stasiun_list" class="form-control" placeholder="-Pilih Lokasi-" required
-                                id="lokasi_pegawai" name="lokasi_pegawai" value="{{ $pegawai->nama_stasiun }}">
+                                id="lokasi_pegawai_update" name="lokasi_pegawai_update"
+                                value="{{ $pegawai->nama_stasiun }}">
                             <datalist id="stasiun_list">
                                 @foreach ($data_stasiun as $stasiun)
                                     <option value="{{ $stasiun->nama_stasiun }}">
@@ -61,20 +61,6 @@
                                 @endforeach
                             </datalist>
                         </div>
-
-                        {{-- OPSI LOKASI DENGAN SELECTBOX --}}
-                        {{-- <div class="form-group">
-                            <label for="lokasi_pegawai">Lokasi</label>
-                            <select class="form-control" id="lokasi_pegawai" name="lokasi_pegawai" required>
-                                <option value="">-Pilih Lokasi-</option>
-                                @foreach ($data_stasiun as $stasiun)
-                                    <option value="{{ $stasiun->nama_stasiun }}"
-                                        {{ $pegawai->id_stasiun == $stasiun->id_stasiun ? 'selected' : '' }}>
-                                        {{ $stasiun->nama_stasiun }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
 
                         <div class="modal-footer py-2">
                             <button type="reset" class="btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -88,17 +74,27 @@
 @endforeach
 
 {{-- Perulangan untuk cek error --}}
-<?php $listError = ['nip_pegawai', 'nama_pegawai', 'bagian_pegawai', 'jabatan_pegawai', 'lokasi_pegawai']; ?>
+<?php $listError = ['nip_pegawai_update', 'nama_pegawai_update', 'bagian_pegawai_update', 'jabatan_pegawai_update', 'lokasi_pegawai_update']; ?>
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">
-            window.onload = function() {
-                OpenBootstrapPopup();
-            };
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                title: 'Update Gagal!',
+                text: '{{ $message }}',
 
-            function OpenBootstrapPopup() {
-                $("#modal_update_pegawai").modal('show');
-            }
+                animation: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 6000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
         </script>
     @break
 @enderror

@@ -18,29 +18,34 @@
                             <div class="border rounded">
                                 <div class="card-body">
                                     <div class="small">
-                                        <h6>Prosedur Permintaan Instalasi Software</h6><br>
-                                        <span>Pengajuan Permintaan Instalasi Software</span>
+                                        <h6>Prosedur Permintaan Pengecekan Hardware</h6><br>
+                                        <span>Pengajuan Permintaan Pengecekan Hardware</span>
                                         <ol>
-                                            <li>Pegawai Mengajukan Permintaan Instalasi Software Melalui Menu Permintaan
-                                                Layanan > Instalasi Software > Tombol Ajukan Permintaan.</li>
-                                            <li>Melengkapi Form Spesifikasi PC atau Laptop yang akan dilakukan instalasi
-                                                software.</li>
-                                            <li>Melengkapi detail permintaan dengan memilih kategori software sesuai
-                                                kebutuhan.</li>
+                                            <li>Pegawai mengajukan permintaan pengecekan hardware melalui menu Permintaan
+                                                Layanan > Pengecekan Hardware > Tombol Ajukan Permintaan.</li>
+                                            <li>Melengkapi data hardware yang akan dilakukan pengecekan.</li>
                                             <li>Menandatangani form secara digital pada kolom input tanda tangan yang telah
                                                 disediakan.</li>
                                             <li>Setelah ditandatangani, klik tombol simpan untuk mengajukan permintaan
-                                                instalasi software.</li>
+                                                pengecekan hardware.</li>
                                         </ol>
-                                        <span>Proses Permintaan Instalasi Software</span>
+                                        <span>Proses Permintaan Pengecekan Hardware</span>
                                         <ol>
-                                            <li>Menunggu admin memproses permintaan, dapat dicek pada kolom status
-                                                permintaan
-                                                untuk memantau progres permintaan.</li>
-                                            <li>Admin akan memilih software yang sesuai dengan permintaan dan spesifikasi PC
-                                                atau Laptop yang Anda ajukan.</li>
-                                            <li>Admin akan mengajukan terlebih dahulu permintaan Anda ke Manajer untuk
-                                                mendapatkan persetujuan instalasi software yang diminta</li>
+                                            <li>Menunggu admin menanggapi permintaan, dapat dicek pada kolom status
+                                                permintaan untuk memantau progres permintaan.</li>
+                                            <li>Setelah permintaan diterima oleh Admin, segera bawa unit yang akan dilakukan
+                                                pengecekan dan diserahkan ke Admin di NOC Kantor Pusat Juanda.</li>
+                                            <li>Proses serah terima barang. Anda akan diberikan notifikasi bahwa telah
+                                                melakukan serah terima barang.</li>
+                                            <li>Admin akan melakukan pengecekan hardware sesuai keluhan.</li>
+                                            <li>Admin akan memberikan rekomendasi hasil pengecekan yang telah divalidasi
+                                                oleh Manajer IT Support.</li>
+                                            <li>Rekomendasi dapat berupa perbaikan langsung oleh tim IT Support maupun
+                                                membawa unit tersebut ke service center.</li>
+                                            <li>Setelah proses pengecekan dan perbaikan selesai, Anda akan diberitahukan
+                                                untuk mengambil unit yang telah selesai dilakukan pengecekan.</li>
+                                            <li>Disarankan untuk selalu memantau status permintaan dan notifikasi untuk
+                                                memantau progres permintaan.</li>
                                         </ol>
 
                                     </div>

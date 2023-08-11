@@ -11,6 +11,7 @@ use App\Models\SuperadminModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class SuperadminController extends Controller
 {
@@ -372,11 +373,12 @@ class SuperadminController extends Controller
 
                 ],
                 [
+                    'email.unique' => 'Email sudah digunakan!',
                     'password.required' => 'Password tidak boleh kosong!',
                     'confirm_password.required' => 'Konfirmasi Password tidak boleh kosong!',
                     'confirm_password.same' => 'Password tidak cocok!',
                     'role.required' => 'Role tidak boleh kosong!',
-                    'nip_pegawai.required' => 'NIK tidak boleh kosong!',
+                    'nip_pegawai.required' => 'NIP tidak boleh kosong!',
                 ]
             );
 
@@ -420,7 +422,7 @@ class SuperadminController extends Controller
             $input_stasiun = $this->modelsuperadmin->input_stasiun($data_stasiun);
 
             return $input_stasiun
-                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Data stasiun berhasil diinput!')
+                ? redirect('/superadmin/master_stasiun')->with('toast_success', 'Data stasiun berhasil ditambahkan!')
                 : redirect('/superadmin/master_stasiun')->with('toast_error', 'Input data stasiun gagal, silakan coba lagi!');
         } elseif ($request->input('jenis_input') == 'data_barang') {
             $request->validate(
@@ -455,11 +457,10 @@ class SuperadminController extends Controller
             $input_barang = $this->modelsuperadmin->input_barang($data_barang);
 
             return $input_barang
-                ? redirect('/superadmin/master_barang')->with('toast_success', 'Barang berhasil diinput!')
+                ? redirect('/superadmin/master_barang')->with('toast_success', 'Data barang berhasil ditambahkan!')
                 : redirect('/superadmin/master_barang')->with('toast_error', 'Input barang gagal, silakan coba lagi!');
         } else {
             // jika jenis input tidak valid, lakukan sesuai kebutuhan
-            // return redirect('/superadmin/datauseraktif')->with('toast_error', 'Data gagal ditambahkan!');
             $request->validate([
                 //data pegawai
                 'nip_pegawai'  => 'required|unique:pegawai,nip|numeric|digits_between:1,5',
@@ -468,9 +469,10 @@ class SuperadminController extends Controller
                 'jabatan_pegawai' => 'required',
                 'lokasi_pegawai' => 'required',
             ], [
-                'nip_pegawai.required' => 'NIK tidak boleh kosong!',
-                'nip_pegawai.numeric' => 'NIK harus angka!',
-                'nip_pegawai.digits_between' => 'Jumlah NIK minimal 4 dan maksimal 5 digit!',
+                'nip_pegawai.unique' => 'NIP sudah terdaftar!',
+                'nip_pegawai.required' => 'NIP tidak boleh kosong!',
+                'nip_pegawai.numeric' => 'NIP harus angka!',
+                'nip_pegawai.digits_between' => 'Jumlah NIP minimal 4 dan maksimal 5 digit!',
 
                 'nama_pegawai.required' => 'Nama tidak boleh kosong!',
                 'bagian_pegawai.required' => 'Bagian tidak boleh kosong!',
@@ -657,38 +659,44 @@ class SuperadminController extends Controller
         }
 
         //Untuk update data pegawai
-        if ($request->has('nip_pegawai')) {
+        if ($request->has('nip_pegawai_update')) {
 
             $request->validate(
                 [
-                    'nip_pegawai' => 'required|min:4',
-                    'nama_pegawai' => 'required',
-                    'bagian_pegawai' => 'required',
-                    'jabatan_pegawai' => 'required',
-                    'lokasi_pegawai' => 'required',
+                    'nip_pegawai_update' => [
+                        'required',
+                        'min:4',
+                        Rule::unique('pegawai', 'nip')->ignore($id, 'nip'),
+                    ],
+                    // 'nip_pegawai_update' => 'required|min:4',
+                    'nama_pegawai_update' => 'required',
+                    'bagian_pegawai_update' => 'required',
+                    'jabatan_pegawai_update' => 'required',
+                    'lokasi_pegawai_update' => 'required',
 
                 ],
                 [
-                    'nip_pegawai.required' => 'Nip wajib diisi!',
-                    'nip_pegawai.min' => 'NIPP minimal 4 angka!',
-                    'nama_pegawai.required' => 'Nama pegawai wajib diisi!',
-                    'bagian_pegawai.required' => 'Unit/bagian pegawai wajib diisi!',
-                    'jabatan_pegawai.required' => 'Jabatan pegawai wajib diisi!',
-                    'lokasi_pegawai.required' => 'Pilih lokasi pegawai!',
+                    'nip_pegawai_update.unique' => 'NIP sudah digunakan!',
+                    'nip_pegawai_update.required' => 'NIP wajib diisi!',
+                    'nip_pegawai_update.min' => 'NIP minimal 4 angka!',
+                    'nama_pegawai_update.required' => 'Nama pegawai wajib diisi!',
+                    'bagian_pegawai_update.required' => 'Unit/bagian pegawai wajib diisi!',
+                    'jabatan_pegawai_update.required' => 'Jabatan pegawai wajib diisi!',
+                    'lokasi_pegawai_update.required' => 'Pilih lokasi pegawai!',
                 ]
 
             );
 
             // untuk mengubah nama stasiun menjadi id_stasiun
-            $nama_stasiun = $request->input('lokasi_pegawai');
+            $nama_stasiun = $request->input('lokasi_pegawai_update');
             $id_stasiun = $this->modelsuperadmin->getIdStasiun($nama_stasiun);
 
             // input data yang telah divalidasi
             $data = [
-                'nip' => $request->nip_pegawai,
-                'nama' => $request->nama_pegawai,
-                'bagian' => $request->bagian_pegawai,
-                'jabatan' => $request->jabatan_pegawai,
+                'nip' => $request->nip_pegawai_update,
+                'nama' => $request->nama_pegawai_update,
+                'bagian' => $request->bagian_pegawai_update,
+                'jabatan' => $request->jabatan_pegawai_update,
                 'id_stasiun' => $id_stasiun,
 
                 'updated_at' => \Carbon\Carbon::now(),
@@ -706,21 +714,21 @@ class SuperadminController extends Controller
         if ($request->input('jenis_input') == 'data_stasiun') {
             $request->validate(
                 [
-                    'id_stasiun' => 'required|unique:stasiun,id_stasiun,' . $id . ',id_stasiun',
-                    'nama_stasiun' => 'required|unique:stasiun,nama_stasiun,' . $request->nama_stasiun . ',nama_stasiun'
+                    'id_stasiun_update' => 'required|unique:stasiun,id_stasiun,' . $id . ',id_stasiun',
+                    'nama_stasiun_update' => 'required|unique:stasiun,nama_stasiun,' . $id . ',id_stasiun'
                 ],
                 [
-                    'id_stasiun.required' => 'ID stasiun wajib diisi!',
-                    'id_stasiun.unique' => 'ID stasiun sudah ada!',
-                    'nama_stasiun.required' => 'Nama stasiun wajib diisi!',
-                    'nama_stasiun.unique' => 'Nama stasiun sudah ada!',
+                    'id_stasiun_update.required' => 'ID stasiun wajib diisi!',
+                    'id_stasiun_update.unique' => 'ID stasiun sudah ada!',
+                    'nama_stasiun_update.required' => 'Nama stasiun wajib diisi!',
+                    'nama_stasiun_update.unique' => 'Nama stasiun sudah ada!',
                 ]
             );
 
-            $nama_stasiun =  ucwords(strtolower($request->nama_stasiun));
+            $nama_stasiun =  ucwords(strtolower($request->nama_stasiun_update));
 
             $data_stasiun = [
-                'id_stasiun' => $request->id_stasiun,
+                'id_stasiun' => $request->id_stasiun_update,
                 'nama_stasiun' => $nama_stasiun
             ];
 
@@ -764,7 +772,7 @@ class SuperadminController extends Controller
             $update_barang = $this->modelsuperadmin->update_barang($data_barang, $id);
 
             return $update_barang
-                ? redirect('/superadmin/master_barang')->with('toast_success', 'Barang berhasil diupdate!')
+                ? redirect('/superadmin/master_barang')->with('toast_success', 'Data barang berhasil diupdate!')
                 : redirect('/superadmin/master_barang')->with('toast_error', 'Update barang gagal, silakan coba lagi!');
         }
 
@@ -854,7 +862,7 @@ class SuperadminController extends Controller
             // end of condition
         } elseif ($request->has('hapus_barang')) {
             return $this->modelsuperadmin->delete_barang($id)
-                ? back()->with('toast_success', 'Barang berhasil dihapus!')
+                ? back()->with('toast_success', 'Data barang berhasil dihapus!')
                 : back()->with('toast_error', 'Barang gagal dihapus!');
 
             // end of condition

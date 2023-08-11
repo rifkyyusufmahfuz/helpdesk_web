@@ -109,9 +109,8 @@
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="hapus_software">
-
                                         <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="confirm_delete_software('{{ $data2->id_software }}')">
+                                            onclick="confirmDelete('{{ $data2->id_software }}', 'Hapus software {{ $data2->nama_software }}?', 'Instalasi software {{ $data2->nama_software }} akan dibatalkan pada permintaan ini.')">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>

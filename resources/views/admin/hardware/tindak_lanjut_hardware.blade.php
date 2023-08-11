@@ -95,9 +95,8 @@
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="hapus_hardware">
-
                                         <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="confirm_delete_hardware('{{ $data2->id_hardware }}')">
+                                            onclick="confirmDelete('{{ $data2->id_hardware }}', 'Hapus komponen {{ $data2->komponen }}?', 'Komponen {{ $data2->komponen }} akan dihapus dari daftar pengecekan hardware pada permintaan ini.')">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>

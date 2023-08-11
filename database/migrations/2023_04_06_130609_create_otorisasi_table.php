@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id_otorisasi');
             $table->date('tanggal_approval')->nullable();
             $table->enum('status_approval', ['pending', 'waiting', 'approved', 'rejected', 'revision']);
-            $table->string('catatan', 50);
+            $table->string('catatan', 100);
             $table->string('ttd_manager', 100)->nullable();
 
             $table->unsignedInteger('id')->nullable();

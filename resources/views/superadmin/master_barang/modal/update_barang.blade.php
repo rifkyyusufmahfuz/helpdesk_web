@@ -94,13 +94,23 @@
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">
-            window.onload = function() {
-                OpenBootstrapPopup();
-            };
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                title: 'Update Gagal!',
+                text: '{{ $message }}',
 
-            function OpenBootstrapPopup() {
-                $("#modal_update_barang{{ $data->kode_barang }}").modal('show');
-            }
+                animation: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 6000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
         </script>
     @break
 @enderror

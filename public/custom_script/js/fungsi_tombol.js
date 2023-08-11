@@ -92,21 +92,21 @@ $(document).ready(function() {
 
 
 // tombol aksi hapus software
-function confirm_delete_software(id) {
-    Swal.fire({
-        title: 'Yakin ingin menghapus software?',
-        text: 'Membatalkan software yang akan diinstal pada permintaan ini.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Batal',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Submit form jika user menekan tombol "Ya, hapus"
-            document.querySelector('#form-delete-' + id).submit();
-        }
-    });
-}
+// function confirm_delete_software(id) {
+//     Swal.fire({
+//         title: 'Hapus software?',
+//         text: 'Membatalkan software yang akan diinstal pada permintaan ini.',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonText: 'Ya',
+//         cancelButtonText: 'Batal',
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             // Submit form jika user menekan tombol "Ya, hapus"
+//             document.querySelector('#form-delete-' + id).submit();
+//         }
+//     });
+// }
 
 //untuk admin
 function instalasi_selesai(id) {

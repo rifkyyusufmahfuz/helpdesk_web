@@ -15,9 +15,6 @@
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
-                        <!-- Isi form edit software di sini -->
-
-                        <!-- Tambahkan input fields untuk mengedit software -->
                         <div class="form-group">
                             <label for="nama_software">Software</label>
                             <input type="text" class="form-control" id="nama_software" name="nama_software"
@@ -25,10 +22,11 @@
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="versi_software">Versi Software</label>
-                            <input class="form-control @error('versi_software') is-invalid @enderror" type="text"
-                                name="versi_software" id="versi_software" value="{{ $data2->versi_software }}">
-                            @error('versi_software')
+                            <label for="versi_software_update">Versi Software</label>
+                            <input required class="form-control @error('versi_software_update') is-invalid @enderror"
+                                type="text" name="versi_software_update" id="versi_software_update"
+                                value="{{ $data2->versi_software }}">
+                            @error('versi_software_update')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -36,11 +34,11 @@
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="notes">*Catatan</label>
-                            <textarea class="form-control @error('notes') is-invalid @enderror" name="notes" id="notes" cols="20"
-                                rows="5">{{ $data2->notes }}</textarea>
+                            <label for="notes_update">*Catatan</label>
+                            <textarea class="form-control @error('notes_update') is-invalid @enderror" name="notes_update" id="notes_update"
+                                cols="20" rows="5">{{ $data2->notes }}</textarea>
                             <span class="small">*Kosongkan apabila tidak ada catatan</span>
-                            @error('notes')
+                            @error('notes_update')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -56,4 +54,30 @@
             </div>
         </div>
     </div>
+@endforeach
+
+<?php $listError = ['versi_software_update', 'notes_update']; ?>
+@foreach ($listError as $err)
+    @error($err)
+        <script type="text/javascript">
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                title: 'Update Gagal!',
+                text: '{{ $message }}',
+
+                animation: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 6000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        </script>
+    @break
+@enderror
 @endforeach

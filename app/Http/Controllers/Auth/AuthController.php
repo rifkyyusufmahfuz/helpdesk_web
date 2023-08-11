@@ -15,10 +15,16 @@ class AuthController extends Controller
     public function dologin(Request $request)
     {
         // validasi
-        $credentials = $request->validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
+        $credentials = $request->validate(
+            [
+                'email' => 'required',
+                'password' => 'required'
+            ],
+            [
+                'email.required' => 'Email wajib diisi!',
+                'password.required' => 'Password wajib diisi!'
+            ]
+        );
 
         if (auth()->attempt($credentials)) {
 

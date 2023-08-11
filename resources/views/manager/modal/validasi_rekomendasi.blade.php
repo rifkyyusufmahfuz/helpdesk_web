@@ -5,7 +5,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="validasi_rekomendasi_label">Pengecekan Hardware</h5>
+                    <h5 class="modal-title" id="validasi_rekomendasi_label">Validasi Rekomendasi</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -19,7 +19,7 @@
                         <input hidden id="id_permintaan" name="id_permintaan" value="{{ $data->id_permintaan }}">
                         <input hidden id="id_otorisasi" name="id_otorisasi" value="{{ $data->id_otorisasi }}">
 
-                        <h5>Rekomendasi hasil pengecekan</h5>
+                        <h5>Validasi Rekomendasi Hasil Pengecekan</h5>
                         <span>List hardware yang telah dilakukan pengecekan oleh Executor:</span><br>
                         <table class="table table-bordered">
                             <thead>

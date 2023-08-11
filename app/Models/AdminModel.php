@@ -366,7 +366,9 @@ class AdminModel extends Model
 
     public function update_hardware($data, $id)
     {
-        return DB::table('hardware')->where('id_hardware', $id)->update($data) ? true : false;
+        return DB::table('hardware')->where('id_hardware', $id)->update($data)
+            ? true
+            : false;
     }
 
     public function hapus_hardware($id)

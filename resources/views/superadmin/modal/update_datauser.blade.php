@@ -16,9 +16,9 @@
                         {{-- <input type="hidden" name="jenis_update" value="update_data"> --}}
                         <div class="form-group">
                             <label for="email2">Email</label>
-                            <input type="email2" name="email2" id="email2" class="form-control"
+                            <input type="email" name="email2" id="email2" class="form-control"
                                 value="{{ $user->email }}" required>
-                                @error('email2')
+                            @error('email2')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -50,13 +50,23 @@
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">
-            window.onload = function() {
-                OpenBootstrapPopup();
-            };
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                title: 'Update Gagal!',
+                text: '{{ $message }}',
 
-            function OpenBootstrapPopup() {
-                $("#modalEditUser{{ $user->id }}").modal('show');
-            }
+                animation: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 6000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
         </script>
     @break
 @enderror

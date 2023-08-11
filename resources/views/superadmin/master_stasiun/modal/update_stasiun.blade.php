@@ -15,21 +15,21 @@
                         @method('PUT')
                         <input type="hidden" id="jenis_input" name="jenis_input" value="data_stasiun">
                         <div class="form-group">
-                            <label for="id_stasiun">ID Stasiun</label>
+                            <label for="id_stasiun_update">ID Stasiun</label>
                             <input
                                 onkeypress="return event.charCode >= 65 && event.charCode <= 90 || event.charCode >= 97 && event.charCode <= 122"
-                                maxlength="3" type="text" class="form-control" id="id_stasiun" name="id_stasiun"
+                                maxlength="3" type="text" class="form-control" id="id_stasiun_update" name="id_stasiun_update"
                                 required value="{{ $data->id_stasiun }}" autofocus
                                 onkeyup="this.value = this.value.toUpperCase();">
-                            @error('id_stasiun')
+                            @error('id_stasiun_update')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="nama_stasiun">Nama Stasiun</label>
-                            <input required type="text" class="form-control" id="nama_stasiun" name="nama_stasiun"
+                            <label for="nama_stasiun_update">Nama Stasiun</label>
+                            <input required type="text" class="form-control" id="nama_stasiun_update" name="nama_stasiun_update"
                                 value="{{ $data->nama_stasiun }}" onkeypress="return /^[a-zA-Z\s]*$/.test(event.key);">
-                            @error('nama_stasiun')
+                            @error('nama_stasiun_update')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -46,17 +46,27 @@
 @endforeach
 
 {{-- Perulangan untuk cek error --}}
-<?php $listError = ['id_stasiun', 'nama_stasiun']; ?>
+<?php $listError = ['id_stasiun_update', 'nama_stasiun_update']; ?>
 @foreach ($listError as $err)
     @error($err)
         <script type="text/javascript">
-            window.onload = function() {
-                OpenBootstrapPopup();
-            };
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                title: 'Update Gagal!',
+                text: '{{ $message }}',
 
-            function OpenBootstrapPopup() {
-                $("#modal_update_stasiun{{ $data->id_stasiun }}").modal('show');
-            }
+                animation: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 6000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
         </script>
     @break
 @enderror
