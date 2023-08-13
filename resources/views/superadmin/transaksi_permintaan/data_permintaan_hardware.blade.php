@@ -87,7 +87,7 @@
                                         {{ $data->status_permintaan == '1'
                                             ? 'Pending'
                                             : ($data->status_permintaan == '2'
-                                                ? 'Menunggu validasi manager'
+                                                ? 'Menunggu validasi Manajer'
                                                 : ($data->status_permintaan == '3'
                                                     ? 'Diterima'
                                                     : ($data->status_permintaan == '4'
@@ -109,7 +109,7 @@
 
                                         <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_permintaan_hardware_{{ $data->id_permintaan }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
                                         <form id="form-delete-{{ $data->id_permintaan }}"

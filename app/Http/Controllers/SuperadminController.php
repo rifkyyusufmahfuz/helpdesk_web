@@ -901,12 +901,15 @@ class SuperadminController extends Controller
                 if ($hapus_permintaan) {
                     $kode_barang = $request->kode_barang;
 
-                    $data_barang = [
-                        'status_barang' => 'dikembalikan',
-                        'updated_at' => now(),
-                    ];
+                    // $data_barang = [
+                    //     'status_barang' => 'dikembalikan',
+                    //     'updated_at' => now(),
+                    // ];
 
-                    $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
+                    // $this->modelsuperadmin->update_barang($data_barang, $kode_barang);
+
+                    //metode jika hapus permintaan maka data barang juga dihapus
+                    $this->modelsuperadmin->delete_barang($kode_barang);
 
                     return back()->with('toast_success', 'Permintaan ' . $tipe_permintaan . ' dengan nomor "' . $id . '" berhasil dihapus!');
                 } else {
@@ -1044,23 +1047,6 @@ class SuperadminController extends Controller
                 $hapus_otorisasi = $this->modelsuperadmin->delete_otorisasi($id);
 
                 if ($hapus_otorisasi) {
-                    // $permintaan = DB::table('permintaan')->where('id_permintaan', $id_permintaan)->first();
-
-                    // if ($permintaan) {
-                    //     $id_otorisasi = $permintaan->id_otorisasi;
-
-                    //     $data_otorisasi = [
-                    //         'status_approval' => 'waiting',
-                    //         'updated_at' => now(),
-                    //     ];
-                    //     $data_permintaan = [
-                    //         'status_permintaan' => 2,
-                    //         'updated_at' => now(),
-                    //     ];
-
-                    //     $this->modelsuperadmin->update_otorisasi($data_otorisasi, $id_otorisasi);
-                    //     $this->modelsuperadmin->update_permintaan($id_permintaan, $data_permintaan);
-                    // }
                     return back()->with('toast_success', 'Otorisasi berhasil dihapus!');
                 } else {
                     return back()->with('toast_error', 'Otorisasi gagal dihapus!');

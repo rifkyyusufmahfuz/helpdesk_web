@@ -89,7 +89,7 @@
                         <button type="reset" id="btn_close" class="btn btn-sm btn-secondary"
                             data-bs-dismiss="modal">Tutup</button>
                         <button id="submit_btn" type="submit" class="btn btn-sm btn-primary">Ajukan ke
-                            Manager</button>
+                            Manajer</button>
                     </div>
                 </form>
             </div>

@@ -53,6 +53,9 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            //tanggal penyelesaian
+            $table->date('tanggal_penyelesaian')->nullable();
+
             //timestamp
             $table->timestamps();
         });

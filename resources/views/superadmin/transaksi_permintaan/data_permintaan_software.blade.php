@@ -90,7 +90,7 @@
                                     <div class="btn-group" role="group">
                                         <button class="btn btn-sm btn-warning rounded text-white mr-1" data-toggle="modal"
                                             data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
                                         <form id="form-delete-{{ $data->id_permintaan }}"

@@ -83,15 +83,10 @@ class AdminModel extends Model
 
     public function update_permintaan($data, $id)
     {
-        return DB::table('permintaan')->where('id_permintaan', $id)->update($data) ? true : false;
+        return DB::table('permintaan')->where('id_permintaan', $id)->update($data)
+            ? true
+            : false;
     }
-
-    // public function get_data_barang($kode_barang)
-    // {
-    //     return DB::table('barang')
-    //         ->where('kode_barang', $kode_barang)
-    //         ->get();
-    // }
 
     public function get_barang_by_id_permintaan($id)
     {
@@ -162,7 +157,7 @@ class AdminModel extends Model
             $pegawaiId = $permintaan->id;
 
             // Mengirim notifikasi ke pegawai
-            $pesan = 'Permintaan instalasi software Anda dengan ID Permintaan "' . $id_permintaan . '" sedang diajukan ke manajer, terima kasih.';
+            $pesan = 'Permintaan instalasi software Anda dengan ID Permintaan "' . $id_permintaan . '" sedang diajukan ke Manajer. Terima kasih!';
             $tautan = '/pegawai/permintaan_software';
 
             $kirim_notifikasi = DB::table('notifikasi')->insert([
@@ -195,7 +190,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" diproses oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" diproses oleh ' . $nama . ' dan menunggu otorisasi dari Manajer.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);
@@ -241,7 +236,7 @@ class AdminModel extends Model
                     'tanggal_penanganan' => now(),
                     'ttd_tindak_lanjut' => $filename,
                     'id' => $id,
-                    'updated_at' => now(),
+                    // 'updated_at' => now(),
                 ]);
 
             $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
@@ -253,7 +248,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu otorisasi kembali dari Manajer.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);
@@ -486,7 +481,7 @@ class AdminModel extends Model
                     'tanggal_penanganan' => now(),
                     'ttd_tindak_lanjut' => $filename,
                     'id' => $id,
-                    'updated_at' => now(),
+                    // 'updated_at' => now(),
                 ]);
 
             $ajukan_ke_manager = DB::table('otorisasi')->where('id_otorisasi', $id_otorisasi)->update([
@@ -498,7 +493,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu Approval dari Manager.',
+                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu otorisasi kembali dari Manajer.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);
@@ -520,7 +515,9 @@ class AdminModel extends Model
 
     public function update_tindak_lanjut($data_tindak_lanjut, $id_tindak_lanjut)
     {
-        return DB::table('tindak_lanjut')->where('id_tindak_lanjut', $id_tindak_lanjut)->update($data_tindak_lanjut) ? true : false;
+        return DB::table('tindak_lanjut')->where('id_tindak_lanjut', $id_tindak_lanjut)->update($data_tindak_lanjut)
+            ? true
+            : false;
     }
 
     public function get_bast_by_nip($nip)

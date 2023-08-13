@@ -59,58 +59,70 @@
                 <i class="fa fa-plus"></i> Ajukan Permintaan
             </button>
             <div class="table-responsive">
-                <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
                             <th>Status Permintaan</th>
                             <th>Keterangan</th>
+                            <th>Waktu Penyelesaian</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="small">
                         @foreach ($permintaan as $data)
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->created_at }}</td>
                                 {{-- kolom status permintaan --}}
 
                                 {{-- status pada saat permintaan diajukan --}}
-                                @if ($data->status_permintaan == '1')
-                                    <td>Pending</td>
+                                <td>
+                                    <span
+                                        class="badge badge-{{ $data->status_permintaan == '1'
+                                            ? 'danger'
+                                            : ($data->status_permintaan == '2'
+                                                ? 'warning'
+                                                : ($data->status_permintaan == '3'
+                                                    ? 'success'
+                                                    : ($data->status_permintaan == '4'
+                                                        ? 'primary'
+                                                        : ($data->status_permintaan == '5'
+                                                            ? 'info'
+                                                            : ($data->status_permintaan == '0'
+                                                                ? 'danger'
+                                                                : ($data->status_permintaan == '6'
+                                                                    ? 'secondary'
+                                                                    : 'secondary')))))) }} p-2">
 
-                                    {{-- status permintaan pada saat admin mengajukan permintaan ke manajer --}}
-                                @elseif ($data->status_permintaan == '2')
-                                    <td>Menunggu Persetujuan</td>
+                                        {{ $data->status_permintaan == '1'
+                                            ? 'Pending'
+                                            : ($data->status_permintaan == '2'
+                                                ? 'Menunggu Persetujuan'
+                                                : ($data->status_permintaan == '3'
+                                                    ? 'Diterima'
+                                                    : ($data->status_permintaan == '4'
+                                                        ? 'Diproses'
+                                                        : ($data->status_permintaan == '5'
+                                                            ? 'Instalasi Selesai'
+                                                            : ($data->status_permintaan == '0'
+                                                                ? 'Ditolak'
+                                                                : ($data->status_permintaan == '6'
+                                                                    ? 'Selesai'
+                                                                    : 'Selesai')))))) }}
+                                    </span>
+                                </td>
 
-                                    {{-- status permintaan ketika manajer menerima permintaan --}}
-                                @elseif ($data->status_permintaan == '3')
-                                    <td>Diterima</td>
-
-                                    {{-- status permintaan ketika admin menerima barang --}}
-                                @elseif ($data->status_permintaan == '4')
-                                    <td>Diproses</td>
-
-                                    {{-- status ketika instalasi selesai --}}
-                                @elseif ($data->status_permintaan == '5')
-                                    <td>Instalasi selesai</td>
-                                    {{-- status ketika permintaan telah selesai --}}
-                                @elseif ($data->status_permintaan == '6')
-                                    <td>Selesai</td>
-                                    {{-- status ketika permintaan ditolak --}}
-                                @elseif ($data->status_permintaan == '0')
-                                    <td>Ditolak</td>
-                                @endif
                                 {{-- kolom keterangan diambil dari status permintaan --}}
                                 @if ($data->status_permintaan == '1')
-                                    <td class="text-center">-</td>
+                                    <td>Menunggu tanggapan Admin</td>
                                 @elseif($data->status_permintaan == '2')
                                     <td>Sedang diajukan ke manajer</td>
                                 @elseif ($data->status_permintaan == '3')
                                     <td>Menunggu PC / Laptop diserahkan ke NOC</td>
                                 @elseif ($data->status_permintaan == '4')
-                                    <td>Unit sudah diterima, dan sedang diproses oleh admin</td>
+                                    <td>Unit sudah diterima, dan sedang diproses oleh Admin</td>
                                 @elseif ($data->status_permintaan == '5')
                                     <td>Unit siap diambil</td>
                                 @elseif ($data->status_permintaan == '6')
@@ -118,8 +130,26 @@
                                 @elseif ($data->status_permintaan == '0')
                                     <td>Permintaan ditolak karena tidak memenuhi persyaratan</td>
                                 @endif
+
+                                <td>
+                                    @if ($data->tanggal_penyelesaian != '')
+                                        {{ date('Y-m-d', strtotime($data->tanggal_penyelesaian)) }}
+                                        @php
+                                            $tanggal_penyelesaian = \Carbon\Carbon::parse($data->tanggal_penyelesaian);
+                                            $sekarang = \Carbon\Carbon::now();
+                                            $selisihHari = $sekarang->diffInDays($tanggal_penyelesaian) + 1;
+                                        @endphp
+                                        @if ($tanggal_penyelesaian->isPast())
+                                            <br> *Selesai*
+                                        @else
+                                            <br> *{{ $selisihHari }} Hari*
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 {{-- kolom aksi --}}
-                                <td class="text-center">
+                                <td>
                                     {{-- UNTUK MENAMPILKAN VIEW CETAK FORM INSTALASI SOFTWARE --}}
                                     <div class="overlay" id="overlay_{{ $data->id_permintaan }}">
                                         <div class="iframe-container">

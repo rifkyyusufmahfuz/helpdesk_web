@@ -46,13 +46,11 @@
 
         <div class="card-body">
             <div class="tombol-aksi-hardsoft">
-                <p class="text-danger small">*Cek hardware yang bermasalah, setelah itu ajukan hasil pengecekan ke manager
+                <p class="text-danger small">*Cek hardware yang bermasalah, setelah itu ajukan hasil pengecekan ke Manajer
                     untuk divalidasi</p>
                 <button class="btn btn-md btn-success  mb-3" data-bs-toggle="modal" data-bs-target="#tambah_software"><i
                         class="fas fa-plus fa-sm mr-2"></i>Cek Hardware</button>
 
-                {{-- <button class="btn btn-md btn-info  mb-3" data-toggle="modal" data-target="#forwardToManager"><i
-                        class="fas fa-forward fa-sm mr-2"></i>Ajukan ke Manager</button> --}}
                 @foreach ($permintaan as $data)
                     <button class="btn btn-md btn-info mb-3" data-bs-toggle="modal"
                         data-bs-target="#ajukan_ke_manager_{{ $data->id_permintaan }}"

@@ -17,29 +17,42 @@
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            <th>Kebutuhan</th>
+                            {{-- <th>Kebutuhan</th> --}}
                             <th>Status Otorisasi</th>
-                            <th class="text-center">Status Permintaan</th>
-                            <th class="text-center">Aksi</th>
+                            <th>Status Permintaan</th>
+                            <th>Waktu Penyelesaian</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
-                    <tbody>
+                    <tbody class="small">
                         <?php $no = 1; ?>
                         @foreach ($permintaan as $data)
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                <td>{{ $data->keluhan_kebutuhan }}</td>
-                                <td>{{ ucwords($data->status_approval) }}</td>
+                                {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
+                                <td>
+                                    <span
+                                        class="p-2 badge badge-{{ $data->status_approval == 'pending'
+                                            ? 'danger'
+                                            : ($data->status_approval == 'waiting' || $data->status_approval == 'revision'
+                                                ? 'warning'
+                                                : ($data->status_approval == 'approved'
+                                                    ? 'success'
+                                                    : ($data->status_approval == 'rejected'
+                                                        ? 'danger'
+                                                        : ''))) }}">
+                                        {{ ucwords($data->status_approval) }}
+                                    </span>
+                                </td>
 
-
-                                <td class="text-center">
+                                <td>
                                     <span
                                         class="badge badge-{{ $data->status_permintaan == '1'
                                             ? 'danger'
@@ -75,7 +88,25 @@
                                     </span>
                                 </td>
 
-                                <td class="text-center">
+                                <td>
+                                    @if ($data->tanggal_penyelesaian != '')
+                                        {{ date('Y-m-d', strtotime($data->tanggal_penyelesaian)) }}
+                                        @php
+                                            $tanggal_penyelesaian = \Carbon\Carbon::parse($data->tanggal_penyelesaian);
+                                            $sekarang = \Carbon\Carbon::now();
+                                            $selisihHari = $sekarang->diffInDays($tanggal_penyelesaian) + 1;
+                                        @endphp
+                                        @if ($tanggal_penyelesaian->isPast())
+                                            <br> *Selesai*
+                                        @else
+                                            <br> *{{ $selisihHari }} Hari*
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td>
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
 
@@ -96,19 +127,28 @@
 
                                         <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
-                                        <form
-                                            action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
-                                            method="GET" style="display: inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
-                                                title="Pengajuan Software"
-                                                {{ $data->status_permintaan != '1' && $data->status_approval != 'revision' ? 'disabled' : '' }}>
-                                                <i class="fas fa-cogs"></i>
+                                        @if ($data->status_permintaan != '1' && $data->status_approval != 'revision')
+                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
+                                                class="btn btn-sm btn-primary rounded text-white mr-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#estimasi_penyelesaian_{{ $data->id_permintaan }}"
+                                                title="Estimasi Penyelesaian"><i class="fas fa-clock"></i>
                                             </button>
-                                        </form>
+                                        @elseif ($data->status_permintaan == '1' || $data->status_approval == 'revision')
+                                            <form
+                                                action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
+                                                method="GET" style="display: inline-block;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
+                                                    title="Pengajuan Software"
+                                                    {{ $data->status_permintaan != '1' && $data->status_approval != 'revision' ? 'disabled' : '' }}>
+                                                    <i class="fas fa-cogs"></i>
+                                                </button>
+                                            </form>
+                                        @endif
 
                                         <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
                                             method="GET" style="display: inline-block;">
@@ -130,8 +170,8 @@
 
     @if (isset($data))
         @include('admin.software.modal.proses_software')
-        {{-- @include('admin.software.modal.input_barang') --}}
         @include('admin.software.modal.detail_permintaan_software')
         @include('admin.laporan_permintaan.cetak_laporan_permintaan_software')
+        @include('admin.software.modal.input_estimasi_penyelesaian')
     @endif
 @endsection

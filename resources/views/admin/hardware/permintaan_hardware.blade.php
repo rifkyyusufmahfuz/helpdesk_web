@@ -17,29 +17,25 @@
             <div class="table-responsive">
                 <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th>No.</th>
                             <th>ID Permintaan</th>
                             <th>Waktu Pengajuan</th>
-                            {{-- <th>Keluhan</th> --}}
-                            {{-- <th>Nama Pegawai</th> --}}
-                            <th class="text-center">Status Validasi</th>
-                            <th class="text-center">Status Permintaan</th>
-                            <th class="text-center">Aksi</th>
+                            <th>Status Validasi</th>
+                            <th>Status Permintaan</th>
+                            <th>Waktu Penyelesaian</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     {{-- PERMINTAAN SOFTWARE VIEW ADMIN --}}
-                    <tbody>
+                    <tbody class="small">
                         <?php $no = 1; ?>
                         @foreach ($permintaan as $data)
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
-                                {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
-                                {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
-                                {{-- <td>{{ $data->nama }}</td> --}}
-                                <td class="text-center">
+                                <td>
                                     <span
                                         class="badge badge-{{ $data->status_approval == 'pending'
                                             ? 'danger'
@@ -70,7 +66,7 @@
                                 </td>
 
 
-                                <td class="text-center">
+                                <td>
                                     <span
                                         class="badge badge-{{ $data->status_permintaan == '1'
                                             ? 'danger'
@@ -91,7 +87,7 @@
                                         {{ $data->status_permintaan == '1'
                                             ? 'Pending'
                                             : ($data->status_permintaan == '2'
-                                                ? 'Menunggu validasi manager'
+                                                ? 'Menunggu validasi Manajer'
                                                 : ($data->status_permintaan == '3'
                                                     ? 'Diterima'
                                                     : ($data->status_permintaan == '4'
@@ -106,8 +102,26 @@
                                     </span>
                                 </td>
 
+                                <td>
+                                    @if ($data->tanggal_penyelesaian != '')
+                                        {{ date('Y-m-d', strtotime($data->tanggal_penyelesaian)) }}
+                                        @php
+                                            $tanggal_penyelesaian = \Carbon\Carbon::parse($data->tanggal_penyelesaian);
+                                            $sekarang = \Carbon\Carbon::now();
+                                            $selisihHari = $sekarang->diffInDays($tanggal_penyelesaian) + 1;
+                                        @endphp
+                                        @if ($tanggal_penyelesaian->isPast())
+                                            <br> *Selesai*
+                                        @else
+                                            <br> *{{ $selisihHari }} Hari*
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
+                                </td>
 
-                                <td class="text-center">
+
+                                <td>
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
                                         @if ($data->status_permintaan != '1')
@@ -147,8 +161,17 @@
 
                                         <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_permintaan_hardware_{{ $data->id_permintaan }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
+
+
+
+                                        <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
+                                            class="btn btn-sm btn-primary rounded text-white mr-1" data-bs-toggle="modal"
+                                            data-bs-target="#estimasi_penyelesaian_{{ $data->id_permintaan }}"
+                                            title="Estimasi Penyelesaian"><i class="fas fa-clock"></i>
+                                        </button>
+
 
                                         <form action="/admin/permintaan_hardware/cek_hardware/{{ $data->id_permintaan }}"
                                             method="GET" style="display: inline-block;">
@@ -182,7 +205,7 @@
     </div>
 
     @if (isset($data))
-        {{-- @include('admin.software.modal.proses_software') --}}
+        @include('admin.software.modal.input_estimasi_penyelesaian')
         @include('admin.hardware.modal.detail_permintaan_hardware')
         @include('admin.laporan_permintaan.cetak_laporan_permintaan_hardware')
     @endif

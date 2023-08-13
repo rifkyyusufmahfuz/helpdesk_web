@@ -103,7 +103,7 @@
         </li>
 
         {{-- master barang --}}
-        <li class="nav-item {{ request()->is('superadmin/master_barang') || request()->is('') ? 'active' : '' }}">
+        {{-- <li class="nav-item {{ request()->is('superadmin/master_barang') || request()->is('') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('superadmin/master_barang') ? '' : 'collapsed' }}" href="#"
                 data-toggle="collapse" data-target="#collapseMasterBarang" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-boxes"></i>
@@ -121,7 +121,7 @@
                     </a>
                 </div>
             </div>
-        </li>
+        </li> --}}
 
         <hr class="sidebar-divider">
 
@@ -192,8 +192,7 @@
             class="nav-item {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('') | request()->is('superadmin/transaksi_bast_barang_masuk') ? 'active' : '' }}">
 
             <a class="nav-link {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('superadmin/transaksi_bast_barang_masuk') ? '' : 'collapsed' }}"
-                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi"
-                aria-controls="collapseTwo">
+                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-user-gear"></i>
                 <span>BAST</span>
             </a>

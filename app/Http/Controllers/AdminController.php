@@ -430,7 +430,6 @@ class AdminController extends Controller
                 ];
             }
 
-
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
             $id_permintaan = $request->id_permintaan;
 
@@ -455,13 +454,6 @@ class AdminController extends Controller
                 'status_barang' => 'diterima',
                 'updated_at' => now(),
             ];
-
-            // $tindak_lanjut = TindakLanjutModel::find($id_permintaan);
-            // $id_tindak_lanjut = $tindak_lanjut->id_tindak_lanjut;
-            // $data_tindak_lanjut = [
-            //     'tanggal_penanganan' => now(),
-            //     'updated_at' => now()
-            // ];
 
             $update_permintaan = $this->modeladmin->update_permintaan($data_permintaan, $id_permintaan);
             $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
@@ -687,7 +679,9 @@ class AdminController extends Controller
             $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
-            return $update_permintaan && $update_barang && $kirim_notifikasi ? back()->with('toast_success', 'Proses permintaan telah diselesaikan, requestor telah diberitahukan untuk mengambil unit!') : back()->with('toast_success', 'Status permintaan gagal diubah!');
+            return $update_permintaan && $update_barang && $kirim_notifikasi
+                ? back()->with('toast_success', 'Proses permintaan telah diselesaikan, requestor telah diberitahukan untuk mengambil unit!')
+                : back()->with('toast_error', 'Status permintaan gagal diubah!');
         } else if ($request->has('acc_permintaan')) {
             //update table permintaan
             $data = [
@@ -696,13 +690,6 @@ class AdminController extends Controller
             ];
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
             $id_permintaan = $request->id_permintaan;
-
-            //update table barang
-            // $kode_barang = $request->kode_barang;
-            // $data_barang = [
-            //     'status_barang' => 'siap diambil',
-            //     'updated_at' => now()
-            // ];
 
             $permintaan = PermintaanModel::find($id_permintaan);
             $pegawaiId = $permintaan->id;
@@ -715,18 +702,18 @@ class AdminController extends Controller
             ];
 
             $update_permintaan = $this->modeladmin->update_permintaan($data, $id);
-            // $update_barang = $this->modeladmin->update_barang($data_barang, $kode_barang);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);
 
 
-            return $update_permintaan && $kirim_notifikasi ? back()->with('toast_success', 'Permintaan pengecekan hardware diterima, requestor telah diberikan notifikasi untuk menyerahkan barang.') : back()->with('toast_success', 'Permintaan gagal diupdate, silakan coba lagi!');
+            return $update_permintaan && $kirim_notifikasi
+                ? back()->with('toast_success', 'Permintaan pengecekan hardware diterima, requestor telah diberikan notifikasi untuk menyerahkan barang.')
+                : back()->with('toast_success', 'Permintaan gagal diupdate, silakan coba lagi!');
         }
         // untuk update hardware 
         else if ($request->has('status_hardware')) {
             $request->validate(
                 [
                     'status_hardware' => 'required',
-
                 ],
                 [
                     'status_hardware.required' => 'Pilih status hardware!',
@@ -739,16 +726,40 @@ class AdminController extends Controller
                 'problem' => $problem,
                 'updated_at' => now(),
             ];
-            return $this->modeladmin->update_hardware($data, $id) ? back()->with('toast_success', 'Status hardware dan problem berhasil diubah!') : back()->with('toast_success', 'Status hardware dan problem gagal diubah!');
+            return $this->modeladmin->update_hardware($data, $id)
+                ? back()->with('toast_success', 'Status hardware dan problem berhasil diubah!')
+                : back()->with('toast_error', 'Status hardware dan problem gagal diubah!');
+        }
+        //untuk estimasi penyelesaian
+        elseif ($request->has('estimasi_penyelesaian')) {
+            $request->validate(
+                [
+                    'tanggal_penyelesaian' => 'required',
+                ],
+                [
+                    'tanggal_penyelesaian.required' => 'Pilih tanggal penyelesaian!',
+                ]
+            );
+
+            $data = [
+                'tanggal_penyelesaian' => $request->tanggal_penyelesaian
+            ];
+
+            return $this->modeladmin->update_permintaan($data, $id)
+                ? back()->with('toast_success', 'Estimasi waktu penyelesaian telah ditetapkan!')
+                : back()->with('toast_error', 'Estimasi waktu penyelesaian gagal diinput!');
         }
         // untuk update software 
         else {
-            $request->validate([
-                'versi_software_update' => 'required',
+            $request->validate(
+                [
+                    'versi_software_update' => 'required',
 
-            ], [
-                'versi_software_update.required' => 'Isi versi software!',
-            ]);
+                ],
+                [
+                    'versi_software_update.required' => 'Isi versi software!',
+                ]
+            );
 
             $catatan = $request->notes_update ?: '-';
             $data = [
@@ -756,7 +767,9 @@ class AdminController extends Controller
                 'notes' => $catatan,
                 'updated_at' => now(),
             ];
-            return $this->modeladmin->update_software($data, $id) ? back()->with('toast_success', 'Versi software dan catatan berhasil diupdate!') : back()->with('toast_success', 'Update versi software dan catatan gagal!');
+            return $this->modeladmin->update_software($data, $id)
+                ? back()->with('toast_success', 'Versi software dan catatan berhasil diupdate!')
+                : back()->with('toast_success', 'Update versi software dan catatan gagal!');
         }
     }
 

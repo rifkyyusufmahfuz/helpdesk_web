@@ -64,7 +64,7 @@
 
                                         {{-- <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
                                             data-target="#detail_bast_masuk_{{ $data->id_bast }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button> --}}
 
                                     </div>

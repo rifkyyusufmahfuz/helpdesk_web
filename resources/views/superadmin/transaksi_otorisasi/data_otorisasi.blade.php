@@ -6,7 +6,7 @@
         <div class="card-header py-3">
             <div class="row">
                 <h4 class="card-title mx-2">Informasi Permintaan</h4>
-                <p class="small text-gray-800">Permintaan yang telah divalidasi & diotorisasi Manager</p>
+                <p class="small text-gray-800">Permintaan yang telah divalidasi & diotorisasi Manajer</p>
             </div>
         </div>
         <div class="card-body">
@@ -36,7 +36,7 @@
                                     <div class="btn-group" role="group">
                                         <button class="btn btn-sm btn-warning rounded text-white mr-1" data-toggle="modal"
                                             data-target="#detail_otorisasi{{ $data->id_otorisasi }}"
-                                            title="Lihat Permintaan"><i class="fas fa-eye"></i>
+                                            title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
                                         <form id="form-delete-{{ $data->id_otorisasi }}"
