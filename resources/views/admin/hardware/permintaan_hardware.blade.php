@@ -164,9 +164,8 @@
                                             title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
-
-
-                                        <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
+                                        <button
+                                            {{ $data->status_permintaan == '4' && $data->status_approval != 'approved' ? '' : 'disabled' }}
                                             class="btn btn-sm btn-primary rounded text-white mr-1" data-bs-toggle="modal"
                                             data-bs-target="#estimasi_penyelesaian_{{ $data->id_permintaan }}"
                                             title="Estimasi Penyelesaian"><i class="fas fa-clock"></i>

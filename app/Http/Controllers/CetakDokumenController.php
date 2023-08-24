@@ -112,65 +112,33 @@ class CetakDokumenController extends Controller
             "Software Lainnya"
         );
 
-        // // Ambil data permintaan
-        // $permintaan = PermintaanModel::findOrFail($id_permintaan);
-
-        // // Ambil data pegawai berdasarkan nip pada tabel users
-        // $pegawai = PegawaiModel::where('nip', $permintaan->user->nip)->firstOrFail();
-
-        // // Ambil data kategori software berdasarkan id_permintaan
-        // $kategori = DB::table('kategori_software')->where('id_kategori', $permintaan->id_kategori)->first();
-        // $table_software = DB::table('software')->where('id_permintaan', $id_permintaan)->get();
-
-        // $otorisasi = OtorisasiModel::where('id_otorisasi', $permintaan->id_otorisasi)->first();
-
-        // // Ambil data software yang telah dipilih
-        // $selectedSoftware = $table_software->pluck('nama_software')->toArray();
-
-        // // Ambil data dari table tindak lanjut admin
-        // $tindaklanjut = TindakLanjutModel::where('id_permintaan', $id_permintaan)->first();
-
-        // // Ambil data admin berdasarkan id pada tabel users
-        // $data_admin = null;
-        // if ($tindaklanjut) {
-        //     $data_admin = PegawaiModel::where('nip', $tindaklanjut->user->nip)->first();
-        // }
-
         //BARU
         // Ambil data permintaan
-        // $permintaan = DB::table('permintaan')->findOrFail($id_permintaan);
         $permintaan = $this->modelcetak->get_table_permintaan_by_id($id_permintaan);
 
         // Ambil data pegawai berdasarkan nip pada tabel users
         $get_nip = $permintaan->nip;
         $pegawai = $this->modelcetak->get_pegawai_by_nip($get_nip);
 
-        // $pegawai = DB::table('pegawai')->where('nip', $permintaan->user->nip)->firstOrFail();
 
-        // Ambil data kategori software berdasarkan id_permintaan
-        // $kategori = DB::table('kategori_software')->where('id_kategori', $permintaan->id_kategori)->first();
         $get_id_kategori = $permintaan->id_kategori;
         $kategori = $this->modelcetak->get_kategori_by_id_kategori($get_id_kategori);
 
-        // $table_software = DB::table('software')->where('id_permintaan', $id_permintaan)->get();
         $table_software = $this->modelcetak->get_software_by_id_permintaan($id_permintaan);
 
         $get_id_otorisasi = $permintaan->id_otorisasi;
-        // $otorisasi = DB::table('otorisasi')->where('id_otorisasi', $permintaan->id_otorisasi)->first();
         $otorisasi = $this->modelcetak->get_otorisasi_by_id_otorisasi($get_id_otorisasi);
 
         // Ambil data software yang telah dipilih
         $selectedSoftware = $table_software->pluck('nama_software')->toArray();
 
         // Ambil data dari table tindak lanjut admin
-        // $tindaklanjut = DB::table('tindak_lanjut')->where('id_permintaan', $id_permintaan)->first();
         $tindaklanjut = $this->modelcetak->get_tindak_lanjut_by_id_permintaan($id_permintaan);
 
         // Ambil data admin berdasarkan id pada tabel users
         $data_admin = null;
         if ($tindaklanjut) {
             $get_nip_tindak_lanjut = $tindaklanjut->nip;
-            // $data_admin = DB::table('pegawai')->where('nip', $tindaklanjut->user->nip)->first();
             $data_admin = $this->modelcetak->get_data_admin($get_nip_tindak_lanjut);
         }
 
@@ -422,18 +390,22 @@ class CetakDokumenController extends Controller
                 $query->whereBetween('permintaan.tanggal_permintaan', [$laporan->tanggal_awal, $laporan->tanggal_akhir]);
             })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
         } elseif ($laporan->periode_laporan === 'bulanan') {
+            $tanggal_parts = explode('-', $laporan->tanggal_awal);
+            $tahun = $tanggal_parts[0];
+            $bulan = $tanggal_parts[1];
+            
             // Hitung total permintaan dan jumlah software/hardware bulanan
             $totalPermintaanSoftware = PermintaanModel::where('tipe_permintaan', 'software')
-                ->whereMonth('tanggal_permintaan', $laporan->tanggal_awal)->count();
+                ->whereMonth('tanggal_permintaan', $bulan)->count();
             $totalPermintaanHardware = PermintaanModel::where('tipe_permintaan', 'hardware')
-                ->whereMonth('tanggal_permintaan', $laporan->tanggal_awal)->count();
-
-            $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($laporan) {
-                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->bultanggal_awalan);
+                ->whereMonth('tanggal_permintaan', $bulan)->count();
+            
+            $softwareCounts = SoftwareModel::whereHas('permintaan', function ($query) use ($bulan) {
+                $query->whereMonth('permintaan.tanggal_permintaan', $bulan);
             })->groupBy('software.nama_software')->selectRaw('software.nama_software, count(*) as total')->get();
-
-            $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($laporan) {
-                $query->whereMonth('permintaan.tanggal_permintaan', $laporan->tanggal_awal);
+            
+            $hardwareCounts = HardwareModel::whereHas('permintaan', function ($query) use ($bulan) {
+                $query->whereMonth('permintaan.tanggal_permintaan', $bulan);
             })->groupBy('hardware.komponen')->selectRaw('hardware.komponen, count(*) as total')->get();
         } elseif ($laporan->periode_laporan === 'tahunan') {
             // Hitung total permintaan dan jumlah software/hardware tahunan

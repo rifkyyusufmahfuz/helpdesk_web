@@ -179,6 +179,7 @@
 
         $("#btn_close").click(function() {
             $(".filter_option").hide();
+            $("#submit_btn").prop("disabled", true);
         });
     });
 </script>

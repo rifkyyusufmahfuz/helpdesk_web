@@ -24,20 +24,21 @@
 
 
 
-                    <form method="post" action="/admin/crud/{{ $data->id_permintaan }}">
+                    <form method="POST" action="/admin/crud/{{ $data->id_permintaan }}">
                         @csrf
                         @method('PUT')
                         <input hidden name="estimasi_penyelesaian" id="estimasi_penyelesaian" value="software">
                         <div class="form-group">
                             <input class="form-control" type="date" name="tanggal_penyelesaian"
                                 value="{{ $data->tanggal_penyelesaian ? date('Y-m-d', strtotime($data->tanggal_penyelesaian)) : '' }}"
-                                id="tanggal_penyelesaian_{{ $data->id_permintaan }}" min="{{ date('Y-m-d') }}">
+                                id="tanggal_penyelesaian_{{ $data->id_permintaan }}" min="{{ date('Y-m-d') }}" required>
                         </div>
                         <div class="modal-footer">
                             <button type="reset" id="btn_close_estimasi_{{ $data->id_permintaan }}"
                                 class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button id="submit_estimasi_{{ $data->id_permintaan }}" type="submit"
-                                class="btn btn-sm btn-primary">Simpan</button>
+                            {{-- <button id="submit_estimasi_{{ $data->id_permintaan }}" type="submit"
+                                class="btn btn-sm btn-primary">Simpan</button> --}}
+                            <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -45,7 +46,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             const tanggalInput = document.getElementById('tanggal_penyelesaian_{{ $data->id_permintaan }}');
             const tombolSimpan = document.getElementById('submit_estimasi_{{ $data->id_permintaan }}');
@@ -63,10 +64,10 @@
 
             tanggalInput.dispatchEvent(new Event('change'));
         });
-    </script>
+    </script> --}}
 
 
-    <script>
+    {{-- <script>
         $("#submit_estimasi_{{ $data->id_permintaan }}").prop("disabled", true);
 
         function toggleSubmitButton() {
@@ -93,5 +94,5 @@
                 $("#submit_estimasi_{{ $data->id_permintaan }}").prop("disabled", true);
             });
         });
-    </script>
+    </script> --}}
 @endforeach

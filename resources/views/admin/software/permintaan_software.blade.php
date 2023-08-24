@@ -172,6 +172,6 @@
         @include('admin.software.modal.proses_software')
         @include('admin.software.modal.detail_permintaan_software')
         @include('admin.laporan_permintaan.cetak_laporan_permintaan_software')
-        @include('admin.software.modal.input_estimasi_penyelesaian')
+        {{-- @include('admin.software.modal.input_estimasi_penyelesaian') --}}
     @endif
 @endsection
