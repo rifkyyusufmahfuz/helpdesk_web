@@ -34,8 +34,8 @@
                                             <li>Menunggu admin menanggapi permintaan, dapat dicek pada kolom status
                                                 permintaan untuk memantau progres permintaan.</li>
                                             <li>Setelah permintaan diterima oleh Admin, segera bawa unit yang akan dilakukan
-                                                pengecekan dan diserahkan ke Admin di NOC Kantor Pusat Juanda.</li>
-                                            <li>Proses serah terima barang. Anda akan diberikan notifikasi bahwa telah
+                                                pengecekan ke NOC Kantor Pusat Stasiun Juanda.</li>
+                                            <li>Setelah menyerahkan unit ke NOC, Anda akan diberikan notifikasi bahwa telah
                                                 melakukan serah terima barang.</li>
                                             <li>Admin akan melakukan pengecekan hardware sesuai keluhan.</li>
                                             <li>Admin akan memberikan rekomendasi hasil pengecekan yang telah divalidasi
@@ -44,8 +44,10 @@
                                                 membawa unit tersebut ke service center.</li>
                                             <li>Setelah proses pengecekan dan perbaikan selesai, Anda akan diberitahukan
                                                 untuk mengambil unit yang telah selesai dilakukan pengecekan.</li>
-                                            <li>Disarankan untuk selalu memantau status permintaan dan notifikasi untuk
-                                                memantau progres permintaan.</li>
+                                            <li>Setelah mengambil unit di NOC, Anda akan diberikan notifikasi bahwa
+                                                telah melakukan serah terima barang.</li>
+                                            <li>Disarankan untuk selalu memantau status permintaan dan notifikasi secara
+                                                berkala untuk memantau progres permintaan.</li>
                                         </ol>
 
                                     </div>

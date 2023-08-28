@@ -39,8 +39,22 @@
                                                 untuk memantau progres permintaan.</li>
                                             <li>Admin akan memilih software yang sesuai dengan permintaan dan spesifikasi PC
                                                 atau Laptop yang Anda ajukan.</li>
-                                            <li>Admin akan mengajukan terlebih dahulu permintaan Anda ke Manajer untuk
-                                                mendapatkan persetujuan instalasi software yang diminta</li>
+                                            <li>Admin akan mengajukan permintaan Anda ke Manajer untuk mendapatkan
+                                                persetujuan instalasi software yang diminta</li>
+                                            <li>Setelah disetujui, silakan bawa PC/Laptop yang akan dilakukan instalasi ke
+                                                NOC kantor Pusat Stasiun Juanda.</li>
+                                            <li>Setelah menyerahkan PC/Laptop ke NOC, Anda akan diberikan notifikasi bahwa
+                                                telah melakukan serah terima barang.</li>
+                                            <li>Proses instalasi software segera dilakukan atau menunggu antrian sesuai
+                                                banyaknya permintaan.</li>
+                                            <li>Apabila menunggu antrian, maka Admin akan memberikan jangka waktu
+                                                penyelesaian permintaan.</li>
+                                            <li>Setelah proses instalasi selesai dilakukan, Anda akan diberikan notifikasi
+                                                untuk mengambil PC/Laptop di NOC kantor Pusat Stasiun Juanda.</li>
+                                            <li>Setelah mengambil PC/Laptop di NOC, Anda akan diberikan notifikasi bahwa
+                                                telah melakukan serah terima barang.</li>
+                                            <li>Disarankan untuk selalu memantau status permintaan dan notifikasi secara
+                                                berkala untuk memantau progres permintaan.</li>
                                         </ol>
 
                                     </div>
