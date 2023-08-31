@@ -47,16 +47,11 @@ class ResetPasswordController extends Controller
         ]);
 
         Mail::send('auth.password.email.token-reset-password', ['token' => $token], function ($message) use ($request) {
-            // $message->from('no-reply@krl.co.id', 'KCI - IT Helpdesk');
             $message->to($request->email);
             $message->subject('Reset Password');
         });
-
-        // return view('auth.password.kirim_email_reset_password')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
-
+  
         return redirect('/')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
-
-        // return view('auth.password.kirim_email_reset_password')->with('toast_info', 'Tautan reset password telah dikirimkan, silakan cek email Anda!');
     }
 
     //halaman yang diakses dari link email tautan dengan token reset email
@@ -113,6 +108,7 @@ class ResetPasswordController extends Controller
 
             $namaPegawai = $pegawai->nama;
             $role = $pegawai->nama_role;
+
             // Lanjutkan dengan menambahkan notifikasi ke tabel notifikasi
             $pesan = "" . $email . " (" . $namaPegawai  . " - " . ucwords($role) .  ") telah melakukan reset password.";
 
@@ -125,7 +121,6 @@ class ResetPasswordController extends Controller
                 'tautan' => '/superadmin/datauseraktif',
                 'read_at' => null,
                 'created_at' => now(),
-                // 'updated_at' => now()
             ]);
 
             DB::table('notifikasi')->insert([
@@ -135,7 +130,6 @@ class ResetPasswordController extends Controller
                 'tautan' => '/pegawai',
                 'read_at' => null,
                 'created_at' => now(),
-                // 'updated_at' => now()
             ]);
 
 
