@@ -400,6 +400,41 @@ class ManagerController extends Controller
                     'user_id' => $pegawaiId,
                 ];
 
+                //kirim notifikasi ke requestor / pegawai melalui email
+                $email = DB::table('permintaan')
+                    ->join('users', 'permintaan.id', '=', 'users.id')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->value('users.email');
+
+                $data_unit = DB::table('barang')
+                    ->join('permintaan', 'barang.kode_barang', '=', 'permintaan.kode_barang')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select('barang.*')
+                    ->get();
+
+                $otorisasi_data = DB::table('otorisasi')
+                    ->join('permintaan', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select('otorisasi.*')
+                    ->get();
+
+                $formatted_id_permintaan = Str::replace('-', '/', $id_permintaan);
+
+                Mail::send(
+                    'notifikasi_email.requestor.permintaan_ditolak',
+                    [
+                        'id_permintaan' => $id_permintaan,
+                        'id_permintaan_formatted' => $formatted_id_permintaan,
+                        'data_unit' => $data_unit,
+                        'otorisasi_data' => $otorisasi_data,
+                    ],
+                    function ($message) use ($email, $formatted_id_permintaan) {
+                        $message->to($email);
+                        $message->subject('Permintaan Instalasi Software Ditolak: ' . $formatted_id_permintaan);
+                    }
+                );
+
+
                 // kirim notifikasi ke admin
                 $id_permintaan = $request->id_permintaan;
                 $permintaan = $this->modelmanager->get_admin_by_id_tindaklanjut($id_permintaan);
