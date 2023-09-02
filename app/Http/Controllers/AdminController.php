@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminModel;
-use App\Models\OtorisasiModel;
 use App\Models\PermintaanModel;
-use App\Models\TindakLanjutModel;
 use Illuminate\Http\Request;
 use App\Utils\RomanNumberConverter;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -665,6 +665,53 @@ class AdminController extends Controller
                     'created_at' => now(),
                     'user_id' => $pegawaiId,
                 ];
+
+                //kirim notifikasi ke requestor / pegawai melalui email
+                $email = DB::table('permintaan')
+                    ->join('users', 'permintaan.id', '=', 'users.id')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->value('users.email');
+
+                $data_unit = DB::table('barang')
+                    ->join('permintaan', 'barang.kode_barang', '=', 'permintaan.kode_barang')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select('barang.*')
+                    ->get();
+
+                $data_tindak_lanjut = DB::table('tindak_lanjut')
+                    ->join('permintaan', 'tindak_lanjut.id_permintaan', '=', 'permintaan.id_permintaan')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select('tindak_lanjut.*')
+                    ->get();
+
+                $data_software = DB::table('permintaan')
+                    ->join('software', 'permintaan.id_permintaan', '=', 'software.id_permintaan')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select(
+                        'permintaan.*',
+                        'software.*',
+                    )
+                    ->get();
+
+                $permintaan = PermintaanModel::find($id_permintaan);
+                $keluhan = $permintaan->keluhan_kebutuhan;
+
+                $formatted_id_permintaan = Str::replace('-', '/', $id_permintaan);
+
+                Mail::send(
+                    'notifikasi_email.requestor.permintaan_software_selesai',
+                    [
+                        'id_permintaan' => $id_permintaan,
+                        'id_permintaan_formatted' => $formatted_id_permintaan,
+                        'data_unit' => $data_unit,
+                        'keluhan' => $keluhan,
+                        'data_software' => $data_software
+                    ],
+                    function ($message) use ($email, $formatted_id_permintaan) {
+                        $message->to($email);
+                        $message->subject('Instalasi Software Selesai: ' . $formatted_id_permintaan);
+                    }
+                );
             } elseif ($request->selesaikan_permintaan == 'permintaan_hardware') {
                 $notifikasi = [
                     'pesan' => 'Permintaan pengecekan hardware Anda dengan ID Permintaan = ' . $id_permintaan . ' telah selesai. Silakan ambil unit di NOC. Terima kasih!',
@@ -672,6 +719,44 @@ class AdminController extends Controller
                     'created_at' => now(),
                     'user_id' => $pegawaiId,
                 ];
+
+                //kirim notifikasi ke requestor / pegawai melalui email
+                $email = DB::table('permintaan')
+                    ->join('users', 'permintaan.id', '=', 'users.id')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->value('users.email');
+
+                $data_unit = DB::table('barang')
+                    ->join('permintaan', 'barang.kode_barang', '=', 'permintaan.kode_barang')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select('barang.*')
+                    ->get();
+
+                $data_tindak_lanjut = DB::table('tindak_lanjut')
+                    ->join('permintaan', 'tindak_lanjut.id_permintaan', '=', 'permintaan.id_permintaan')
+                    ->where('permintaan.id_permintaan', $id_permintaan)
+                    ->select('tindak_lanjut.*')
+                    ->get();
+
+                $permintaan = PermintaanModel::find($id_permintaan);
+                $keluhan = $permintaan->keluhan_kebutuhan;
+
+                $formatted_id_permintaan = Str::replace('-', '/', $id_permintaan);
+
+                Mail::send(
+                    'notifikasi_email.requestor.permintaan_hardware_selesai',
+                    [
+                        'id_permintaan' => $id_permintaan,
+                        'id_permintaan_formatted' => $formatted_id_permintaan,
+                        'data_unit' => $data_unit,
+                        'tindak_lanjut' => $data_tindak_lanjut,
+                        'keluhan' => $keluhan
+                    ],
+                    function ($message) use ($email, $formatted_id_permintaan) {
+                        $message->to($email);
+                        $message->subject('Pengecekan Hardware Selesai: ' . $formatted_id_permintaan);
+                    }
+                );
             }
 
 
@@ -700,6 +785,35 @@ class AdminController extends Controller
                 'created_at' => now(),
                 'user_id' => $pegawaiId,
             ];
+
+
+            //kirim notifikasi ke requestor / pegawai melalui email
+            $email = DB::table('permintaan')
+                ->join('users', 'permintaan.id', '=', 'users.id')
+                ->where('permintaan.id_permintaan', $id_permintaan)
+                ->value('users.email');
+
+            $data_unit = DB::table('barang')
+                ->join('permintaan', 'barang.kode_barang', '=', 'permintaan.kode_barang')
+                ->where('permintaan.id_permintaan', $id_permintaan)
+                ->select('barang.*')
+                ->get();
+            $formatted_id_permintaan = Str::replace('-', '/', $id_permintaan);
+            $keluhan = $permintaan->keluhan_kebutuhan;
+
+            Mail::send(
+                'notifikasi_email.requestor.permintaan_diterima',
+                [
+                    'id_permintaan' => $id_permintaan,
+                    'id_permintaan_formatted' => $formatted_id_permintaan,
+                    'data_unit' => $data_unit,
+                    'keluhan' => $keluhan
+                ],
+                function ($message) use ($email, $formatted_id_permintaan) {
+                    $message->to($email);
+                    $message->subject('Permintaan Pengecekan Hardware Diterima: ' . $formatted_id_permintaan);
+                }
+            );
 
             $update_permintaan = $this->modeladmin->update_permintaan($data, $id);
             $kirim_notifikasi = $this->modeladmin->input_notifikasi($notifikasi);

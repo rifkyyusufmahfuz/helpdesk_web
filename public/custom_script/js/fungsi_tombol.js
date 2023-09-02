@@ -90,24 +90,6 @@ $(document).ready(function() {
     });
 });
 
-
-// tombol aksi hapus software
-// function confirm_delete_software(id) {
-//     Swal.fire({
-//         title: 'Hapus software?',
-//         text: 'Membatalkan software yang akan diinstal pada permintaan ini.',
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonText: 'Ya',
-//         cancelButtonText: 'Batal',
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             // Submit form jika user menekan tombol "Ya, hapus"
-//             document.querySelector('#form-delete-' + id).submit();
-//         }
-//     });
-// }
-
 //untuk admin
 function instalasi_selesai(id) {
 
@@ -143,7 +125,6 @@ function instalasi_selesai(id) {
 function terima_permintaan(id) {
     Swal.fire({
         title: 'Terima Permintaan',
-        // text: 'Terima permintaan pengecekan hardware, status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk menyerahkan unit yang akan dicek ke NOC.',
         html: '<div style="text-align: center;">Terima permintaan pengecekan hardware. <br> Status permintaan akan diubah dan requestor akan mendapatkan notifikasi untuk menyerahkan unit yang akan dicek ke NOC.</div>',
         icon: 'question',
         showCancelButton: true,
