@@ -131,14 +131,17 @@ class AdminController extends Controller
         $permintaan = $this->modeladmin->get_permintaan_software_by_id($id_permintaan);
         $software = $this->modeladmin->get_software_by_id($id_permintaan);
 
-        $isSoftwareFilled = false;
+        $isSoftwareFilled = true; // Anggap awalnya semuanya terisi
+
         if ($software) {
             foreach ($software as $sw) {
-                if (!empty($sw->versi_software) && !empty($sw->notes)) {
-                    $isSoftwareFilled = true;
+                if (empty($sw->versi_software) || empty($sw->notes)) {
+                    $isSoftwareFilled = false;
                     break;
                 }
             }
+        } else {
+            $isSoftwareFilled = false; // Tidak ada data software
         }
 
         return view(

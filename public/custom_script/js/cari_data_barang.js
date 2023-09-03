@@ -50,19 +50,19 @@ $(document).ready(function() {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    var textareas = document.querySelectorAll('textarea');
+// document.addEventListener('DOMContentLoaded', function() {
+//     var textareas = document.querySelectorAll('textarea');
 
-    textareas.forEach(function(textarea) {
-        textarea.addEventListener('input', function() {
-            var text = textarea.value.toLowerCase();
-            var sentences = text.split('. ');
+//     textareas.forEach(function(textarea) {
+//         textarea.addEventListener('input', function() {
+//             var text = textarea.value.toLowerCase();
+//             var sentences = text.split('. ');
 
-            for (var i = 0; i < sentences.length; i++) {
-                sentences[i] = sentences[i].charAt(0).toUpperCase() + sentences[i].slice(1);
-            }
+//             for (var i = 0; i < sentences.length; i++) {
+//                 sentences[i] = sentences[i].charAt(0).toUpperCase() + sentences[i].slice(1);
+//             }
 
-            textarea.value = sentences.join('. ');
-        });
-    });
-});
+//             textarea.value = sentences.join('. ');
+//         });
+//     });
+// });

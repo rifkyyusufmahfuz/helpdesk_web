@@ -31,21 +31,21 @@
                         <div><b>Kategori</b></div>
                         <div>
                             @if ($data->operating_system == 1)
-                                <span>Sistem Operasi</span>
+                                <span class="p-1 badge badge-warning">Sistem Operasi</span>
                             @endif
                             @if ($data->microsoft_office == 1)
-                                <span>Microsoft Office</span>
+                                <span class="p-1 badge badge-primary">Microsoft Office</span>
                             @endif
                             @if ($data->software_design == 1)
-                                <span>Software Design</span>
+                                <span class="p-1 badge badge-success">Software Design</span>
                             @endif
                             @if ($data->software_lainnya == 1)
-                                <span>Lainnya</span>
+                                <span class="p-1 badge badge-secondary">Lainnya</span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="form-group px-4">
+                    <div class="form-group px-3">
                         <div><b>Kebutuhan</b></div>
                         <div>{{ $data->keluhan_kebutuhan }}</div>
                     </div>
@@ -54,7 +54,7 @@
                     <div class="row">
                         <div class="form-group px-3">
                             <div><b>Catatan dari Manajer</b></div>
-                            <div class="text-danger font-weight-bold">{{ $data->catatan }}</div>
+                            <div class="text-danger font-weight-bold">"{{ $data->catatan }}"</div>
                         </div>
                     </div>
                 @else
