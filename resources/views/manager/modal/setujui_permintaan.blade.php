@@ -44,7 +44,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <p class="text-center">Nomor Permintaan: <b>{{ $data->id_permintaan }}</b></p>
+                        <p class="text-center">Nomor Tiket : <b>#{{ $data->id_permintaan }}</b></p>
                         <hr>
                         <div class="form-group text-center">
                             <label for="catatan_manager_{{ $data->id_permintaan }}">Catatan</label>
@@ -74,7 +74,7 @@
                                     id="konfirmasi_{{ $data->id_permintaan }}">
                                 <label class="form-check-label text-justify"
                                     for="konfirmasi_{{ $data->id_permintaan }}">
-                                    Setujui permintaan <b>{{ $data->id_permintaan }}</b> dan akan diteruskan ke Admin
+                                    Setujui permintaan <b>#{{ $data->id_permintaan }}</b> dan akan diteruskan ke Admin
                                     untuk melanjutkan proses instalasi.
                                 </label>
                             </div>

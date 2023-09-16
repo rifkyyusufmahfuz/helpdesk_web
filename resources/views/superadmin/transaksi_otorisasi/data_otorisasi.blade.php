@@ -16,7 +16,7 @@
                         <tr>
                             <th>ID Otorisasi / Validasi</th>
                             <th>Tanggal Otorisasi / Validasi</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Tipe Permintaan</th>
                             <th>Catatan</th>
                             <th class="text-center">Aksi</th>
@@ -29,7 +29,7 @@
                             <tr>
                                 <td>{{ $data->id_otorisasi }}</td>
                                 <td>{{ $data->otorisasi_created_at }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->tipe_permintaan }}</td>
                                 <td>{{ $data->catatan }}</td>
                                 <td class="text-center">

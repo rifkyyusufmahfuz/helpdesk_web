@@ -68,7 +68,7 @@
             <tr>
                 <td class="jarak-kiri">Nomor Request</td>
                 <td>:</td>
-                <td>{{ $id_permintaan }}</td>
+                <td id="garis_no_request">#{{ $id_permintaan }}</td>
             </tr>
         </table>
         <table>

@@ -311,47 +311,11 @@ class ManagerController extends Controller
                     'updated_at' => now(),
                 ];
 
-                //kirim notifikasi ke requestor / pegawai
-                $permintaan = $this->modelmanager->cari_requestor($id_permintaan);
-                $pegawaiId = $permintaan->id;
-                $notifikasi = [
-                    'pesan' => 'Permintaan Instalasi Software dengan ID Permintaan "' . $id_permintaan . '" telah disetujui. Silakan bawa unit yang akan diinstalasi. Terima kasih!',
-                    'tautan' => '/pegawai/permintaan_software',
-                    'created_at' => now(),
-                    'user_id' => $pegawaiId,
-                ];
-
-                //kirim notifikasi ke requestor / pegawai melalui email
-                $email = DB::table('permintaan')
-                    ->join('users', 'permintaan.id', '=', 'users.id')
-                    ->where('permintaan.id_permintaan', $id_permintaan)
-                    ->value('users.email');
-
-                $data_unit = DB::table('barang')
-                    ->join('permintaan', 'barang.kode_barang', '=', 'permintaan.kode_barang')
-                    ->where('permintaan.id_permintaan', $id_permintaan)
-                    ->select('barang.*')
-                    ->get();
-                $formatted_id_permintaan = Str::replace('-', '/', $id_permintaan);
-
-                Mail::send(
-                    'notifikasi_email.requestor.permintaan_disetujui',
-                    [
-                        'id_permintaan' => $id_permintaan,
-                        'id_permintaan_formatted' => $formatted_id_permintaan,
-                        'data_unit' => $data_unit
-                    ],
-                    function ($message) use ($email, $formatted_id_permintaan) {
-                        $message->to($email);
-                        $message->subject('Permintaan Instalasi Software Disetujui: ' . $formatted_id_permintaan);
-                    }
-                );
-
                 // kirim notifikasi ke admin
                 $id_permintaan = $request->id_permintaan;
                 $permintaan = $this->modelmanager->get_admin_by_id_tindaklanjut($id_permintaan);
                 $notifikasi_admin = [
-                    'pesan' => 'Permintaan Instalasi Software dengan ID Permintaan "' . $id_permintaan . '" telah disetujui oleh Manajer. Requestor telah diberitahukan untuk menyerahkan unit ke NOC.',
+                    'pesan' => 'Permintaan Instalasi Software dengan Nomor Tiket "#' . $id_permintaan . '" telah disetujui oleh Manajer.',
                     'tautan' => '/admin/permintaan_software',
                     'created_at' => now(),
                     'role_id' => 2,
@@ -390,56 +354,11 @@ class ManagerController extends Controller
                     'updated_at' => now(),
                 ];
 
-                // kirim notifikasi ke requestor / pegawai 
-                $permintaan = $this->modelmanager->cari_requestor($id_permintaan);
-                $pegawaiId = $permintaan->id;
-                $notifikasi = [
-                    'pesan' => 'Maaf permintaan Instalasi Software dengan ID Permintaan "' . $id_permintaan . '" ditolak karena tidak sesuai ketentuan. Silakan ajukan permintaan lain. Terima kasih!',
-                    'tautan' => '/pegawai/permintaan_software',
-                    'created_at' => now(),
-                    'user_id' => $pegawaiId,
-                ];
-
-                //kirim notifikasi ke requestor / pegawai melalui email
-                $email = DB::table('permintaan')
-                    ->join('users', 'permintaan.id', '=', 'users.id')
-                    ->where('permintaan.id_permintaan', $id_permintaan)
-                    ->value('users.email');
-
-                $data_unit = DB::table('barang')
-                    ->join('permintaan', 'barang.kode_barang', '=', 'permintaan.kode_barang')
-                    ->where('permintaan.id_permintaan', $id_permintaan)
-                    ->select('barang.*')
-                    ->get();
-
-                $otorisasi_data = DB::table('otorisasi')
-                    ->join('permintaan', 'otorisasi.id_otorisasi', '=', 'permintaan.id_otorisasi')
-                    ->where('permintaan.id_permintaan', $id_permintaan)
-                    ->select('otorisasi.*')
-                    ->get();
-
-                $formatted_id_permintaan = Str::replace('-', '/', $id_permintaan);
-
-                Mail::send(
-                    'notifikasi_email.requestor.permintaan_ditolak',
-                    [
-                        'id_permintaan' => $id_permintaan,
-                        'id_permintaan_formatted' => $formatted_id_permintaan,
-                        'data_unit' => $data_unit,
-                        'otorisasi_data' => $otorisasi_data,
-                    ],
-                    function ($message) use ($email, $formatted_id_permintaan) {
-                        $message->to($email);
-                        $message->subject('Permintaan Instalasi Software Ditolak: ' . $formatted_id_permintaan);
-                    }
-                );
-
-
                 // kirim notifikasi ke admin
                 $id_permintaan = $request->id_permintaan;
                 $permintaan = $this->modelmanager->get_admin_by_id_tindaklanjut($id_permintaan);
                 $notifikasi_admin = [
-                    'pesan' => 'Permintaan Instalasi Software dengan ID Permintaan "' . $id_permintaan . '" ditolak oleh Manajer.',
+                    'pesan' => 'Permintaan Instalasi Software dengan Nomor Tiket "#' . $id_permintaan . '" ditolak oleh Manajer.',
                     'tautan' => '/admin/permintaan_hardware',
                     'created_at' => now(),
                     'role_id' => 2,
@@ -455,15 +374,15 @@ class ManagerController extends Controller
 
             $update_otorisasi = $this->modelmanager->update_otorisasi($data_otorisasi, $id_otorisasi);
             $update_permintaan = $this->modelmanager->update_permintaan($data_permintaan, $id_permintaan);
-            $kirim_notifikasi = $this->modelmanager->input_notifikasi($notifikasi);
+            // $kirim_notifikasi = $this->modelmanager->input_notifikasi($notifikasi);
             $kirim_notifikasi_admin = $this->modelmanager->input_notifikasi($notifikasi_admin);
 
             if ($request->otorisasi_manager == 'disetujui') {
-                return $update_otorisasi && $update_permintaan && $kirim_notifikasi && $kirim_notifikasi_admin
+                return $update_otorisasi && $update_permintaan && $kirim_notifikasi_admin
                     ? back()->with('success', 'Permintaan telah disetujui dan akan segera diproses oleh Admin!')
                     : back()->with('error', 'Otorisasi permintaan gagal, silakan coba lagi!');
             } elseif ($request->otorisasi_manager == 'ditolak') {
-                return $update_otorisasi && $update_permintaan && $update_barang && $kirim_notifikasi && $kirim_notifikasi_admin
+                return $update_otorisasi && $update_permintaan && $update_barang && $kirim_notifikasi_admin
                     ? back()->with('warning', 'Permintaan telah ditolak dan proses instalasi software tidak akan dilanjutkan.')
                     : back()->with('error', 'Otorisasi permintaan gagal, silakan coba lagi!');
             }
@@ -507,7 +426,7 @@ class ManagerController extends Controller
             $permintaan = $this->modelmanager->get_admin_by_id_tindaklanjut($id_permintaan);
             // $id_admin = $permintaan->id;
             $notifikasi = [
-                'pesan' => 'Rekomendasi pengecekan hardware dengan ID Permintaan "' . $id_permintaan . '" telah divalidasi!',
+                'pesan' => 'Rekomendasi pengecekan hardware dengan Nomor Tiket "#' . $id_permintaan . '" telah divalidasi oleh Manajer',
                 'tautan' => '/admin/permintaan_hardware',
                 'created_at' => now(),
                 'role_id' => 2,

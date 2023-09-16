@@ -53,7 +53,7 @@
                             <textarea disabled class="form-control catatan-manager" name="catatan_manager_{{ $data->id_permintaan }}"
                                 id="catatan_manager_{{ $data->id_permintaan }}" cols="30" rows="5">{{ $data->rekomendasi }}</textarea>
                         </div>
-                        <p class="text-center">Nomor Permintaan: <b>{{ $data->id_permintaan }}</b></p>
+                        <p class="text-center">Nomor Tiket : <b>#{{ $data->id_permintaan }}</b></p>
                         <hr>
                         <div class="form-group text-center">
                             <label for="">Tanda tangan Manager</label>

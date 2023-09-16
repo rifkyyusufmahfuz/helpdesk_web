@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Waktu Pengajuan</th>
                             <th>Kebutuhan</th>
                             {{-- <th>Nama Pegawai</th> --}}
@@ -30,7 +30,7 @@
                         @foreach ($permintaan as $data)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
                                 {{-- <td>
                                     @if ($data->operating_system)

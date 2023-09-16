@@ -5,13 +5,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row">
-                <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
-                <p class="small text-gray-800">Daftar permintaan instalasi software</p>
+                <h4 class="card-title mx-2">Riwayat Permintaan Pengecekan Hardware</h4>
+                <p class="small text-gray-800">Daftar riwayat permintaan pengecekan hardware</p>
             </div>
-            <button type="button" class="btn btn-success mb-3 btn-sm float-left" data-toggle="modal"
-                data-target="#modal_instalasi_software">
-                <i class="fa fa-plus"></i> Permintaan Baru
-            </button>
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cetak_laporan_permintaan"><i
                         class="fas fa-print"></i> Laporan Periodik</button>
@@ -19,13 +15,13 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr class="text-center">
                             <th>No.</th>
                             <th>No. Tiket</th>
                             <th>Waktu Pengajuan</th>
-                            <th>Status Otorisasi</th>
+                            <th>Status Validasi</th>
                             <th>Status Permintaan</th>
                             <th>Waktu Penyelesaian</th>
                             <th>Aksi</th>
@@ -41,18 +37,34 @@
                                 <td>{{ $data->permintaan_created_at }}</td>
                                 <td>
                                     <span
-                                        class="p-2 badge badge-{{ $data->status_approval == 'pending'
+                                        class="badge badge-{{ $data->status_approval == 'pending'
                                             ? 'danger'
-                                            : ($data->status_approval == 'waiting' || $data->status_approval == 'revision'
+                                            : ($data->status_approval == 'waiting'
                                                 ? 'warning'
                                                 : ($data->status_approval == 'approved'
                                                     ? 'success'
-                                                    : ($data->status_approval == 'rejected'
-                                                        ? 'danger'
-                                                        : ''))) }}">
-                                        {{ ucwords($data->status_approval) }}
+                                                    : ($data->status_approval == 'revision'
+                                                        ? 'primary'
+                                                        : ($data->status_approval == 'rejected'
+                                                            ? 'info'
+                                                            : ($data->status_approval == 'rejected'
+                                                                ? 'secondary'
+                                                                : 'secondary'))))) }} p-2">
+
+                                        {{ $data->status_approval == 'pending'
+                                            ? 'Belum divalidasi'
+                                            : ($data->status_approval == 'waiting'
+                                                ? 'Proses validasi'
+                                                : ($data->status_approval == 'approved'
+                                                    ? 'Telah divalidasi'
+                                                    : ($data->status_approval == 'revision'
+                                                        ? 'Revisi'
+                                                        : ($data->status_approval == 'rejected'
+                                                            ? 'Ditolak'
+                                                            : 'Ditolak')))) }}
                                     </span>
                                 </td>
+
 
                                 <td>
                                     <span
@@ -61,7 +73,7 @@
                                             : ($data->status_permintaan == '2'
                                                 ? 'warning'
                                                 : ($data->status_permintaan == '3'
-                                                    ? 'success'
+                                                    ? 'danger'
                                                     : ($data->status_permintaan == '4'
                                                         ? 'primary'
                                                         : ($data->status_permintaan == '5'
@@ -75,9 +87,9 @@
                                         {{ $data->status_permintaan == '1'
                                             ? 'Pending'
                                             : ($data->status_permintaan == '2'
-                                                ? 'Menunggu persetujuan'
+                                                ? 'Menunggu validasi Manajer'
                                                 : ($data->status_permintaan == '3'
-                                                    ? 'Diterima'
+                                                    ? 'Pending'
                                                     : ($data->status_permintaan == '4'
                                                         ? 'Diproses'
                                                         : ($data->status_permintaan == '5'
@@ -108,60 +120,33 @@
                                     @endif
                                 </td>
 
-                                <td>
+
+                                <td class="text-center">
                                     {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
                                     <div class="btn-group" role="group">
 
-                                        <form id="instalasi_selesai-{{ $data->id_permintaan }}"
-                                            action="/admin/crud/{{ $data->id_permintaan }}" method="POST"
-                                            style="display: inline-block;">
-                                            @csrf
-                                            @method('PUT')
-                                            <input hidden name="selesaikan_permintaan" value="permintaan_software">
-                                            <input hidden name="id_permintaan" value="{{ $data->id_permintaan }}">
-                                            <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
-                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
-                                                title="Instalasi selesai" type="button" class="btn btn-sm btn-success"
-                                                onclick="instalasi_selesai('{{ $data->id_permintaan }}')">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        </form>
-
                                         <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
-                                            data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
+                                            data-target="#detail_permintaan_hardware_{{ $data->id_permintaan }}"
                                             title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
-                                        @if ($data->status_permintaan != '1' && $data->status_approval != 'revision')
-                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
-                                                class="btn btn-sm btn-primary rounded text-white mr-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#estimasi_penyelesaian_{{ $data->id_permintaan }}"
-                                                title="Estimasi Penyelesaian"><i class="fas fa-clock"></i>
-                                            </button>
-                                        @elseif ($data->status_permintaan == '1' || $data->status_approval == 'revision')
-                                            <form
-                                                action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
-                                                method="GET" style="display: inline-block;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
-                                                    title="Pengajuan Software"
-                                                    {{ $data->status_permintaan != '1' && $data->status_approval != 'revision' ? 'disabled' : '' }}>
-                                                    <i class="fas fa-cogs"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-
-                                        <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
-                                            method="GET" style="display: inline-block;">
+                                        <form id="form-delete-{{ $data->id_permintaan }}"
+                                            action="/superadmin/crud/{{ $data->id_permintaan }}" method="POST"
+                                            style="display: inline-block;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
-                                                {{ $data->status_permintaan != '3' && $data->status_permintaan != '5' ? 'disabled' : '' }}>
-                                                <i class="fas fa-file-contract"></i>
+                                            @method('DELETE')
+                                            <input hidden name="hapus_permintaan" id="hapus_permintaan">
+                                            <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="confirmDelete('{{ $data->id_permintaan }}', 'Hapus permintaan ini?', 'Menghapus data permintaan akan menghapus data lainnya yang terkait pada permintaan ini!')">
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
+
                                     </div>
+
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -170,12 +155,10 @@
         </div>
     </div>
 
-
-    @include('pegawai.modal.modal_permintaan_software')
+    @include('pegawai.modal.modal_permintaan_hardware')
     @if (isset($data))
-        @include('admin.software.modal.proses_software')
-        @include('admin.software.modal.detail_permintaan_software')
-        @include('admin.laporan_permintaan.cetak_laporan_permintaan_software')
         @include('admin.software.modal.input_estimasi_penyelesaian')
+        @include('admin.hardware.modal.detail_permintaan_hardware')
+        @include('admin.laporan_permintaan.cetak_laporan_permintaan_hardware')
     @endif
 @endsection

@@ -35,7 +35,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <p class="text-center">Nomor Permintaan: <b>{{ $data->id_permintaan }}</b></p>
+                    <p class="text-center">Nomor Tiket : <b>#{{ $data->id_permintaan }}</b></p>
                     <hr>
                     <form action="/manager/crud/{{ $data->id_permintaan }}" method="POST" id="form-tambah-pegawai">
                         @csrf

@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Waktu Pengajuan</th>
                             <th>Status Otorisasi</th>
                             <th class="text-center">Status Permintaan</th>
@@ -28,7 +28,7 @@
                         @foreach ($permintaan as $data)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
                                 <td>{{ ucwords($data->status_approval) }}</td>
 

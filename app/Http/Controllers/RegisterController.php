@@ -94,7 +94,8 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'nip' => $request->nip,
-            'id_role' => 4,
+            //Secara default registrasi adalah role Admin (ID Role = 2), role dapat dikelola dan diubah oleh Superadmin
+            'id_role' => 2,
             'created_at' => \Carbon\Carbon::now(),
         ];
 

@@ -12,7 +12,8 @@
                                     alt="" width="200px" height="auto">
                             </div>
                             <div class="d-flex">
-                                <h6 class="register-heading">Form Registrasi Akun Pegawai</h6>
+                                {{-- <h6 class="register-heading">Form Registrasi Akun Pegawai</h6> --}}
+                                <h6 class="register-heading">Form Registrasi Akun Admin</h6>
                             </div>
                         </div>
                     </div>

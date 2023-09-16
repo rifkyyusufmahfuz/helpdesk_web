@@ -72,7 +72,7 @@
             <tr>
                 <td class="jarak-kiri">Nomor Request</td>
                 <td>:</td>
-                <td>{{ $id_permintaan }}</td>
+                <td>#{{ $id_permintaan }}</td>
             </tr>
         </table>
         <table>
@@ -102,7 +102,7 @@
             <thead>
                 <tr>
                     <td class="jarak-kiri" colspan="3">HARAP DITULIS DENGAN HURUF CETAK </td>
-                    <td colspan="4">*DIINSTALASI SETELAH APPROVALS SELESAI DILAKUKAN</td>
+                    <td colspan="4">*DIISI SETELAH INSTALASI SELESAI DILAKUKAN</td>
                 </tr>
                 <tr>
                     <td colspan="7" class="header">REQUESTOR</td>

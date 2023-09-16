@@ -12,13 +12,25 @@
             <div class="modal-body" id="signature-pad">
                 <form action="/pegawai/simpan_hardware" method="POST" id="form-instalasi-software"
                     enctype="multipart/form-data">
+                    {{-- Fungsi Input permintaan ada di PegawaiController dan PegawaiModel --}}
                     @csrf
                     <div hidden class="form-group">
                         <input class="form-control" id="kode_barang_table" name="kode_barang_table">
                         <input class="form-control" id="input_status_barang" name="input_status_barang">
+                        <input class="form-control" id="no_tiket_table" name="no_tiket_table">
                     </div>
+
                     <div id="detail_barang">
-                        <h5>Data Hardware</h5>
+                        <h5>Data Permintaan</h5>
+                        <div class="form-group">
+                            <label for="no_tiket">Nomor Tiket<span class="text-danger">*</span></label>
+                            <input required type="text" class="form-control" id="no_tiket" name="no_tiket"
+                                maxlength="7" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        </div>
+                        <div hidden id="peringatan_no_tiket" class="alert alert-warning fade show small" role="alert">
+                            <i class="fas fa-exclamation-triangle"> </i> Nomor Tiket sudah ada!
+                        </div>
+
                         <div class="form-group">
                             <label for="kode_barang">No. Aset / Inventaris / Serial Number<span
                                     class="text-danger">*</span></label>
@@ -26,8 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nama_barang">Nama Barang<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nama_barang" name="nama_barang"
-                                placeholder="Laptop, PC atau hardware lainnya, merk, dan tipe">
+                            <input type="text" class="form-control" id="nama_barang" name="nama_barang">
                         </div>
 
                         <div class="form-group">
@@ -40,7 +51,6 @@
                             proses
                             pengajuan.
                         </div>
-
                         <div class="d-flex justify-content-end my-2" id="tombol_detail_barang">
                             <button type="button" class="btn btn-sm btn-primary" id="btn_lanjut_1">Lanjut <i
                                     class="fas fa-arrow-right"></i></button>
@@ -48,44 +58,49 @@
                     </div>
 
                     <div id="detail_pegawai">
-                        <h6>Pengajuan Permintaan</h6>
+                        <h6>Diajukan Oleh</h6>
                         <div class="row">
                             <div class="form-group col-sm-5">
-                                <label for="nip">NIP</label>
-                                <input disabled type="text" class="form-control" id="nip_pegawai" name="nip"
-                                    placeholder="Masukkan NIP" maxlength="5" required
-                                    value="{{ Auth::user()->pegawai->nip }}">
+                                <label for="nip">NIP<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nip_pegawai" name="nip"
+                                    placeholder="Masukkan NIP" maxlength="5" required>
                             </div>
 
                             <div class="form-group col-sm-7">
-                                <label for="nama">Nama</label>
+                                <label for="nama">Nama<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nama_pegawai" name="nama"
-                                    placeholder="Nama" disabled>
+                                    placeholder="Nama">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-5">
-                                <label for="bagian">Bagian</label>
+                                <label for="bagian">Bagian<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="bagian_pegawai" name="bagian"
-                                    placeholder="Bagian" disabled>
+                                    placeholder="Bagian">
                             </div>
 
                             <div class="form-group col-sm-7">
-                                <label for="jabatan">Jabatan</label>
+                                <label for="jabatan">Jabatan<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="jabatan_pegawai" name="jabatan"
-                                    placeholder="Jabatan" disabled>
+                                    placeholder="Jabatan">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lokasi">Lokasi</label>
-                            <input type="text" class="form-control" id="lokasi_pegawai" name="lokasi"
-                                placeholder="Lokasi" disabled>
+                            <label class="form-label" for="lokasi">Lokasi</label>
+                            <input list="stasiun_list" class="form-control" id="lokasi_pegawai" name="lokasi"
+                                placeholder="Pilih lokasi" value="{{ old('lokasi') }}">
+                            <datalist id="stasiun_list">
+                                @foreach ($data_stasiun as $stasiun)
+                                    <option value="{{ $stasiun->nama_stasiun }}"></option>
+                                @endforeach
+                            </datalist>
                         </div>
+
                         <hr>
 
                         <div class="form-group text-center">
-                            <label for="">Tanda Tangan</label>
+                            <label for="">Tanda Tangan Requestor<span class="text-danger">*</span></label>
                             <div>
                                 <div id="note">Silakan tanda tangan di area kolom ini</div>
                                 <canvas onmouseover="my_function();" class="form-ttd" id="the_canvas"
@@ -115,6 +130,7 @@
     </div>
 </div>
 
+<script></script>
 
 <script>
     $(function() {
@@ -162,6 +178,24 @@
                     $('#peringatan_barang').prop('hidden', true);
                 } else {
                     $('#peringatan_barang').prop('hidden', false);
+                }
+
+                var no_tiket_table = $('#no_tiket_table').val();
+
+                var no_tiket = true;
+                $('#detail_barang input, #detail_barang textarea').each(function() {
+                    if (no_tiket_table !== '') {
+                        no_tiket = false;
+                        return false; // Keluar dari loop
+                    }
+                });
+
+                // Aktifkan peringatan jika no_tiket telah ada di tabel permintaan
+                if (no_tiket) {
+                    $('#peringatan_no_tiket').prop('hidden', true);
+                } else {
+                    $('#peringatan_no_tiket').prop('hidden', false);
+                    $('#btn_lanjut_1').prop('disabled', true);
                 }
 
             }, 500);

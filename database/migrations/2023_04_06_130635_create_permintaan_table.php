@@ -53,6 +53,14 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->string('nip', 5);
+            $table->foreign('nip')
+                ->references('nip')
+                ->on('pegawai')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+
             //tanggal penyelesaian
             $table->date('tanggal_penyelesaian')->nullable();
 

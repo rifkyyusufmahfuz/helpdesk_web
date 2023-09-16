@@ -262,6 +262,11 @@ html {
     text-align: center;
 }
 
+#garis_no_request {
+    border-bottom: 1px solid;
+    width: 15rem;
+}
+
 .checkbox_hardware {
     padding-right: 2rem;
 }

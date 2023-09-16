@@ -17,7 +17,7 @@
                             <th>No.</th>
                             <th>ID BAST</th>
                             <th>Waktu BAST</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Perihal</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -30,7 +30,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->id_bast }}</td>
                                 <td>{{ $data->created_at }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->perihal }}</td>
 
                                 <td class="text-center">

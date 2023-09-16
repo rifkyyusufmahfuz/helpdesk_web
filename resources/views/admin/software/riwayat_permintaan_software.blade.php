@@ -5,13 +5,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row">
-                <h4 class="card-title mx-2">Permintaan Instalasi Software</h4>
-                <p class="small text-gray-800">Daftar permintaan instalasi software</p>
+                <h4 class="card-title mx-2">Riwayat Permintaan Instalasi Software</h4>
+                <p class="small text-gray-800">Daftar riwayat permintaan instalasi software</p>
             </div>
-            <button type="button" class="btn btn-success mb-3 btn-sm float-left" data-toggle="modal"
-                data-target="#modal_instalasi_software">
-                <i class="fa fa-plus"></i> Permintaan Baru
-            </button>
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cetak_laporan_permintaan"><i
                         class="fas fa-print"></i> Laporan Periodik</button>
@@ -108,56 +104,23 @@
                                     @endif
                                 </td>
 
-                                <td>
-                                    {{-- TAMPILKAN TIGA TOMBOL BERIKUT --}}
+                                <td class="text-center">
                                     <div class="btn-group" role="group">
-
-                                        <form id="instalasi_selesai-{{ $data->id_permintaan }}"
-                                            action="/admin/crud/{{ $data->id_permintaan }}" method="POST"
-                                            style="display: inline-block;">
-                                            @csrf
-                                            @method('PUT')
-                                            <input hidden name="selesaikan_permintaan" value="permintaan_software">
-                                            <input hidden name="id_permintaan" value="{{ $data->id_permintaan }}">
-                                            <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
-                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
-                                                title="Instalasi selesai" type="button" class="btn btn-sm btn-success"
-                                                onclick="instalasi_selesai('{{ $data->id_permintaan }}')">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        </form>
-
-                                        <button class="btn btn-sm btn-warning rounded text-white mx-1" data-toggle="modal"
+                                        <button class="btn btn-sm btn-warning rounded text-white mr-1" data-toggle="modal"
                                             data-target="#detail_permintaan_software_{{ $data->id_permintaan }}"
                                             title="Detail Permintaan"><i class="fas fa-eye"></i>
                                         </button>
 
-                                        @if ($data->status_permintaan != '1' && $data->status_approval != 'revision')
-                                            <button {{ $data->status_permintaan != '4' ? 'disabled' : '' }}
-                                                class="btn btn-sm btn-primary rounded text-white mr-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#estimasi_penyelesaian_{{ $data->id_permintaan }}"
-                                                title="Estimasi Penyelesaian"><i class="fas fa-clock"></i>
-                                            </button>
-                                        @elseif ($data->status_permintaan == '1' || $data->status_approval == 'revision')
-                                            <form
-                                                action="/admin/permintaan_software/tambah_software/{{ $data->id_permintaan }}"
-                                                method="GET" style="display: inline-block;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-primary text-white mr-1"
-                                                    title="Pengajuan Software"
-                                                    {{ $data->status_permintaan != '1' && $data->status_approval != 'revision' ? 'disabled' : '' }}>
-                                                    <i class="fas fa-cogs"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-
-                                        <form action="/admin/permintaan_software/bast_software/{{ $data->id_permintaan }}"
-                                            method="GET" style="display: inline-block;">
+                                        <form id="form-delete-{{ $data->id_permintaan }}"
+                                            action="/superadmin/crud/{{ $data->id_permintaan }}" method="POST"
+                                            style="display: inline-block;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success text-white" title="BAST"
-                                                {{ $data->status_permintaan != '3' && $data->status_permintaan != '5' ? 'disabled' : '' }}>
-                                                <i class="fas fa-file-contract"></i>
+                                            @method('DELETE')
+                                            <input hidden name="hapus_permintaan" id="hapus_permintaan">
+                                            <input hidden name="kode_barang" value="{{ $data->kode_barang }}">
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="confirmDelete('{{ $data->id_permintaan }}', 'Hapus permintaan ini?', 'Menghapus data permintaan akan menghapus data yang terkait pada permintaan ini!')">
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -169,9 +132,6 @@
             </div>
         </div>
     </div>
-
-
-    @include('pegawai.modal.modal_permintaan_software')
     @if (isset($data))
         @include('admin.software.modal.proses_software')
         @include('admin.software.modal.detail_permintaan_software')

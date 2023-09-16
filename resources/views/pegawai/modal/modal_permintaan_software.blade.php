@@ -16,40 +16,50 @@
                     <div hidden class="form-group">
                         <input class="form-control" id="kode_barang_table" name="kode_barang_table">
                         <input class="form-control" id="input_status_barang" name="input_status_barang">
+                        <input class="form-control" id="no_tiket_table" name="no_tiket_table">
                     </div>
                     <div id="detail_barang">
-                        <h5>Spesifikasi PC / Laptop</h5>
+                        <h5>Data Permintaan</h5>
                         <div class="form-group">
-                            <label for="kode_barang">No. Aset / Inventaris / Serial Number</label>
+                            <label for="no_tiket">Nomor Tiket<span class="text-danger">*</span></label>
+                            <input required type="text" class="form-control" id="no_tiket" name="no_tiket"
+                                maxlength="7" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        </div>
+                        <div hidden id="peringatan_no_tiket" class="alert alert-warning fade show small" role="alert">
+                            <i class="fas fa-exclamation-triangle"> </i> Nomor Tiket sudah ada!
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kode_barang">No. Aset / Inventaris / Serial Number<span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="kode_barang" name="kode_barang">
                         </div>
                         <div class="form-group">
-                            <label for="nama_barang">Nama Barang</label>
+                            <label for="nama_barang">Nama Barang<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nama_barang" name="nama_barang"
                                 placeholder="Laptop/PC, merk, dan tipe">
                         </div>
                         <div class="form-group">
-                            <label for="prosesor">Prosesor</label>
+                            <label for="prosesor">Prosesor<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="prosesor" name="prosesor"
                                 placeholder="Intel... / AMD...">
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label for="ram">RAM</label>
+                                <label for="ram">RAM<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="ram" name="ram"
                                     placeholder="...GB">
                             </div>
                             <div class="form-group col-sm-6">
-                                <label for="penyimpanan">Penyimpanan</label>
+                                <label for="penyimpanan">Penyimpanan<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="penyimpanan" name="penyimpanan"
                                     placeholder="...GB">
                             </div>
                         </div>
 
                         <div hidden id="peringatan_barang" class="alert alert-warning fade show small" role="alert">
-                            <i class="fas fa-exclamation-triangle"> </i> Barang tersebut telah diinput dan sedang dalam
-                            proses
-                            pengajuan.
+                            <i class="fas fa-exclamation-triangle"> </i> Data barang ini telah diinput dan sedang dalam
+                            proses pengajuan.
                         </div>
 
                         <div class="d-flex justify-content-end my-2" id="tombol_detail_barang">
@@ -60,145 +70,51 @@
 
                     <div id="detail_permintaan">
                         <h5>Detail Permintaan</h5>
-                        <h6>Pilih Software</h6>
+                        <h6>Kategori Software<span class="text-danger">*</span></h6>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col">
-                                    <label>Operating System</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox" id="os1"
-                                            value="Microsoft Windows">
-                                        <label class="form-check-label" for="os1">Microsoft Windows</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox" id="os2"
-                                            value="Linux OS">
-                                        <label class="form-check-label" for="os2">Linux OS</label>
-                                    </div>
+                                    {{-- <label>Operating System</label> --}}
                                     <div class="form-check">
                                         <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="os3" value="Mac OS">
-                                        <label class="form-check-label" for="os3">Mac OS</label>
+                                            id="os1" value="Microsoft Windows">
+                                        <label class="form-check-label" for="os1">Operating System</label>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <label>Microsoft Office</label>
+                                    {{-- <label>Microsoft Office</label> --}}
                                     <div class="form-check">
                                         <input class="form-check-input" name="software[]" type="checkbox"
                                             id="office1" value="Microsoft Office Standar">
-                                        <label class="form-check-label" for="office1">Microsoft Office
-                                            Standar</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="office2" value="Microsoft Office For Mac">
-                                        <label class="form-check-label" for="office2">Microsoft Office For
-                                            Mac</label>
+                                        <label class="form-check-label" for="office1">Microsoft Office</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <div class="form-group mb-2">
-                            <label>Software Design</label>
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col">
+                                    {{-- <label>Software Design</label> --}}
                                     <div class="form-check">
                                         <input class="form-check-input" name="software[]" type="checkbox"
                                             id="design5" value="Adobe After Effect">
-                                        <label class="form-check-label" for="design5">Adobe After Effect</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design1" value="Adobe Photoshop">
-                                        <label class="form-check-label" for="design1">Adobe Photoshop</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design2" value="Adobe Premiere">
-                                        <label class="form-check-label" for="design2">Adobe Premiere</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design3" value="Adobe Ilustrator">
-                                        <label class="form-check-label" for="design3">Adobe Ilustrator</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design4" value="Autocad">
-                                        <label class="form-check-label" for="design4">Autocad</label>
+                                        <label class="form-check-label" for="design5">Software Design</label>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design6" value="Corel Draw">
-                                        <label class="form-check-label" for="design6">Corel Draw</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design7" value="Microsoft Project">
-                                        <label class="form-check-label" for="design7">Microsoft Project</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design8" value="Microsoft Visio">
-                                        <label class="form-check-label" for="design8">Microsoft Visio</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design9" value="Sketch Up Pro">
-                                        <label class="form-check-label" for="design9">Sketch Up Pro</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="design10" value="Vray Fr Sketchup">
-                                        <label class="form-check-label" for="design10">Vray fr Sketchup</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="form-group mb-2">
-                            <label>Software Lainnya</label>
-                            <div class="row">
-                                <div class="col">
+                                    {{-- <label>Software Lainnya</label> --}}
                                     <div class="form-check">
                                         <input class="form-check-input" name="software[]" type="checkbox"
                                             id="other1" value="Antivirus">
-                                        <label class="form-check-label" for="other1">Antivirus</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="other5" value="Nitro PDF Pro">
-                                        <label class="form-check-label" for="other5">Nitro PDF Pro</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="other2" value="Open Office">
-                                        <label class="form-check-label" for="other2">Open Office</label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="other3" value="SAP">
-                                        <label class="form-check-label" for="other3">SAP</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="software[]" type="checkbox"
-                                            id="other4" value="Software Lainnya">
-                                        <label class="form-check-label" for="other4">Software Lainnya</label>
+                                        <label class="form-check-label" for="other1">Software Lainnya</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                         <hr>
                         <div class="form-group">
-                            <label for="uraian_kebutuhan">Uraian Kebutuhan</label>
-                            <textarea class="form-control" id="uraian_kebutuhan" name="uraian_kebutuhan" rows="2"></textarea>
+                            <label for="uraian_kebutuhan">Uraian Kebutuhan<span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="uraian_kebutuhan" name="uraian_kebutuhan" rows="4"></textarea>
                         </div>
                         <div class="d-flex justify-content-end my-2" id="tombol_detail_permintaan">
                             <button type="button" class="btn btn-sm btn-danger mr-1" id="tombol_kembali"><i
@@ -209,44 +125,48 @@
                     </div>
 
                     <div id="detail_pegawai">
-                        <h6>Pengajuan Permintaan</h6>
+                        <h6>Diajukan Oleh</h6>
                         <div class="row">
                             <div class="form-group col-sm-5">
-                                <label for="nip">NIP</label>
-                                <input disabled type="text" class="form-control" id="nip_pegawai" name="nip"
-                                    placeholder="Masukkan NIP" maxlength="5" required
-                                    value="{{ Auth::user()->pegawai->nip }}">
+                                <label for="nip">NIP<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nip_pegawai" name="nip"
+                                    placeholder="Masukkan NIP" maxlength="5" required>
                             </div>
 
                             <div class="form-group col-sm-7">
-                                <label for="nama">Nama</label>
+                                <label for="nama">Nama<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nama_pegawai" name="nama"
-                                    placeholder="Nama" disabled>
+                                    placeholder="Nama">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-5">
-                                <label for="bagian">Bagian</label>
+                                <label for="bagian">Bagian<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="bagian_pegawai" name="bagian"
-                                    placeholder="Bagian" disabled>
+                                    placeholder="Bagian">
                             </div>
 
                             <div class="form-group col-sm-7">
-                                <label for="jabatan">Jabatan</label>
+                                <label for="jabatan">Jabatan<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="jabatan_pegawai" name="jabatan"
-                                    placeholder="Jabatan" disabled>
+                                    placeholder="Jabatan">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lokasi">Lokasi</label>
-                            <input type="text" class="form-control" id="lokasi_pegawai" name="lokasi"
-                                placeholder="Lokasi" disabled>
+                            <label class="form-label" for="lokasi">Lokasi</label>
+                            <input list="stasiun_list" class="form-control" id="lokasi_pegawai" name="lokasi"
+                                placeholder="Pilih lokasi" value="{{ old('lokasi') }}">
+                            <datalist id="stasiun_list">
+                                @foreach ($data_stasiun as $stasiun)
+                                    <option value="{{ $stasiun->nama_stasiun }}"></option>
+                                @endforeach
+                            </datalist>
                         </div>
                         <hr>
 
                         <div class="form-group text-center">
-                            <label for="">Tanda Tangan</label>
+                            <label for="">Tanda Tangan Requestor<span class="text-danger">*</span></label>
                             <div>
                                 <div id="note">Silakan tanda tangan di area kolom ini</div>
                                 <canvas onmouseover="my_function();" class="form-ttd" id="the_canvas"
@@ -319,6 +239,24 @@
                     $('#peringatan_barang').prop('hidden', true);
                 } else {
                     $('#peringatan_barang').prop('hidden', false);
+                }
+
+                var no_tiket_table = $('#no_tiket_table').val();
+
+                var no_tiket = true;
+                $('#detail_barang input').each(function() {
+                    if (no_tiket_table !== '') {
+                        no_tiket = false;
+                        return false; // Keluar dari loop
+                    }
+                });
+
+                // Aktifkan peringatan jika no_tiket telah ada di tabel permintaan
+                if (no_tiket) {
+                    $('#peringatan_no_tiket').prop('hidden', true);
+                } else {
+                    $('#peringatan_no_tiket').prop('hidden', false);
+                    $('#btn_lanjut_1').prop('disabled', true);
                 }
 
             }, 500);

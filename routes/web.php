@@ -45,12 +45,11 @@ Route::resource('/registrasi/registrasi_akun', RegisterController::class);
 // 1 = superadmin
 // 2 = admin
 // 3 = manager
-// 4 = pegawai
+// 4 = pegawai ### Role pegawai dihilangkan sesuai request
 
-// untuk Superadmin
+// untuk role Superadmin
 Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], function () {
     Route::get('/superadmin', [SuperadminController::class, 'index']);
-    Route::resource('/superadmin/crud', SuperadminController::class);
 
     // data master user
     Route::get('/superadmin/datauseraktif', [SuperadminController::class, 'halaman_datauser']);
@@ -59,7 +58,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], fun
     Route::get('/superadmin/lihatdatauser/{id}', [SuperadminController::class, 'show'])->name('lihat_data_pegawai');
     Route::post('/superadmin/aktivasi_semua_user', [SuperadminController::class, 'aktivasi_semua_user']);
 
-    // data master notifikasi
+    // data master notifikasi stasiun dan barang
     Route::get('/superadmin/master_notifikasi', [SuperadminController::class, 'master_notifikasi']);
     Route::get('/superadmin/master_stasiun', [SuperadminController::class, 'master_stasiun']);
     Route::get('/superadmin/master_barang', [SuperadminController::class, 'master_barang']);
@@ -75,10 +74,9 @@ Route::group(['middleware' => ['auth', 'checkrole:1', 'checkstatus:aktif']], fun
     Route::get('/superadmin/laporan_periodik', [SuperadminController::class, 'transaksi_laporan_permintaan']);
 });
 
-Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');
-Route::get('/getdatabarang/{kodebarang}', [PegawaiController::class, 'getDataBarang'])->name('getdatabarang');
 
-// untuk Admin
+
+// untuk role Admin
 Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], function () {
     Route::get('/admin', [AdminController::class, 'index']);
     Route::resource('/admin/crud', AdminController::class);
@@ -93,9 +91,29 @@ Route::group(['middleware' => ['auth', 'checkrole:2', 'checkstatus:aktif']], fun
     Route::post('/admin/tindak_lanjut_hardware/{id_permintaan}', [AdminController::class, 'tindak_lanjut_hardware']);
 
     Route::get('/admin/laporan_periodik', [AdminController::class, 'halaman_cetak_laporan_permintaan']);
+
+    Route::get('/admin/riwayat_permintaan_software', [AdminController::class, 'riwayat_permintaan_software']);
+    Route::get('/admin/riwayat_permintaan_hardware', [AdminController::class, 'riwayat_permintaan_hardware']);
+
+
+    //Gabungan dari role pegawai
+    Route::get('/pegawai/permintaan_software', [PegawaiController::class, 'permintaan_software']);
+    Route::post('/pegawai/simpan_software', [PegawaiController::class, 'simpan_software']);
+
+    Route::get('/pegawai/permintaan_hardware', [PegawaiController::class, 'permintaan_hardware']);
+    Route::post('/pegawai/simpan_hardware', [PegawaiController::class, 'simpan_hardware']);
+
+    Route::get('/pegawai/halaman_bast_barang_diterima', [PegawaiController::class, 'halaman_barang_diterima_pegawai']);
+    Route::get('/pegawai/halaman_bast_barang_diserahkan', [PegawaiController::class, 'halaman_barang_diserahkan_pegawai']);
 });
 
-// untuk Manager
+// untuk role superadmin dan admin
+Route::group(['middleware' => ['auth', 'checkrole:2,1', 'checkstatus:aktif']], function () {
+    Route::resource('/superadmin/crud', SuperadminController::class);
+});
+
+
+// untuk role Manager
 Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], function () {
     Route::get('/manager', [ManagerController::class, 'index']);
     Route::resource('/manager/crud', ManagerController::class);
@@ -108,25 +126,20 @@ Route::group(['middleware' => ['auth', 'checkrole:3', 'checkstatus:aktif']], fun
     Route::get('/manager/laporan_periodik', [ManagerController::class, 'halaman_cetak_laporan_permintaan']);
 });
 
-// untuk manager dan admin
+// untuk role manager dan admin
 Route::group(['middleware' => ['auth', 'checkrole:2,3', 'checkstatus:aktif']], function () {
     Route::get('/halaman_bast_barang_masuk', [AdminController::class, 'halaman_barang_masuk_admin']);
     Route::get('/halaman_bast_barang_keluar', [AdminController::class, 'halaman_barang_keluar_admin']);
 });
 
 
-// untuk pegawai
+
+// untuk role pegawai
 Route::group(['middleware' => ['auth', 'checkrole:4']], function () {
     Route::get('/pegawai', [PegawaiController::class, 'index']);
-    Route::get('/pegawai/permintaan_software', [PegawaiController::class, 'permintaan_software']);
-    Route::post('/pegawai/simpan_software', [PegawaiController::class, 'simpan_software']);
-
-    Route::get('/pegawai/permintaan_hardware', [PegawaiController::class, 'permintaan_hardware']);
-    Route::post('/pegawai/simpan_hardware', [PegawaiController::class, 'simpan_hardware']);
-
-    Route::get('/pegawai/halaman_bast_barang_diterima', [PegawaiController::class, 'halaman_barang_diterima_pegawai']);
-    Route::get('/pegawai/halaman_bast_barang_diserahkan', [PegawaiController::class, 'halaman_barang_diserahkan_pegawai']);
 });
+
+
 
 //untuk notifikasi
 Route::get('/notifications', [NotifikasiController::class, 'index']);
@@ -144,3 +157,13 @@ Route::get('/form_pengecekan_hardware/{id}', [CetakDokumenController::class, 'ce
 
 Route::post('/create_laporan_permintaan', [CetakDokumenController::class, 'create_laporan_permintaan']);
 Route::get('/form_laporan_permintaan_periodik/{id}', [CetakDokumenController::class, 'cetak_laporan_periodik']);
+
+
+//Untuk cari data pegawai yang sudah ada agar diinputkan otomatis ketika sudah ada datanya
+Route::get('/getpegawaidata/{nip}', [SuperadminController::class, 'getPegawaiData'])->name('getpegawaidata');
+
+//Untuk mencari data barang yang sudah ada di table barang
+Route::get('/getdatabarang/{kodebarang}', [PegawaiController::class, 'getDataBarang'])->name('getdatabarang');
+
+//Untuk mencari id permintaan yang sudah ada di table permintaan
+Route::get('/get_no_tiket/{no_tiket}', [PegawaiController::class, 'get_no_tiket']);

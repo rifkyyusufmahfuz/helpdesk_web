@@ -103,7 +103,7 @@
         </li>
 
         {{-- master barang --}}
-        {{-- <li class="nav-item {{ request()->is('superadmin/master_barang') || request()->is('') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->is('superadmin/master_barang') || request()->is('') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('superadmin/master_barang') ? '' : 'collapsed' }}" href="#"
                 data-toggle="collapse" data-target="#collapseMasterBarang" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-boxes"></i>
@@ -121,7 +121,7 @@
                     </a>
                 </div>
             </div>
-        </li> --}}
+        </li>
 
         <hr class="sidebar-divider">
 
@@ -192,7 +192,8 @@
             class="nav-item {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('') | request()->is('superadmin/transaksi_bast_barang_masuk') ? 'active' : '' }}">
 
             <a class="nav-link {{ request()->is('superadmin/transaksi_bast_barang_keluar') || request()->is('superadmin/transaksi_bast_barang_masuk') ? '' : 'collapsed' }}"
-                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi" aria-controls="collapseTwo">
+                href="#" data-toggle="collapse" data-target="#collapseDataTransaksi"
+                aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-user-gear"></i>
                 <span>BAST</span>
             </a>
@@ -379,6 +380,37 @@
                 </div>
             </div>
         </li>
+
+
+
+        {{-- MENU RIWAYAT PERMINTAAN LAYANAN --}}
+        <li
+            class="nav-item {{ request()->is('admin/riwayat_permintaan_software*') || request()->is('admin/riwayat_permintaan_hardware*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->is('admin/riwayat_permintaan_software*') || request()->is('admin/riwayat_permintaan_hardware*') ? '' : 'collapsed' }}"
+                href="#" data-toggle="collapse" data-target="#collapseRiwayatPermintaan" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-history"></i>
+                <span>Riwayat Permintaan</span>
+            </a>
+            <div id="collapseRiwayatPermintaan"
+                class="collapse {{ request()->is('admin/riwayat_permintaan_software*') || request()->is('admin/riwayat_permintaan_hardware*') ? 'show' : '' }}"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- PERMINTAAN INSTALASI SOFTWARE --}}
+                    <a class="collapse-item {{ request()->is('admin/riwayat_permintaan_software*') ? 'active' : '' }}"
+                        href="/admin/riwayat_permintaan_software ">
+                        <i class="fas fa-fw fa-laptop-code"></i>
+                        <span>Instalasi Software</span>
+                    </a>
+                    {{-- PERMINTAAN PENGECEKAN HARDWARE --}}
+                    <a class="collapse-item {{ request()->is('admin/riwayat_permintaan_hardware*') ? 'active' : '' }}"
+                        href="/admin/riwayat_permintaan_hardware">
+                        <i class="fas fa-fw fa-tools"></i>
+                        <span>Pengecekan Hardware</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+        {{-- / --}}
 
         {{-- MENU CETAK LAPORAN --}}
         <li class="nav-item {{ request()->is('admin/laporan_periodik*') || request()->is('') ? 'active' : '' }}">

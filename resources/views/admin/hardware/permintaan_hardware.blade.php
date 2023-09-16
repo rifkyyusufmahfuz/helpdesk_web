@@ -8,6 +8,10 @@
                 <h4 class="card-title mx-2">Permintaan Pengecekan Hardware</h4>
                 <p class="small text-gray-800">Daftar permintaan pengecekan hardware</p>
             </div>
+            <button type="button" class="btn btn-success mb-3 btn-sm float-left" data-bs-toggle="modal"
+                data-bs-target="#permintaan_hardware">
+                <i class="fa fa-plus"></i> Permintaan Baru
+            </button>
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cetak_laporan_permintaan"><i
                         class="fas fa-print"></i> Laporan Periodik</button>
@@ -19,7 +23,7 @@
                     <thead>
                         <tr class="text-center">
                             <th>No.</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Waktu Pengajuan</th>
                             <th>Status Validasi</th>
                             <th>Status Permintaan</th>
@@ -33,7 +37,7 @@
                         @foreach ($permintaan as $data)
                             <tr class="text-center">
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
                                 <td>
                                     <span
@@ -73,7 +77,7 @@
                                             : ($data->status_permintaan == '2'
                                                 ? 'warning'
                                                 : ($data->status_permintaan == '3'
-                                                    ? 'success'
+                                                    ? 'danger'
                                                     : ($data->status_permintaan == '4'
                                                         ? 'primary'
                                                         : ($data->status_permintaan == '5'
@@ -89,7 +93,7 @@
                                             : ($data->status_permintaan == '2'
                                                 ? 'Menunggu validasi Manajer'
                                                 : ($data->status_permintaan == '3'
-                                                    ? 'Diterima'
+                                                    ? 'Pending'
                                                     : ($data->status_permintaan == '4'
                                                         ? 'Diproses'
                                                         : ($data->status_permintaan == '5'
@@ -203,6 +207,7 @@
         </div>
     </div>
 
+    @include('pegawai.modal.modal_permintaan_hardware')
     @if (isset($data))
         @include('admin.software.modal.input_estimasi_penyelesaian')
         @include('admin.hardware.modal.detail_permintaan_hardware')

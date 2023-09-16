@@ -81,12 +81,12 @@ class CetakDokumenModel extends Model
     public function get_table_permintaan_by_id($id_permintaan)
     {
         return DB::table('permintaan')
-            ->join('users', 'users.id', '=', 'permintaan.id')
-            ->join('pegawai', 'pegawai.nip', '=', 'users.nip')
+            // ->join('users', 'users.id', '=', 'permintaan.id')
+            ->join('pegawai', 'pegawai.nip', '=', 'permintaan.nip')
             ->where('id_permintaan', $id_permintaan)
             ->select(
                 'permintaan.*',
-                'users.*',
+                // 'users.*',
                 'pegawai.*',
             )
             ->first();

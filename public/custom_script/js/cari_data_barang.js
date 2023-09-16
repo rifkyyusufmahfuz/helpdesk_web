@@ -15,8 +15,7 @@ $(document).ready(function() {
 
             // Set select box berdasarkan nilai status_barang
             $('#status_barang').val(response.status_barang);
-            // Memeriksa status_barang dan mengatur tombol "Lanjut"
-            // checkStatus(response.status_barang, response.kode_barang_table);
+
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
@@ -41,28 +40,39 @@ $(document).ready(function() {
                 // Set select box berdasarkan nilai status_barang
                 $('#status_barang').val(response.status_barang);
 
-                // Memeriksa status_barang dan mengatur tombol "Lanjut"
-                // checkStatus(response.status_barang, response.kode_barang_table);
             },
         });
     });
 
 });
 
+// untuk cari id permintaan 
+$(document).ready(function() {
+    // Inisialisasi data awal
+    var no_tiket = $('#no_tiket').val();
+    $.ajax({
+        type: 'GET',
+        url: '/get_no_tiket/' + no_tiket,
+        dataType: 'json',
+        success: function(response) {
+            $('#no_tiket_table').val(response.no_tiket_table);
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+        }
+    });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     var textareas = document.querySelectorAll('textarea');
+    $('#no_tiket').on('input', function() {
+        var no_tiket = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: '/get_no_tiket/' + no_tiket,
+            dataType: 'json',
+            success: function(response) {
+                $('#no_tiket_table').val(response.no_tiket_table);
 
-//     textareas.forEach(function(textarea) {
-//         textarea.addEventListener('input', function() {
-//             var text = textarea.value.toLowerCase();
-//             var sentences = text.split('. ');
+            },
+        });
+    });
 
-//             for (var i = 0; i < sentences.length; i++) {
-//                 sentences[i] = sentences[i].charAt(0).toUpperCase() + sentences[i].slice(1);
-//             }
-
-//             textarea.value = sentences.join('. ');
-//         });
-//     });
-// });
+});

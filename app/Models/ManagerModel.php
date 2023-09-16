@@ -24,8 +24,8 @@ class ManagerModel extends Model
             // ->join('software', 'permintaan.id_permintaan', '=', 'software.id_permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
             ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
             ->join('tindak_lanjut', 'permintaan.id_permintaan', '=', 'tindak_lanjut.id_permintaan')
@@ -38,7 +38,7 @@ class ManagerModel extends Model
                 // 'software.*',
                 'otorisasi.*',
                 'kategori_software.*',
-                'users.*',
+                // 'users.*',
                 'pegawai.*',
                 'stasiun.*',
                 'barang.*',
@@ -63,8 +63,8 @@ class ManagerModel extends Model
             // ->join('software', 'permintaan.id_permintaan', '=', 'software.id_permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
             ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->join('users', 'permintaan.id', '=', 'users.id')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
             ->join('tindak_lanjut', 'permintaan.id_permintaan', '=', 'tindak_lanjut.id_permintaan')
@@ -77,7 +77,7 @@ class ManagerModel extends Model
                 // 'software.*',
                 'otorisasi.*',
                 'kategori_software.*',
-                'users.*',
+                // 'users.*',
                 'pegawai.*',
                 'stasiun.*',
                 'barang.*',
@@ -139,11 +139,8 @@ class ManagerModel extends Model
     {
         // Gunakan DB::table untuk membuat query builder
         return DB::table('permintaan')
-            // ->join('software', 'permintaan.id_permintaan', '=', 'software.id_permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
-            // ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
             ->join('tindak_lanjut', 'permintaan.id_permintaan', '=', 'tindak_lanjut.id_permintaan')
@@ -153,10 +150,7 @@ class ManagerModel extends Model
             ->select(
                 'permintaan.*',
                 'permintaan.created_at as permintaan_created_at',
-                // 'software.*',
                 'otorisasi.*',
-                // 'kategori_software.*',
-                'users.*',
                 'pegawai.*',
                 'stasiun.*',
                 'barang.*',
@@ -190,8 +184,7 @@ class ManagerModel extends Model
         // Gunakan DB::table untuk membuat query builder
         return DB::table('permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
             ->join('tindak_lanjut', 'permintaan.id_permintaan', '=', 'tindak_lanjut.id_permintaan')
@@ -202,7 +195,6 @@ class ManagerModel extends Model
                 'permintaan.*',
                 'permintaan.created_at as permintaan_created_at',
                 'otorisasi.*',
-                'users.*',
                 'pegawai.*',
                 'stasiun.*',
                 'barang.*',

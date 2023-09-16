@@ -13,7 +13,7 @@
             @foreach ($permintaan as $data_permintaan)
                 <div class="row">
                     <div class="form-group px-3">
-                        <div><b>ID Permintaan</b></div>
+                        <div><b>Nomor Tiket</b></div>
                         <div>{{ $data_permintaan->id_permintaan }}</div>
                     </div>
 

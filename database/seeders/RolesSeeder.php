@@ -17,7 +17,7 @@ class RolesSeeder extends Seeder
             ['id_role' => '1', 'nama_role' => 'superadmin'],
             ['id_role' => '2', 'nama_role' => 'admin'],
             ['id_role' => '3', 'nama_role' => 'manager'],
-            ['id_role' => '4', 'nama_role' => 'pegawai'],
+            // ['id_role' => '4', 'nama_role' => 'pegawai'],
         ];
 
         // Memasukkan data roles ke dalam tabel roles

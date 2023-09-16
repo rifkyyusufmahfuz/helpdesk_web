@@ -45,7 +45,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <p class="text-center">Nomor Permintaan: <b>{{ $data->id_permintaan }}</b></p>
+                        <p class="text-center">Nomor Tiket : <b>#{{ $data->id_permintaan }}</b></p>
                         <hr>
                         <div class="form-group text-center">
                             <label for="catatan_manager_2_{{ $data->id_permintaan }}">Catatan</label>
@@ -75,7 +75,7 @@
                                     id="konfirmasi_tolak{{ $data->id_permintaan }}">
                                 <label class="form-check-label text-justify"
                                     for="konfirmasi_tolak{{ $data->id_permintaan }}">
-                                    Tolak permintaan <b>{{ $data->id_permintaan }}</b> dan akan mengakhiri permintaan
+                                    Tolak permintaan <b>#{{ $data->id_permintaan }}</b> dan akan mengakhiri permintaan
                                     dengan status ditolak.
                                 </label>
                             </div>

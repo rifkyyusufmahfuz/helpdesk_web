@@ -11691,11 +11691,17 @@ body.sidebar-toggled footer.sticky-footer {
     /* ubah cursor menjadi not-allowed */
 }
 
-#informasi_software:focus {
-    user-select: none;
-}
-
+#informasi_software:focus,
+#peringatan_no_tiket,
+#peringatan_barang,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 label {
+    /* EDITED 16092023 */
     user-select: none;
 }
 
@@ -11735,44 +11741,3 @@ label {
     overflow-y: auto;
     /* tambahkan overflow-y dengan nilai auto atau scroll */
 }
-
-
-/* .kbw-signature {
-    border: 1px solid #d1d3e2;
-    border-radius: 0.35rem;
-    max-width: 350px;
-    height: auto;
-    padding: 3px;
-    position: relative;
-}
-
-#sig canvas {
-    max-width: 300px !important;
-    height: auto;
-} */
-
-
-/* @media (min-width: 576px) {
-    .img-sidebar {
-        height: 1.8rem;
-    }
-    .container,
-    .container-sm {
-        max-width: 540px;
-    }
-}
-
-@media (min-width: 768px) {
-    .img-sidebar {
-        height: 50px;
-    }
-    .container,
-    .container-md,
-    .container-sm {
-        max-width: 720px;
-    }
-}
-
-.sidebar.toggled .img-sidebar {
-    max-height: 25px;
-} */

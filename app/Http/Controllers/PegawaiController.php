@@ -107,9 +107,9 @@ class PegawaiController extends Controller
     public function simpan_software(Request $request)
     {
         if ($this->modelpegawai->simpan_permintaan_software($request)) {
-            return redirect('/pegawai/permintaan_software')->with('toast_success', 'Permintaan instalasi software berhasil diajukan!');
+            return redirect('/admin/permintaan_software')->with('toast_success', 'Permintaan instalasi software berhasil diajukan!');
         } else {
-            return redirect('/pegawai/permintaan_software')->with('toast_error', 'Permintaan gagal diajukan, silakan coba lagi!');
+            return redirect('/admin/permintaan_software')->with('toast_error', 'Permintaan gagal diajukan, silakan coba lagi!');
         }
     }
 
@@ -127,8 +127,8 @@ class PegawaiController extends Controller
     public function simpan_hardware(Request $request)
     {
         return $this->modelpegawai->simpan_permintaan_hardware($request)
-            ? redirect('/pegawai/permintaan_hardware')->with('toast_success', 'Permintaan pengecekan hardware berhasil diajukan!')
-            : redirect('/pegawai/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan, silakan coba lagi!');
+            ? redirect('/admin/permintaan_hardware')->with('toast_success', 'Permintaan pengecekan hardware berhasil diajukan!')
+            : redirect('/admin/permintaan_hardware')->with('toast_error', 'Permintaan gagal ditambahkan, silakan coba lagi!');
     }
 
 
@@ -205,6 +205,22 @@ class PegawaiController extends Controller
                 'ram' => $ram,
                 'penyimpanan' => $penyimpanan,
                 'status_barang' => $status_barang,
+            ]);
+        } else {
+            return response()->json(null);
+        }
+    }
+
+
+    public function get_no_tiket($no_tiket)
+    {
+        $data_permintaan = $this->modelpegawai->data_permintaan_by_id($no_tiket);
+
+        if ($data_permintaan) {
+            $no_tiket_table = $data_permintaan['id_permintaan'];
+
+            return response()->json([
+                'no_tiket_table' => $no_tiket_table,
             ]);
         } else {
             return response()->json(null);

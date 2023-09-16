@@ -17,9 +17,7 @@ class AdminModel extends Model
         return DB::table('permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
             ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('roles', 'users.id_role', '=', 'roles.id_role')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
             ->select(
@@ -27,14 +25,43 @@ class AdminModel extends Model
                 'permintaan.created_at as permintaan_created_at',
                 'otorisasi.*',
                 'kategori_software.*',
-                'users.*',
-                'roles.*',
                 'pegawai.*',
                 'stasiun.*',
                 'barang.*',
             )
             ->where('tipe_permintaan', 'software')
-            ->orderBy('permintaan.status_permintaan', 'asc')
+            ->where('permintaan.status_permintaan', '<>', '0')
+            ->where('permintaan.status_permintaan', '<>', 6)
+            ->orderBy('permintaan.created_at', 'asc')
+            // ->orderBy('permintaan.status_permintaan', 'asc')
+            ->get()
+            ->toArray();
+    }
+
+    public function get_riwayat_permintaan_software()
+    {
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->select(
+                'permintaan.*',
+                'permintaan.created_at as permintaan_created_at',
+                'otorisasi.*',
+                'kategori_software.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+            )
+            ->where('tipe_permintaan', 'software')
+            ->where(function ($query) {
+                $query->where('permintaan.status_permintaan', '0')
+                    ->orWhere('permintaan.status_permintaan', 6);
+            })
+            ->orderBy('permintaan.updated_at', 'desc')
             ->get()
             ->toArray();
     }
@@ -44,11 +71,19 @@ class AdminModel extends Model
         return DB::table('permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
             ->join('kategori_software', 'permintaan.id_kategori', '=', 'kategori_software.id_kategori')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('roles', 'users.id_role', '=', 'roles.id_role')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->join('users', 'permintaan.id', '=', 'users.id')
+            // ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
-            ->select('permintaan.*', 'otorisasi.*', 'kategori_software.*', 'users.*', 'roles.*', 'pegawai.*', 'stasiun.*')
+            ->select(
+                'permintaan.*',
+                'otorisasi.*',
+                'kategori_software.*',
+                // 'users.*',
+                // 'roles.*',
+                'pegawai.*',
+                'stasiun.*'
+            )
             ->where('permintaan.id_permintaan', '=', $id_permintaan)
             ->orderBy('permintaan.updated_at', 'desc')
             ->limit(1)
@@ -154,18 +189,18 @@ class AdminModel extends Model
 
             // Mendapatkan ID pegawai dan role_id dari tabel permintaan
             $permintaan = PermintaanModel::find($id_permintaan);
-            $pegawaiId = $permintaan->id;
+            // $pegawaiId = $permintaan->id;
 
             // Mengirim notifikasi ke pegawai
-            $pesan = 'Permintaan instalasi software Anda dengan ID Permintaan "' . $id_permintaan . '" sedang diajukan ke Manajer. Terima kasih!';
-            $tautan = '/pegawai/permintaan_software';
+            // $pesan = 'Permintaan instalasi software Anda dengan ID Permintaan "' . $id_permintaan . '" sedang diajukan ke Manajer. Terima kasih!';
+            // $tautan = '/pegawai/permintaan_software';
 
-            $kirim_notifikasi = DB::table('notifikasi')->insert([
-                'pesan' => $pesan,
-                'tautan' => $tautan,
-                'user_id' => $pegawaiId,
-                'created_at' => now()
-            ]);
+            // $kirim_notifikasi = DB::table('notifikasi')->insert([
+            //     'pesan' => $pesan,
+            //     'tautan' => $tautan,
+            //     'user_id' => $pegawaiId,
+            //     'created_at' => now()
+            // ]);
 
             $tindak_lanjut_software = DB::table('tindak_lanjut')->insert([
                 'tanggal_penanganan' => now(),
@@ -190,13 +225,13 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" diproses oleh ' . $nama . ' dan menunggu otorisasi dari Manajer.',
+                'pesan' => 'Permintaan instalasi software dengan Nomor Tiket "#' . $id_permintaan . '" diproses oleh ' . $nama . ' dan menunggu otorisasi Manajer.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);
 
 
-            if ($ajukan_ke_manager && $tindak_lanjut_software && $update_permintaan && $kirim_notifikasi) {
+            if ($ajukan_ke_manager && $tindak_lanjut_software && $update_permintaan) {
                 return true;
             } else {
                 return false;
@@ -248,7 +283,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu otorisasi kembali dari Manajer.',
+                'pesan' => 'Permintaan instalasi software dengan Nomor Tiket "#' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu otorisasi kembali dari Manajer.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);
@@ -294,23 +329,47 @@ class AdminModel extends Model
         // Gunakan DB::table untuk membuat query builder
         return DB::table('permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('roles', 'users.id_role', '=', 'roles.id_role')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->join('users', 'permintaan.id', '=', 'users.id')
+            // ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
             ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
             ->select(
                 'permintaan.*',
                 'permintaan.created_at as permintaan_created_at',
                 'otorisasi.*',
-                'users.*',
-                'roles.*',
+                // 'users.*',
+                // 'roles.*',
                 'pegawai.*',
                 'stasiun.*',
                 'barang.*',
             )
             ->where('tipe_permintaan', 'hardware')
-            ->orderBy('status_permintaan', 'asc')
+            ->where('permintaan.status_permintaan', '<>', 6)
+            ->orderBy('permintaan.created_at', 'asc')
+            ->get()
+            ->toArray();
+    }
+
+    public function get_riwayat_permintaan_hardware()
+    {
+        // Gunakan DB::table untuk membuat query builder
+        return DB::table('permintaan')
+            ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
+            ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
+            ->join('barang', 'permintaan.kode_barang', '=', 'barang.kode_barang')
+            ->select(
+                'permintaan.*',
+                'permintaan.created_at as permintaan_created_at',
+                'otorisasi.*',
+                'pegawai.*',
+                'stasiun.*',
+                'barang.*',
+            )
+            ->where('tipe_permintaan', 'hardware')
+            ->where('permintaan.status_permintaan', 6)
+            ->orderBy('permintaan.updated_at', 'desc')
             ->get()
             ->toArray();
     }
@@ -331,11 +390,18 @@ class AdminModel extends Model
     {
         return DB::table('permintaan')
             ->join('otorisasi', 'permintaan.id_otorisasi', '=', 'otorisasi.id_otorisasi')
-            ->join('users', 'permintaan.id', '=', 'users.id')
-            ->join('roles', 'users.id_role', '=', 'roles.id_role')
-            ->join('pegawai', 'users.nip', '=', 'pegawai.nip')
+            // ->join('users', 'permintaan.id', '=', 'users.id')
+            // ->join('roles', 'users.id_role', '=', 'roles.id_role')
+            ->join('pegawai', 'permintaan.nip', '=', 'pegawai.nip')
             ->join('stasiun', 'pegawai.id_stasiun', '=', 'stasiun.id_stasiun')
-            ->select('permintaan.*', 'otorisasi.*', 'users.*', 'roles.*', 'pegawai.*', 'stasiun.*')
+            ->select(
+                'permintaan.*',
+                'otorisasi.*',
+                // 'users.*',
+                // 'roles.*',
+                'pegawai.*',
+                'stasiun.*'
+            )
             ->where('permintaan.id_permintaan', '=', $id_permintaan)
             ->orderBy('permintaan.updated_at', 'desc')
             ->limit(1)
@@ -435,7 +501,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Pengecekan hardware dengan ID Permintaan "' . $id_permintaan . '" telah diselesaikan oleh ' . $nama . ' dan menunggu validasi dari Manager.',
+                'pesan' => 'Pengecekan hardware dengan Nomor Tiket "#' . $id_permintaan . '" telah diselesaikan oleh ' . $nama . ' dan menunggu validasi dari Manajer.',
                 'tautan' => '/manager/permintaan_hardware',
                 'created_at' => now()
             ]);
@@ -493,7 +559,7 @@ class AdminModel extends Model
             $nama = ucwords(auth()->user()->pegawai->nama);
             $simpan_notifikasi = DB::table('notifikasi')->insert([
                 'role_id' => 3,
-                'pesan' => 'Permintaan instalasi software dengan ID Permintaan "' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu otorisasi kembali dari Manajer.',
+                'pesan' => 'Permintaan instalasi software dengan Nomor Tiket "#' . $id_permintaan . '" telah direvisi oleh ' . $nama . ' dan menunggu otorisasi kembali dari Manajer.',
                 'tautan' => '/manager/permintaan_software',
                 'created_at' => now()
             ]);

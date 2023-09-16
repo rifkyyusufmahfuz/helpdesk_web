@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <th>ID Tindak Lanjut</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Tanggal Penanganan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -26,7 +26,7 @@
                         @foreach ($data_tindaklanjut as $data)
                             <tr>
                                 <td>{{ $data->id_tindak_lanjut }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->tanggal_penanganan }}</td>
 
                                 <td class="text-center">

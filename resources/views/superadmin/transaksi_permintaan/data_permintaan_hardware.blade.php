@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Waktu Pengajuan</th>
                             <th>Keluhan</th>
                             {{-- <th>Nama Pegawai</th> --}}
@@ -30,7 +30,7 @@
                         @foreach ($permintaan as $data)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
                                 <td>{{ $data->keluhan_kebutuhan }}</td>
                                 {{-- <td>{{ $data->keluhan_kebutuhan }}</td> --}}
@@ -138,7 +138,6 @@
     </div>
 
     @if (isset($data))
-        {{-- @include('admin.software.modal.proses_software') --}}
         @include('admin.hardware.modal.detail_permintaan_hardware')
     @endif
 @endsection

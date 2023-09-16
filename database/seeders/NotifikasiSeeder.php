@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use League\CommonMark\Util\LinkParserHelper;
 
 class NotifikasiSeeder extends Seeder
 {
@@ -32,14 +30,14 @@ class NotifikasiSeeder extends Seeder
             [
                 'user_id' => null,
                 'role_id' => 2,
-                'pesan' => 'Pemberitahuan untuk admin',
+                'pesan' => 'Pemberitahuan untuk admin (Test)',
                 'tautan' => '#',
                 'created_at' => \Carbon\Carbon::now(),
             ],
             [
                 'user_id' => null,
                 'role_id' => 2,
-                'pesan' => 'Pemberitahuan untuk admin 2',
+                'pesan' => 'Pemberitahuan untuk admin 2 (Test)',
                 'tautan' => '#',
                 'created_at' => \Carbon\Carbon::now(),
             ],

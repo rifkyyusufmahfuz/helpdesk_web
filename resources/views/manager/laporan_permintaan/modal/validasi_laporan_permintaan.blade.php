@@ -20,7 +20,7 @@
 
                         <h5>Validasi Laporan</h5>
                         <span>Laporan permintaan periodik berikut ini akan divalidasi:</span><br>
-                        <span>Nomor Permintaan: <b>{{ $data->id_laporan }}</b></span>
+                        <span>Nomor Laporan: <b>{{ $data->id_laporan }}</b></span>
                         <div class="table-responsive mt-2">
                             <table class="table table-bordered" width="100%" cellspacing="0">
                                 <thead>

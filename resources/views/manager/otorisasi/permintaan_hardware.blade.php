@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>ID Permintaan</th>
+                            <th>No. Tiket</th>
                             <th>Waktu Pengajuan</th>
                             {{-- <th>Kategori Software</th> --}}
                             {{-- <th>Uraian Kebutuhan</th> --}}
@@ -31,7 +31,7 @@
                             <?php $no = 1; ?>
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $data->id_permintaan }}</td>
+                                <td>#{{ $data->id_permintaan }}</td>
                                 <td>{{ $data->permintaan_created_at }}</td>
                                 <td>
                                     <span
