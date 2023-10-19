@@ -176,14 +176,14 @@ class PegawaiModel extends Model
             $latestId = $latestPermintaan->id_permintaan;
             $lastIdParts = explode('-', $latestId);
             $lastUrutan = intval($lastIdParts[0]);
-            $lastBulan = $lastIdParts[3];
-            $lastTahun = $lastIdParts[4];
+            $lastBulan = isset($lastIdParts[3]) ? $lastIdParts[3] : '';
+            $lastTahun = isset($lastIdParts[4]) ? $lastIdParts[4] : '';
 
             $bulanSekarang = date('n');
             $kodeBulanSekarang = RomanNumberConverter::convertMonthToRoman($bulanSekarang);
             $tahunSekarang = date('Y');
 
-            if ($lastBulan !== $kodeBulanSekarang || $lastTahun !== $tahunSekarang) {
+            if (strlen($lastBulan) !== strlen($kodeBulanSekarang) || $lastTahun !== $tahunSekarang) {
                 $urutanBaru = 1;
             } else {
                 $urutanBaru = $lastUrutan + 1;
@@ -195,6 +195,7 @@ class PegawaiModel extends Model
         }
 
         $newIdPermintaan = sprintf('%04d', $urutanBaru) . '-KCI-ITHELPDESK-' . $kodeBulanSekarang . '-' . $tahunSekarang;
+
 
         //simpan tanda tangan
         $filename = "requestor_" . $newIdPermintaan . ".png";
